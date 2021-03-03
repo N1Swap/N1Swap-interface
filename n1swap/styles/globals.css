@@ -14,3 +14,38 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.container {
+  min-height: 100vh;
+  padding: 0 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.block-logo {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding:10px 20px;
+}
+
+.block-logo .word {
+    font-size: 18px;
+    font-weight: bold;
+    margin-left: 15px;
+}
+
+.ant-layout-header  .trigger {
+    padding: 0 24px;
+    font-size: 18px;
+    line-height: 64px;
+    cursor: pointer;
+    transition: color 0.3s;
+    color: #fff;
+}
+
+@media (max-width: 600px) {
+
+}
