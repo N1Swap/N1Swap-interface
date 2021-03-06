@@ -6,19 +6,18 @@ import Immutable from 'immutable';
 
 import reducer from './reducer.js';
 
-
 function createMiddlewares () { // { isServer }
-  	let middlewares = [
-    	thunkMiddleware,
-  	]
-  	if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
-    	middlewares.push(createLogger({
-	     	level: 'info',
-	      	collapsed: true,
-	     	stateTransformer: state => state.toJS(),
-	    }))
-  	}
-  	return middlewares
+    let middlewares = [
+        thunkMiddleware,
+    ]
+    if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
+        middlewares.push(createLogger({
+            level: 'info',
+            collapsed: true,
+            stateTransformer: state => state.toJS(),
+        }))
+    }
+    return middlewares
 }
 
 export const initStore = (initialState = {}, context) => {
@@ -35,10 +34,16 @@ export const initStore = (initialState = {}, context) => {
   )
 }
 
-// export default comp => withRedux(initStore)(comp)
-
 // create a makeStore function
-const makeStore = context => initStore();
+export const makeStore = context => initStore();
 
 // export an assembled wrapper
-export const wrapper = createWrapper(makeStore, {debug: true});
+// export const wrapper = createWrapper(makeStore, {debug: true});
+export const wrapper = createWrapper(makeStore
+    , {
+        debug: true ,
+        serializeState: state => state.toJS(),
+        deserializeState: state => Immutable.fromJS(state),
+    }
+);
+

@@ -1,15 +1,17 @@
 import '../styles/globals.css'
 
-import {wrapper} from '../redux/store';
-import App from 'next/app';
+import {wrapper,makeStore} from '../redux/store';
+import App, {Container} from "next/app";
+// import {Provider} from "react-redux";
 
+import Immutable from 'immutable';
+import PageWrapper from '../components/pagewrapper'
+
+// let store = initStore();
 
 class MyApp extends App {
-	
+    
     static getInitialProps = async ({Component, ctx}) => {
-
-        ctx.store.dispatch({type: 'TOE', payload: 'was set in _app'});
-
         return {
             pageProps: {
                 // Call page-level getInitialProps
@@ -24,10 +26,8 @@ class MyApp extends App {
     render() {
         const {Component, pageProps} = this.props;
 
-        return (
-            <Component {...pageProps} />
-        );
+        return <Component {...pageProps} />
     }
 }
 
-export default wrapper.withRedux(MyApp);
+export default wrapper.withRedux(MyApp)

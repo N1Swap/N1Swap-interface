@@ -1,0 +1,82 @@
+.box_wrapper {
+    position: relative;
+    max-width: 420px;
+    width: 100%;
+    background: rgb(255, 255, 255);
+    box-shadow: rgb(0 0 0 / 1%) 0px 0px 1px, rgb(0 0 0 / 4%) 0px 4px 8px, rgb(0 0 0 / 4%) 0px 16px 24px, rgb(0 0 0 / 1%) 0px 24px 32px;
+    border-radius: 30px;
+    margin:0 auto;
+}
+
+.box_wrapper .box_head {
+    padding: 12px 1rem 0px 1.5rem;
+    margin-bottom: -4px;
+    width: 100%;
+    max-width: 420px;
+    color: rgb(86, 90, 105);
+    font-size: 16px;
+    justify-content: space-between;
+    align-items: center;
+    display: flex;
+}
+
+.box_wrapper .box_head .title {
+    margin: 0px;
+    min-width: 0px;
+    font-weight: 500;
+    color: #000;
+}
+.box_wrapper .box_head .tool {
+    margin-left: 10px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    height: 36px;
+    line-height: 36px;
+}
+
+.box_wrapper .box_head .tool a {
+    display: flex;
+    align-items: center;
+    color:#888;
+}
+
+.box_wrapper .box_head .tool a:hover {
+    color: #aaa;
+}
+
+.box_wrapper .box_content {
+    padding:1rem;
+}
+
+.box_form .box_from_input {
+    border-radius: 20px;
+    border: 1px solid rgb(247, 248, 250);
+    background-color: rgb(255, 255, 255);
+}
+
+.box_form .box_from_input h3{
+    margin: 0px;
+    display: flex;
+    font-size: 0.75rem;
+    line-height: 1rem;
+    padding: 0.75rem 1rem 0px;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: 500;
+    font-size: 14px;
+    color: rgb(86, 90, 105);
+}
+
+.box_form .currency_input {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    padding: 0.75rem 0.75rem 0.75rem 1rem;
+}
+
+.box_form .to {
+    text-align: center;
+    margin:20px 0;
+}
+
