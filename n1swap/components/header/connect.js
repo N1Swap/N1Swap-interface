@@ -1,13 +1,15 @@
 import React from 'react';
-import {Button,Tag,Typography,Modal} from 'antd';
-const { Paragraph, Text } = Typography;
+import {Button,Tag,Typography,Modal,Divider} from 'antd';
+const { Paragraph, Text,Title } = Typography;
 
 import { initStore } from 'redux/store';
 import {tronlink_installed,tronlink_logined,tronlink_set_account} from 'redux/reducer/setting';
 import { connect } from "react-redux";
+import Image from 'next/image'
 
 
 import {pageReady} from 'helper/misc';
+import {CursorClickOutline} from 'heroicons-react';
 
 import {getTronLinkLoginAccount,getIsInstalledTronLink,getIsLoginTronLink,sendTx} from 'helper/tron';
 
@@ -115,7 +117,7 @@ class TronReact extends React.Component {
                             onClick={this.toggleModal.bind({},'account')}
                         >
                             <Text
-                                style={{ width: 100 }}
+                                style={{ width: 100  }}
                                 ellipsis={{ tooltip: tronlink.get('account') }}
                               >
                                 {tronlink.get('account')}
@@ -132,15 +134,42 @@ class TronReact extends React.Component {
                     width={420}
                     title="Account" 
                     visible={is_show_account_modal} 
-                    onOk={this.handleOk} 
+                    footer={null}
                     onCancel={this.toggleModal.bind({},'account')}>
-                    <div className={styles.search_box_content}>
+                    <div className={styles.wallet_info}>
+                        <p className={styles.sub}>Connected with TronLink</p>
+                        <div className={styles.address}>
+                            <div className={styles.icon}>
+                                <Image
+                                    src={"/img/wallet/tronlink.jpg"}
+                                    width={20}
+                                    height={20}
+                                    layout="fixed"
+                                />
+                            </div>
+                            <div className={styles.addr}>
+                                <Title
+                                    style={{ width: 200 }}
+                                    copyable={true}
+                                    level={4}
+                                    ellipsis={{ tooltip: tronlink.get('account') }}
+                                  >
+                                    {tronlink.get('account')}
+                                </Title>
+                            </div>
+                        </div>
+                        <Divider />
+                        <div className={styles.more}>
+                            <div className={styles.morep}>
+                                <a><CursorClickOutline size={16} />View on Tronscan</a>
+                            </div>
+                        </div>
                     </div>
                 </Modal>
                 <Modal
                     className={'border_modal'}
                     width={420}
-                    title="Connect Wallet" 
+                    title="Connect A Wallet" 
                     visible={is_show_connect_modal} 
                     onOk={this.handleOk} 
                     onCancel={this.toggleModal.bind({},'connect')}>
