@@ -130,4 +130,4 @@ function mapStateToProps(state,ownProps) {
     }
 }
 
-module.exports = withTranslation()(connect(mapStateToProps,mapDispatchToProps)(SwapTrade))
+module.exports = connect(mapStateToProps,mapDispatchToProps)(SwapTrade)
