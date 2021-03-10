@@ -4,7 +4,6 @@ import { initStore } from 'redux/store';
 import { connect } from "react-redux";
 import SwapInput from 'components/swap/input';
 import {Button} from 'antd';
-import { withTranslation } from 'next-i18next'
 
 import styles from 'styles/swap_trade.module.less'
 
@@ -92,7 +91,7 @@ class SwapTrade extends React.Component {
                                     ref={this.fromRef}
                                     default_token={'TRX'} 
                                     disable_token={this.state.from_token_disable}
-                                    setDisableToken={this.handleTokenDisable.bind({},'to')}
+                                    next-i18next'next-i18next'={this.handleTokenDisable.bind({},'to')}
                                     />
                             </div>
                         </div>
