@@ -6,16 +6,7 @@ let config =  withAntdLess({
     // optional
     lessVarsFilePath: './styles/variables.less',
     // optional https://github.com/webpack-contrib/css-loader#object
-    cssLoaderOptions: {
-
-      less: {
-        lessOptions: { // important extra layer for less-loader^6.0.0
-          javascriptEnabled: true
-        }
-      }
-
-        
-    },
+    cssLoaderOptions: {},
 
     // Other Config Here...
 
