@@ -25,7 +25,6 @@ import Head from 'next/head'
 const Home = () => {
 
     return <PageWrapper>
-            <div>
             <Head>
                 <title>N1Swap</title>
                 <link rel="icon" href="/favicon.ico" />
@@ -33,7 +32,6 @@ const Home = () => {
 
             <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
                 <TradeBox />
-            </div>
             </div>
     </PageWrapper>
     

@@ -1,13 +1,14 @@
-import '../styles/globals.css'
+require('../styles/globals.less');
 
 import {wrapper,makeStore} from '../redux/store';
 import App, {Container} from "next/app";
-// import {Provider} from "react-redux";
+import {Suspense} from 'react';
+
+import TranslateProvider from 'helper/translate/provider'
 
 import Immutable from 'immutable';
 import PageWrapper from '../components/pagewrapper'
 
-// let store = initStore();
 
 class MyApp extends App {
     
@@ -26,7 +27,21 @@ class MyApp extends App {
     render() {
         const {Component, pageProps} = this.props;
 
-        return <Component {...pageProps} />
+        const isServer = (typeof window === 'undefined');
+
+        console.log('isServer',isServer);
+
+        if (isServer) {
+            return  <TranslateProvider><Component {...pageProps} /></TranslateProvider>
+        }else {
+            return <Suspense fallback={<h1>Loading translate data...</h1>}>
+                <TranslateProvider>
+                    <Component {...pageProps} />
+                </TranslateProvider>
+            </Suspense>
+            // return <TranslateProvider><Component {...pageProps} /></TranslateProvider>
+        }
+        
     }
 }
 

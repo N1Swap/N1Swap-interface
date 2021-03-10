@@ -4,12 +4,15 @@ import { initStore } from 'redux/store';
 import { connect } from "react-redux";
 import SwapInput from 'components/swap/input';
 import {Button} from 'antd';
+import { withTranslation } from 'next-i18next'
 
-import styles from 'styles/swap_trade.module.css'
+import styles from 'styles/swap_trade.module.less'
 
 import {CogOutline,ArrowNarrowDown} from 'heroicons-react';
 
-React.useLayoutEffect = React.useEffect 
+// React.useLayoutEffect = React.useEffect 
+
+
 
 class SwapTrade extends React.Component {
 
@@ -50,9 +53,10 @@ class SwapTrade extends React.Component {
         const {is_loading,
             from_token_name,from_token_amount,
             to_token_amount,to_token_name} = this.state;
-        const {tronlink} = this.props;
+        const {tronlink,t} = this.props;
 
-        console.log('debug,tronlink',tronlink.toJS());
+        // console.log('debug,tronlink',tronlink.toJS());
+        console.log('debug-t',t);
 
         return (
             <div className={styles.box_wrapper}>
@@ -76,7 +80,9 @@ class SwapTrade extends React.Component {
                             </div>
                         </div>
                         <div className={styles.to}>
-                            <ArrowNarrowDown />
+                            <div className={styles.to_icon}>
+                                <ArrowNarrowDown size={20} />
+                            </div>
                         </div>
                         <div className={styles.box_from_input}>
                             <h3>To</h3>
@@ -88,7 +94,7 @@ class SwapTrade extends React.Component {
                         </div>
                     </div>
                     <div className={styles.box_footer}>
-                        <Button onClick={this.test}>Get Value</Button>
+                        <Button block size="large" className="big-radius-btn" type="primary" onClick={this.test}>{t('Get Value')}</Button>
                     </div>
                 </div>
             </div>
@@ -106,4 +112,4 @@ function mapStateToProps(state,ownProps) {
     }
 }
 
-module.exports = connect(mapStateToProps,mapDispatchToProps)(SwapTrade)
+module.exports = withTranslation()(connect(mapStateToProps,mapDispatchToProps)(SwapTrade))

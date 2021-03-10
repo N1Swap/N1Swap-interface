@@ -1,15 +1,22 @@
 import React, { useState } from 'react';
 import Image from 'next/image'
-import styles from '../styles/index.module.css'
+import styles from '../styles/components/pagewrapper.module.less'
 
-import { Layout, Menu, Breadcrumb } from 'antd';
+import { Layout, Menu, Breadcrumb, Button,Divider} from 'antd';
 const { Header, Content, Footer, Sider } = Layout;
-import { UploadOutlined, UserOutlined, VideoCameraOutlined,MenuFoldOutlined,MenuUnfoldOutlined } from '@ant-design/icons';
+import { UserOutlined, VideoCameraOutlined,MenuFoldOutlined,MenuUnfoldOutlined } from '@ant-design/icons';
 
-import Tron from 'components/tron'
-import N1SBtn from 'components/n1s/btn'
+import {HomeOutline,SwitchHorizontal,LightningBoltOutline} from 'heroicons-react';
+
+import ConnectWallet from 'components/header/connect'
+import N1SBtn from 'components/header/n1s'
+import LanguageBtn from 'components/language/btn'
+import MoreBtn from 'components/header/more'
+
+
 import { withRouter } from 'next/router'
 
+                            // <TelegramSvg />
 
 class PageWrapper extends React.Component {
 
@@ -49,9 +56,8 @@ class PageWrapper extends React.Component {
         const {collapsed} = this.state;
 
         return (
-            <div className={styles.container}>
-
-                <Layout>
+            <div className='fullpage-container' >
+                    <Layout>
                     <Sider
                       breakpoint="lg"
                       collapsedWidth="0"
@@ -60,32 +66,59 @@ class PageWrapper extends React.Component {
                       }}
                       collapsed={collapsed}
                       theme={'light'}
+                      width={250}
                       onCollapse={(collapsed, type) => {
                         console.log(collapsed, type);
                       }}
-                    >
+                      className="block-sider"
+                    >   
+                        <div className="block-sider-top">
                         <div className='block-logo'>
                             <Image
-                                src="/img/logo/logo.png"
+                                src="/img/logo/logo_square.png"
                                 alt="N1Swap Logo"
-                                width={38}
-                                height={40}
+                                width={32}
+                                height={32}
                                 className="logo"
                               />
                             <span className='word'>N1Swap</span>
                         </div>
                         <Menu theme="light" mode="inline" onClick={this.handleClick}>
-                            <Menu.Item key="home" icon={<UserOutlined />}>
+                            <Menu.Item key="home" icon={<HomeOutline />}>
                               Home
                             </Menu.Item>
-                            <Menu.Item key="trade" icon={<VideoCameraOutlined />}>
-                              Trade
+                            <Menu.Item key="trade" icon={<SwitchHorizontal />}>
+                              Exchange
                             </Menu.Item>
-                            <Menu.Item key="test" icon={<VideoCameraOutlined />}>
-                              Test
+                            <Menu.Item key="liquidity" icon={<LightningBoltOutline />}>
+                              Liquidity
                             </Menu.Item>
-
                         </Menu>
+                        </div>
+
+                        <div className={styles.block_sider_bottom}>
+
+                            <div className={styles.block_social}>
+                                <a>
+                                    <Image src="/img/social/discord.svg" 
+                                    width={24}
+                                    height={24}/></a>
+                                <a>
+                                    <Image src="/img/social/twitter.svg" 
+                                    width={24}
+                                    height={24}/></a>
+                                <a>
+                                    <Image src="/img/social/telegram.svg" 
+                                    width={24}
+                                    height={24}/></a>
+                            </div>
+
+                            <Divider />
+                            <div className={styles.block_lang}>
+                                <LanguageBtn />
+                            </div>
+                        </div>
+
                     </Sider>
                     <Layout>
 
@@ -101,7 +134,8 @@ class PageWrapper extends React.Component {
                         </div>
                         <div className="block-right-menu">
                             <N1SBtn />
-                            <Tron />
+                            <ConnectWallet />
+                            <MoreBtn />
                         </div>
                     </Header>
 

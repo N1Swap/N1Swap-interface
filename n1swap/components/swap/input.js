@@ -1,13 +1,9 @@
 import React from 'react';
-import {Modal,Input,Button} from 'antd';
+import {Input} from 'antd';
 
-import { initStore } from 'redux/store';
-import { connect } from "react-redux";
-import Image from 'next/image'
+import styles from 'styles/swap_input.module.less'
 
-import styles from 'styles/swap_input.module.css'
-
-import {ChevronDown} from 'heroicons-react';
+import TokenSelect from 'components/common/token_select'
 
 class SwapInput extends React.Component {
 
@@ -22,7 +18,7 @@ class SwapInput extends React.Component {
 
         this.handleAmountChange = this.handleAmountChange.bind(this);
         this.getValue = this.getValue.bind(this)
-        this.toggleOpenTokenList = this.toggleOpenTokenList.bind(this)
+        this.handleTokenChange = this.handleTokenChange.bind(this);
     }
 
     static getDerivedStateFromProps(nextProps,prevState) {
@@ -45,14 +41,10 @@ class SwapInput extends React.Component {
         })
     }
 
-    toggleOpenTokenList() {
+    handleTokenChange(token) {
         this.setState({
-            'is_open_token_modal' : !this.state.is_open_token_modal
+            'token' : token
         })
-    }
-
-    handleOk() {
-
     }
 
     render() {
@@ -62,48 +54,8 @@ class SwapInput extends React.Component {
 
         return (
             <div className={styles.input_wrapper}>
-
-                    
                 <Input bordered={false} className={styles.input} value={amount} placeholder={'0.0'} onChange={this.handleAmountChange}/>
-                <button 
-                    className={styles.token_btn} 
-                    onClick={this.toggleOpenTokenList} 
-                    >
-                    {
-                        (token)
-                        ? <span className={styles.token_name}>
-                            <span className={styles.token_icon}>
-                            <Image
-                                src="/img/token/trx.svg"
-                                width={16}
-                                height={16}
-                                layout="fixed"
-                            />
-                            </span>
-                            {token}
-                        </span>
-                        : <span className={styles.token_name}>select token</span>
-                    }
-                    <span className={styles.arrow}><ChevronDown /></span>
-                </button>
-                {
-                    (is_open_token_modal)
-                    ? <Modal 
-                        className={'border_modal'}
-                        width={420}
-                        title="Select Token" 
-                        visible={is_open_token_modal} 
-                        onOk={this.handleOk} 
-                        onCancel={this.toggleOpenTokenList}>
-                        <div className={styles.search_box_wrapper}>
-                            <Input size={'large'} className={styles.input_radius} placeholder={'Search name or paste address'}/>
-                        </div>
-                        <div className={styles.search_box_content}>
-                        </div>
-                    </Modal>
-                    : null
-                }
-
+                <TokenSelect value={token} onChange={this.handleTokenChange} />
             </div>
         );
     }
