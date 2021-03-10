@@ -67,10 +67,10 @@ class SwapTrade extends React.Component {
         const {is_loading,
             from_token_name,from_token_amount,
             to_token_amount,to_token_name} = this.state;
-        const {tronlink,t} = this.props;
+        const {tronlink} = this.props;
 
         // console.log('debug,tronlink',tronlink.toJS());
-        console.log('debug-t',t);
+        // console.log('debug-t',t);
 
         return (
             <div className={styles.box_wrapper}>
@@ -112,7 +112,7 @@ class SwapTrade extends React.Component {
                         </div>
                     </div>
                     <div className={styles.box_footer}>
-                        <Button block size="large" className="big-radius-btn" type="primary" onClick={this.test}>{t('Get Value')}</Button>
+                        <Button block size="large" className="big-radius-btn" type="primary" onClick={this.test}>{'Get Value'}</Button>
                     </div>
                 </div>
             </div>
