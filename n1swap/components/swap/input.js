@@ -21,12 +21,19 @@ class SwapInput extends React.Component {
         this.handleTokenChange = this.handleTokenChange.bind(this);
     }
 
-    static getDerivedStateFromProps(nextProps,prevState) {
-        if (nextProps.default_token) {
-            prevState['token'] = nextProps.default_token
+    componentDidMount() {
+        if (this.props.default_token) {
+            let default_token = this.props.default_token.toLowerCase()
+            this.handleTokenChange(default_token);
         }
-        return prevState;
     }
+
+    // static getDerivedStateFromProps(nextProps,prevState) {
+    //     if (nextProps.default_token) {
+    //         prevState['token'] = nextProps.default_token
+    //     }
+    //     return prevState;
+    // }
 
     getValue() {
         return {
@@ -42,20 +49,25 @@ class SwapInput extends React.Component {
     }
 
     handleTokenChange(token) {
+        console.log('debug001,更换当前选中的token:',token)
         this.setState({
-            'token' : token
+            'token' : token,
         })
+        this.props.setDisableToken(token);
     }
 
     render() {
 
-
         const {token,amount,is_open_token_modal} = this.state;
+        const {disable_token} = this.props;
+
+        console.log('debug001,当前选中的token是',token,this.state);
+        console.log('debug001,当前disable的token是',disable_token);
 
         return (
             <div className={styles.input_wrapper}>
                 <Input bordered={false} className={styles.input} value={amount} placeholder={'0.0'} onChange={this.handleAmountChange}/>
-                <TokenSelect value={token} onChange={this.handleTokenChange} />
+                <TokenSelect token={token} disable_token={disable_token} onChange={this.handleTokenChange} />
             </div>
         );
     }

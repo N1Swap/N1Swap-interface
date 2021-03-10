@@ -20,6 +20,8 @@ class SwapTrade extends React.Component {
         super(props)
         this.state = {
             is_loading  : false,
+            from_token_disable : null,
+            to_token_disable   : null
         }
 
         this.fromRef = React.createRef();
@@ -27,6 +29,7 @@ class SwapTrade extends React.Component {
 
         this.handleTokenChange = this.handleTokenChange.bind(this)
         this.handleAmountChange = this.handleAmountChange.bind(this)
+        this.handleTokenDisable = this.handleTokenDisable.bind(this)
 
         this.test = this.test.bind(this);
 
@@ -46,6 +49,18 @@ class SwapTrade extends React.Component {
 
     test() {
         console.log('this.fromRef',this.fromRef.current.getValue());
+    }
+
+    handleTokenDisable(name,token) {
+        if (name == 'from') {
+            this.setState({
+                'from_token_disable' : token
+            })
+        }else if (name == 'to') {
+            this.setState({
+                'to_token_disable' : token
+            })
+        }
     }
 
     render() {
@@ -76,6 +91,8 @@ class SwapTrade extends React.Component {
                                 <SwapInput 
                                     ref={this.fromRef}
                                     default_token={'TRX'} 
+                                    disable_token={this.state.from_token_disable}
+                                    setDisableToken={this.handleTokenDisable.bind({},'to')}
                                     />
                             </div>
                         </div>
@@ -89,6 +106,8 @@ class SwapTrade extends React.Component {
                             <div className={styles.currency_input}>
                                 <SwapInput 
                                     ref={this.toRef}
+                                    disable_token={this.state.to_token_disable}
+                                    setDisableToken={this.handleTokenDisable.bind({},'from')}
                                     />
                             </div>
                         </div>

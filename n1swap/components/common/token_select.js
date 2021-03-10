@@ -1,9 +1,11 @@
 import React from 'react';
 import {Modal,Input,Button,Divider} from 'antd';
 
-import { initStore } from 'redux/store';
-import { connect } from "react-redux";
 import classNames from 'classnames';
+
+// import { initStore } from 'redux/store';
+// import { connect } from "react-redux";
+// import classNames from 'classnames';
 import Image from 'next/image'
 
 import styles from 'styles/components/common/token_select.module.less'
@@ -20,6 +22,7 @@ class TokenSelect extends React.Component {
         }
         this.toggleOpenTokenList = this.toggleOpenTokenList.bind(this)
         this.handleValueChange = this.handleValueChange.bind(this)
+        this.selectToken = this.selectToken.bind(this)
     }
 
 
@@ -32,7 +35,7 @@ class TokenSelect extends React.Component {
     handleValueChange(name,e) {
         let v = {}
         v[name] = e.target.value;
-        console.log('handleValueChange',name,e.target.value)
+        // console.log('handleValueChange',name,e.target.value)
         this.setState(v)
     }
 
@@ -48,11 +51,37 @@ class TokenSelect extends React.Component {
         return result;
     }
 
+    selectToken(name) {
+
+        const {disable_token} = this.props;
+
+        if (disable_token == name) {
+            return false;
+        }
+
+        this.props.onChange(name)
+        this.toggleOpenTokenList();
+    }
+
+    getSelect(token_list,token) {
+
+        let token_lower = token.toLowerCase();
+        let select = null
+        token_list.map(one=>{
+            // console.log('debug001,check',one.name,token_lower)
+            if (one.name == token_lower) {
+                // console.log('debug001,find',one.name);
+                select = one;
+            }
+        })
+        return select;
+    }
+
     render() {
 
 
         const {is_open_token_modal,kw} = this.state;
-        const {token} = this.props;
+        const {token,disable_token} = this.props;
 
         let token_list = [
             {
@@ -77,6 +106,12 @@ class TokenSelect extends React.Component {
             token_list = this.getList(token_list,kw);
         }
 
+        let select_token = null;
+        if (token) {
+            select_token = this.getSelect(token_list,token);
+        }
+
+
         return (
             <React.Fragment>
                 <button 
@@ -84,17 +119,17 @@ class TokenSelect extends React.Component {
                     onClick={this.toggleOpenTokenList} 
                     >
                     {
-                        (token)
+                        (select_token)
                         ? <span className={styles.token_name}>
                             <span className={styles.token_icon}>
                             <Image
-                                src="/img/token/trx.svg"
+                                src={"/img/token/"+select_token.icon}
                                 width={16}
                                 height={16}
                                 layout="fixed"
                             />
                             </span>
-                            {token}
+                            {select_token.name.toUpperCase()}
                         </span>
                         : <span className={styles.token_name}>select token</span>
                     }
@@ -117,7 +152,13 @@ class TokenSelect extends React.Component {
                             <Divider />
                             {
                                 token_list.map(token=>{
-                                    return <div className={'block-token-one'}><a className="link-all">
+                                    let is_disable = false;
+                                    if (token.name == disable_token) {
+                                        is_disable = true;
+                                    }
+                                    return <div className={'block-token-one'}><a 
+                                        className={classNames("link-all",{"disable":is_disable})} 
+                                        onClick={this.selectToken.bind({},token.name)}>
                                         <div className="icon">
                                             <Image
                                                 src={"/img/token/"+token.icon}
