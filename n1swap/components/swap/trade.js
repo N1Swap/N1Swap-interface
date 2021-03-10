@@ -91,7 +91,7 @@ class SwapTrade extends React.Component {
                                     ref={this.fromRef}
                                     default_token={'TRX'} 
                                     disable_token={this.state.from_token_disable}
-                                    next-i18next'next-i18next'={this.handleTokenDisable.bind({},'to')}
+                                    setDisableToken={this.handleTokenDisable.bind({},'to')}
                                     />
                             </div>
                         </div>
