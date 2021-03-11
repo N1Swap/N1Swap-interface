@@ -5,9 +5,9 @@ export default class CommonLite extends Component {
     constructor(props) {
         super(props)
         
-        this.handleEventValueChange = ::this.handleEventValueChange
-        this.handleValueChange = ::this.handleValueChange
-        this.handleCheckboxValueChange = ::this.handleCheckboxValueChange
+        this.handleEventValueChange = this.handleEventValueChange.bind(this)
+        this.handleValueChange = this.handleValueChange.bind(this)
+        this.handleCheckboxValueChange = this.handleCheckboxValueChange.bind(this)
     }
 
     handleValueChange(key_name,value) {

@@ -12,10 +12,10 @@ const Home = () => {
 
     return <PageWrapper>
             <Head>
-                <title>Home</title>
+                <title>Exchange</title>
             </Head>
             <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
-                <h1>Home</h1>
+                <TradeBox />
             </div>
     </PageWrapper>
     

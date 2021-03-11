@@ -1,6 +1,7 @@
 import React from 'react';
 import {Button,Popover} from 'antd';
 
+import classNames from 'classnames';
 import {set_language} from 'redux/reducer/setting';
 import { connect } from "react-redux";
 import Image from 'next/image'
@@ -63,8 +64,9 @@ class LanguageBtn extends React.Component {
         const {language} = this.props;
 
         const default_langs = ['EN','CN','ID','JP'];
+        const country = this.transferLanguageToCountry(language);
 
-        let content = <div className={styles.language_list}>
+        let content = <div className={classNames("dropdown-menu",styles.language_list)}>
             <ul>
                 {
                     default_langs.map(one=>{
@@ -87,12 +89,12 @@ class LanguageBtn extends React.Component {
             </ul>
         </div>
         return (
-            <Popover content={content} title={null}>
+            <Popover content={content} title={null} placement="topRight" arrowPointAtCenter >
                 <Button  
                     type={'link'}
                     className={styles.language_btn}
                     icon={<div className={styles.flag}><Image 
-                    src="/img/flag/country-4x3/gb.svg"
+                    src={"/img/flag/country-4x3/"+country+".svg"}
                     width={24}
                     height={18}
                     /></div>}>{this.transferLanguageToFullName(language)}</Button>

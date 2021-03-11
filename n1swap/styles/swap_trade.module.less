@@ -25,6 +25,11 @@
     min-width: 0px;
     font-weight: 500;
     color: #000;
+    .sub {
+        font-size: 12px;
+        color: #999;
+        font-weight:normal;
+    }
 }
 .box_wrapper .box_head .tool {
     margin-left: 10px;
@@ -45,8 +50,31 @@
     color: #aaa;
 }
 
-.box_wrapper .box_content {
-    padding:1.25rem 1.75rem 1.75rem 1.75rem;
+.box_wrapper {
+
+    .box_content_top {
+        padding:1.25rem 1.75rem 1.75rem 1.75rem;
+    }
+
+    .box_content_mid {
+        padding:1.75rem 1.75rem 0 1.75rem;
+    }
+
+
+    .box_content_mid2 {
+        padding:0 1.75rem 0 1.75rem;
+    }
+
+    .box_content_footer {
+        padding:0 1.75rem 0.5rem 1.75rem;
+    }
+    .footer_text {
+        text-align: center;
+        a {
+            margin-left: 12px;
+            color: #3E2EAF;
+        }
+    }
 }
 
 .box_form .box_from_input {
@@ -101,3 +129,33 @@
     }
 }
 
+.liquidity_list {
+    .liquidity_head {
+        display: flex;
+        justify-content: flex-start;
+        align-items:center;
+    }
+    h3 {
+        margin-bottom: 0;
+        margin-right:12px;
+    }
+}
+
+.unlogin_box {
+    padding:20px 0;
+    text-align: center;
+    color: #aaa;
+}
+
+.login_box {
+    padding:20px 0 0 0;
+    .empty{
+    padding:20px 0;
+    background: #FAFAFA;
+    border: 1px solid #F0F0F0;
+    text-align: center;
+    color: #aaa;
+    border-radius:12px;
+    color: #999;
+    }
+}

@@ -1,13 +1,14 @@
 import React from 'react';
-import {Modal,Input,Button} from 'antd';
+import {Modal,Input,Button,Tooltip} from 'antd';
+import classNames from 'classnames'
 
-import { initStore } from 'redux/store';
 import { connect } from "react-redux";
 import Image from 'next/image'
 
-import styles from 'styles/swap_setting.module.less'
+import styles from 'styles/components/swap/setting.module.less'
 
-import {ChevronDown} from 'heroicons-react';
+import {CogOutline,QuestionMarkCircleOutline} from 'heroicons-react';
+// import CommonLite from 'components/hoc/lite'
 
 class SwapInput extends React.Component {
 
@@ -15,90 +16,97 @@ class SwapInput extends React.Component {
         super(props)
 
         this.state = {
-            'token'                 : null,
-            'amount'                : 0,
-            'is_open_token_modal'   : false,
+            'tolerance'             : 1.0,
+            'deadline'              : 20,
+            'is_open_modal'         : false,
         }
 
-        this.handleAmountChange = this.handleAmountChange.bind(this);
         this.getValue = this.getValue.bind(this)
-        this.toggleOpenTokenList = this.toggleOpenTokenList.bind(this)
-    }
-
-    static getDerivedStateFromProps(nextProps,prevState) {
-        if (nextProps.default_token) {
-            prevState['token'] = nextProps.default_token
-        }
-        return prevState;
+        this.toggleOpenModal = this.toggleOpenModal.bind(this)
+        this.handleEventValueChange = this.handleEventValueChange.bind(this)
+        this.setTolerance = this.setTolerance.bind(this)
     }
 
     getValue() {
         return {
-            'token'  : this.state.token,
-            'amount' : Number(this.state.amount)
+            'tolerance'  : Number(this.state.tolerance),
+            'deadline' : Number(this.state.deadline)
         }
     }
 
-    handleAmountChange(e) {
+
+    toggleOpenModal() {
         this.setState({
-            'amount' : e.target.vlaue
+            'is_open_modal' : !this.state.is_open_modal
         })
     }
 
-    toggleOpenTokenList() {
+    setTolerance(v) {
         this.setState({
-            'is_open_token_modal' : !this.state.is_open_token_modal
+            'tolerance' : v
         })
     }
 
-    handleOk() {
 
+    handleEventValueChange(key_name,event){
+        // var value = event.target.value;
+        var new_state = {}
+        new_state[key_name] = event.target.value;
+        this.setState(new_state);
     }
+
 
     render() {
 
 
-        const {token,amount,is_open_token_modal} = this.state;
+        const {tolerance,deadline,is_open_modal} = this.state;
 
         return (
             <div className={styles.input_wrapper}>
 
-                    
-                <Input bordered={false} className={styles.input} value={amount} placeholder={'0.0'} onChange={this.handleAmountChange}/>
-                <button 
-                    className={styles.token_btn} 
-                    onClick={this.toggleOpenTokenList} 
-                    >
-                    {
-                        (token)
-                        ? <span className={styles.token_name}>
-                            <span className={styles.token_icon}>
-                            <Image
-                                src="/img/token/trx.svg"
-                                width={16}
-                                height={16}
-                                layout="fixed"
-                            />
-                            </span>
-                            {token}
-                        </span>
-                        : <span className={styles.token_name}>select token</span>
-                    }
-                    <span className={styles.arrow}><ChevronDown /></span>
-                </button>
+                <a className={styles.btn} onClick={this.toggleOpenModal}>
+                    <CogOutline />
+                </a>
+                
                 {
-                    (is_open_token_modal)
+                    (is_open_modal)
                     ? <Modal 
                         className={'border_modal'}
                         width={420}
-                        title="Setting" 
-                        visible={is_open_token_modal} 
+                        title="Settings" 
+                        visible={is_open_modal} 
                         onOk={this.handleOk} 
-                        onCancel={this.toggleOpenTokenList}>
-                        <div className={styles.search_box_wrapper}>
-                            <Input size={'large'} className={styles.input_radius} placeholder={'Search name or paste address'}/>
-                        </div>
-                        <div className={styles.search_box_content}>
+                        footer={null}
+                        onCancel={this.toggleOpenModal}>
+                        <div className={styles.setting_wrapper}>
+                            <div className={styles.setting_one}>
+                                <div className={styles.head}>
+                                    <h3>Slippage tolerance</h3>
+                                    <Tooltip placement="top" title={'your transaction will revert'}>
+                                        <QuestionMarkCircleOutline size={16} />
+                                    </Tooltip>
+                                </div>
+                                <div className={styles.ct}>
+                                    <a onClick={this.setTolerance.bind({},0.1)} className={(tolerance == 0.1) ? classNames(styles.one,styles.active) : styles.one}>0.1%</a>
+                                    <a onClick={this.setTolerance.bind({},0.5)} className={(tolerance == 0.5) ? classNames(styles.one,styles.active) : styles.one}>0.5%</a>
+                                    <a onClick={this.setTolerance.bind({},1)} className={(tolerance == 1) ? classNames(styles.one,styles.active) : styles.one}>1%</a>
+                                    <Input value={tolerance} eclassName={styles.input} onChange={this.handleEventValueChange.bind({},'tolerance')} suffix="%"/>
+                                </div>
+                            </div>
+                            <div className={styles.setting_one}>
+                                <div className={styles.head}>
+                                    <h3>Transaction deadline</h3>
+                                    <Tooltip placement="top" title={'your transaction will revert'}>
+                                        <QuestionMarkCircleOutline size={16} />
+                                    </Tooltip>
+                                </div>
+                                <div className={styles.ct}>
+                                    <Input className={classNames(styles.input,styles.time_input)}  
+                                        value={deadline} 
+                                        onChange={this.handleEventValueChange.bind({},'deadline')}
+                                        suffix="minutes"/>
+                                </div>
+                            </div>
                         </div>
                     </Modal>
                     : null

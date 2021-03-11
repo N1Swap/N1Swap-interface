@@ -13,6 +13,7 @@ import N1SBtn from 'components/header/n1s'
 import LanguageBtn from 'components/language/btn'
 import MoreBtn from 'components/header/more'
 
+import Head from 'next/head'
 
 import { withRouter } from 'next/router'
 
@@ -40,8 +41,11 @@ class PageWrapper extends React.Component {
         console.log('handleClick',key)
         let href;
         switch(key.key) {
-            case 'test':
-                href = '/test';
+            case 'exchange':
+                href = '/exchange';
+                break;
+            case 'liquidity':
+                href = '/liquidity';
                 break;
             default:
                 href = '/';
@@ -51,13 +55,30 @@ class PageWrapper extends React.Component {
         this.props.router.push(href)
     }
 
+    getSelectKey(pathname) {
+        switch(pathname) {
+            case '/liquidity':
+                return ['liquidity']
+            case '/exchange':
+                return ['exchange']
+            default:
+                return ['home']
+        }
+    }
+
     render() {
 
         const {collapsed} = this.state;
+        const {router} = this.props;
 
+        const selectedKeys = this.getSelectKey(router.pathname)
         return (
             <div className='fullpage-container' >
-                    <Layout>
+                <Head>
+                    <title>N1Swap</title>
+                    <link rel="icon" href="/img/favicon.png" />
+                </Head>
+                <Layout>
                     <Sider
                       breakpoint="lg"
                       collapsedWidth="0"
@@ -83,11 +104,11 @@ class PageWrapper extends React.Component {
                               />
                             <span className='word'>N1Swap</span>
                         </div>
-                        <Menu theme="light" mode="inline" onClick={this.handleClick}>
+                        <Menu theme="light" mode="inline" onClick={this.handleClick} selectedKeys={selectedKeys}>
                             <Menu.Item key="home" icon={<HomeOutline />}>
                               Home
                             </Menu.Item>
-                            <Menu.Item key="trade" icon={<SwitchHorizontal />}>
+                            <Menu.Item key="exchange" icon={<SwitchHorizontal />}>
                               Exchange
                             </Menu.Item>
                             <Menu.Item key="liquidity" icon={<LightningBoltOutline />}>

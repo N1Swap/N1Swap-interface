@@ -3,13 +3,15 @@ import React,{useRef} from 'react';
 import { initStore } from 'redux/store';
 import { connect } from "react-redux";
 import SwapInput from 'components/swap/input';
-import SwapSetting from 'components/swap/setting';
-
-import {Button} from 'antd';
+import {Button,Divider,Tooltip} from 'antd';
 
 import styles from 'styles/swap_trade.module.less'
 
-import {ArrowNarrowDown} from 'heroicons-react';
+import {CogOutline,ArrowNarrowDown,QuestionMarkCircleOutline} from 'heroicons-react';
+
+// React.useLayoutEffect = React.useEffect 
+
+
 
 class SwapTrade extends React.Component {
 
@@ -67,50 +69,62 @@ class SwapTrade extends React.Component {
             to_token_amount,to_token_name} = this.state;
         const {tronlink} = this.props;
 
-        // console.log('debug,tronlink',tronlink.toJS());
+        console.log('debug,tronlink',tronlink.toJS());
         // console.log('debug-t',t);
 
         return (
             <div className={styles.box_wrapper}>
                 <div className={styles.box_head}>
-                    <div className={styles.title}>Swap</div>
+                    <div className={styles.title}>
+                        Liquidity
+                        <div className={styles.sub}>Add liquidity to receive LP tokens.</div>
+                    </div>
                     <div className={styles.tool}>
-                        <SwapSetting />
+                        <a className={styles.btn}>
+                            <CogOutline />
+                        </a>
                     </div>
                 </div>
-                <div className={styles.box_content_top}>
-                    <div className={styles.box_form}>
-                        <div className={styles.box_from_input}>
-                            <h3>From</h3>
-                            <div className={styles.currency_input}>
-                                <SwapInput 
-                                    ref={this.fromRef}
-                                    default_token={'TRX'} 
-                                    disable_token={this.state.from_token_disable}
-                                    setDisableToken={this.handleTokenDisable.bind({},'to')}
-                                    />
-                            </div>
-                        </div>
-                        <div className={styles.to}>
-                            <div className={styles.to_icon}>
-                                <ArrowNarrowDown size={20} />
-                            </div>
-                        </div>
-                        <div className={styles.box_from_input}>
-                            <h3>To</h3>
-                            <div className={styles.currency_input}>
-                                <SwapInput 
-                                    ref={this.toRef}
-                                    disable_token={this.state.to_token_disable}
-                                    setDisableToken={this.handleTokenDisable.bind({},'from')}
-                                    />
-                            </div>
-                        </div>
-                    </div>
-                    <div className={styles.box_footer}>
-                        <Button block size="large" className="big-radius-btn" type="primary" onClick={this.test}>{'Get Value'}</Button>
-                    </div>
+
+                <div className={styles.box_content_mid}>
+                
+                    <Button block size="large" className="big-radius-btn" type="primary" onClick={this.test}>{'Add Liquidity'}</Button>
+
                 </div>
+
+                <Divider />
+
+                <div className={styles.box_content_mid2}>
+                
+                    <div className={styles.liquidity_list}>
+                        <div className={styles.liquidity_head}>
+                            <h3>your liquidity</h3>
+                            <Tooltip placement="top" title={'When you add liquidity, you are given pool tokens that represent your share. If you don’t see a pool you joined in this list, try importing a pool below.'}>
+                                <QuestionMarkCircleOutline size={16} />
+                            </Tooltip>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div className={styles.box_content_mid2}>
+                    {
+                        (tronlink.get('account'))
+                        ? <div className={styles.login_box}>
+                            <div className={styles.empty}>
+                                No liquidity found.
+                            </div>
+                        </div>
+                        : <div className={styles.unlogin_box}>Connect to a wallet to view your liquidity.</div>
+                    }
+                </div>
+                
+                <Divider />
+
+                <div className={styles.box_content_footer}>
+                    <p className={styles.footer_text}>Don't see a pool you joined?<a>Impot it</a></p>
+                </div>
+
             </div>
         );
     }

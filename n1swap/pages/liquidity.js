@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import {wrapper} from '../redux/store';
 
 import PageWrapper from '../components/pagewrapper'
-import TradeBox from '../components/swap/trade'
+import TradeBox from '../components/liquidity/trade'
 
 import Head from 'next/head'
 
@@ -15,7 +15,7 @@ const Home = () => {
                 <title>Home</title>
             </Head>
             <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
-                <h1>Home</h1>
+                <TradeBox />
             </div>
     </PageWrapper>
     

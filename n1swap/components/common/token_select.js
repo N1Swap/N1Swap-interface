@@ -102,7 +102,7 @@ class TokenSelect extends React.Component {
             },
             {
                 'name'             : 'n1s',
-                'contract_address' : '0x113232323',
+                'contract_address' : 'TQS3q4S7TnXrHhby5tGLXYX76eMps3QBuy',
                 'sub'              : 'n1swap',
                 'icon'             : 'n1s.svg'
             }
