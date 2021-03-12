@@ -168,7 +168,7 @@ class TronReact extends React.Component {
                     </div>
                 </Modal>
                 <Modal
-                    maskStyle={{'background':'#fff'}}
+                    // maskStyle={{'background':'#fff'}}
                     className={'border_modal'}
                     width={420}
                     title="Connect A Wallet" 

@@ -90,7 +90,7 @@ class SwapInput extends React.Component {
                                     <a onClick={this.setTolerance.bind({},0.1)} className={(tolerance == 0.1) ? classNames(styles.one,styles.active) : styles.one}>0.1%</a>
                                     <a onClick={this.setTolerance.bind({},0.5)} className={(tolerance == 0.5) ? classNames(styles.one,styles.active) : styles.one}>0.5%</a>
                                     <a onClick={this.setTolerance.bind({},1)} className={(tolerance == 1) ? classNames(styles.one,styles.active) : styles.one}>1%</a>
-                                    <Input value={tolerance} eclassName={styles.input} onChange={this.handleEventValueChange.bind({},'tolerance')} suffix="%"/>
+                                    <Input value={tolerance} className={styles.input} onChange={this.handleEventValueChange.bind({},'tolerance')} suffix="%"/>
                                 </div>
                             </div>
                             <div className={styles.setting_one}>

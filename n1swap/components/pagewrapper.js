@@ -56,8 +56,11 @@ class PageWrapper extends React.Component {
     }
 
     getSelectKey(pathname) {
+
+
         switch(pathname) {
             case '/liquidity':
+            case '/liquidity/add':
                 return ['liquidity']
             case '/exchange':
                 return ['exchange']
@@ -98,11 +101,19 @@ class PageWrapper extends React.Component {
                             <Image
                                 src="/img/logo/logo_square.png"
                                 alt="N1Swap Logo"
-                                width={32}
-                                height={32}
+                                width={28}
+                                height={28}
                                 className="logo"
                               />
-                            <span className='word'>N1Swap</span>
+                            <span className='word'>
+                            <Image
+                                src="/img/logo/word.svg"
+                                alt="N1Swap"
+                                width={93}
+                                height={22}
+                                className="logo"
+                              />
+                            </span>
                         </div>
                         <Menu theme="light" mode="inline" onClick={this.handleClick} selectedKeys={selectedKeys}>
                             <Menu.Item key="home" icon={<HomeOutline />}>

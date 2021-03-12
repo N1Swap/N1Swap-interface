@@ -19,6 +19,16 @@ a {
   box-sizing: border-box;
 }
 
+@keyframes flip {
+  0% { transform: perspective(1000px) rotateY(0deg); }
+  100% { transform: perspective(1000px) rotateY(360deg); }
+}
+
+.flip {
+    animation: 5s cubic-bezier(0.83, 0, 0.17, 1) 0s infinite normal none running flip;
+    filter: drop-shadow(rgba(0, 0, 0, 0.15) 0px 2px 4px);
+}
+
 .container {
   min-height: 100vh;
   padding: 0 0.5rem;
@@ -30,9 +40,9 @@ a {
 
 .block-logo {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
-    padding:20px 20px;
+    padding:16px 20px;
 }
 
 .block-logo .word {
@@ -40,6 +50,8 @@ a {
     font-weight: bold;
     margin-left: 10px;
     color: #2F3442;
+    display: flex;
+    align-items:center;
 }
 
 .ant-layout-header  .trigger {
@@ -56,9 +68,34 @@ a {
     border-radius: 12px;
 }
 
+
+
 .border_modal .ant-modal-content{
     border-radius: 24px;
     overflow: hidden;
+}
+
+.color_modal {
+    .ant-btn:hover,
+    .ant-btn:focus {
+        border-color:#a376e0;
+        color: #fff;
+    }
+
+    .ant-modal-content {
+        color: #fff;
+        background: linear-gradient(137.52deg, #2D50CC 0.62%, #7E12D3 85.1%);
+        .ant-modal-header {
+            .ant-modal-title {
+                color: #fff;
+            }
+            background:none;
+            border-bottom-color:rgba(255, 255, 255, 0.3);
+        }
+        .ant-modal-close-x {
+            color: #fff;
+        }
+    }
 }
 
 .ant-layout-header {
@@ -155,6 +192,10 @@ body,
     background:#fafafa;
 }
 
+.round-btn {
+    border-radius: 40px;
+}
+
 .block-token-one {
     a.link-all {
         display: flex;
@@ -226,6 +267,52 @@ body,
             border: none;
         }
     }
+}
+
+
+
+.color-box {
+    background: linear-gradient(137.52deg, #2D50CC 0.62%, #7E12D3 85.1%);
+    box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.06);
+    border-radius: 20px;
+    margin:0 auto 0 auto;
+    padding:25px;
+    color: #fff;
+    max-width: 420px;
+    .head {
+        margin-bottom: 12px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        font-size: 18px;
+        .title {
+            font-weight:500;
+            margin-left: 12px;
+        }
+    }
+    .icon {
+        display: flex;
+        align-items: center;
+    }
+    .bottom {
+        margin-top:12px;
+        a:hover {
+            color: #bba8ce;
+        }
+    }
+    .with-end-icon {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        .icon {
+            margin-left: 12px;
+        }
+    }
+
+}
+
+.margin-bottom-20 {
+    margin-bottom: 20px;
 }
 
 @media (max-width: 600px) {

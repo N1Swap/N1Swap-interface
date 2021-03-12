@@ -31,24 +31,31 @@
         font-weight:normal;
     }
 }
-.box_wrapper .box_head .tool {
-    margin-left: 10px;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    height: 36px;
-    line-height: 36px;
-}
+.box_wrapper .box_head {
+    .nav,
+    .tool {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        height: 36px;
+        line-height: 36px;
+        a {
+            display: flex;
+            align-items: center;
+            color:#888;
+        }
+        a:hover {
+            color: #aaa;
+        }
+    }
+    .tool {
+        margin-left: 10px;
+    }
+    .nav {
+        margin-right: 10px;
+    }
+} 
 
-.box_wrapper .box_head .tool a {
-    display: flex;
-    align-items: center;
-    color:#888;
-}
-
-.box_wrapper .box_head .tool a:hover {
-    color: #aaa;
-}
 
 .box_wrapper {
 
