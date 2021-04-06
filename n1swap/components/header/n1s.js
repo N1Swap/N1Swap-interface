@@ -4,8 +4,8 @@ import {Button,Modal} from 'antd';
 import { connect } from "react-redux";
 import styles from 'styles/components/header/n1s.module.less'
 import Image from 'next/image'
+import {ArrowCircleRightIcon,XIcon} from '@heroicons/react/solid';
 
-import {ArrowCircleRight} from 'heroicons-react'
 
 class N1SBtn extends React.Component {
 
@@ -33,6 +33,8 @@ class N1SBtn extends React.Component {
         // let is_logined = (tronlink.get('is_login'));
         let is_logined = true;
 
+
+
         return (
             <div>
                 <Button
@@ -44,6 +46,7 @@ class N1SBtn extends React.Component {
                     <span className={styles.token}>N1S</span>
                 </Button>
                 <Modal
+                    closeIcon={<XIcon className="icon-20" />}
                     className={'border_modal color_modal'}
                     width={420}
                     footer={null}
@@ -93,7 +96,7 @@ class N1SBtn extends React.Component {
                         <a className={styles.with_end_icon}>
                             <span>View N1S analytics</span>
                             <div className={styles.icon}>
-                                <ArrowCircleRight size={16} />
+                                <ArrowCircleRightIcon className={'icon-16'} />
                             </div>
                         </a>
                     </div>

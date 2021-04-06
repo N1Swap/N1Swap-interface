@@ -3,14 +3,11 @@ import {Modal,Input,Button,Divider} from 'antd';
 
 import classNames from 'classnames';
 
-// import { initStore } from 'redux/store';
-// import { connect } from "react-redux";
-// import classNames from 'classnames';
 import Image from 'next/image'
 
 import styles from 'styles/components/common/token_select.module.less'
 
-import {ChevronDown} from 'heroicons-react';
+import {ChevronDownIcon} from '@heroicons/react/solid';
 
 class TokenSelect extends React.Component {
 
@@ -139,7 +136,7 @@ class TokenSelect extends React.Component {
                         </span>
                         : <span className={styles.token_name}>select token</span>
                     }
-                    <span className={styles.arrow}><ChevronDown /></span>
+                    <span className={styles.arrow}><ChevronDownIcon className="icon-16" /></span>
                 </button>
                 {
                     (is_open_token_modal)

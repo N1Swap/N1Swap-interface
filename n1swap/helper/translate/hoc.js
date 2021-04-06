@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { injectIntl } from 'react-intl';
-import TranslateContext from '~/common/translate/context'
-import {strFormat} from '~/helper/str'
+import TranslateContext from 'helper/translate/context'
+import {strFormat} from 'helper/str'
 
 
 const translateHoc = WrappedComponent => {
@@ -13,7 +12,7 @@ const translateHoc = WrappedComponent => {
 
         constructor(props, context) {
             super(props, context);
-            this.getTranslate = ::this.getTranslate
+            this.getTranslate = this.getTranslate.bind(this)
         }
 
         getTranslate(name, values = {}) {

@@ -1,6 +1,5 @@
 import React,{useRef} from 'react';
 
-import { initStore } from 'redux/store';
 import { connect } from "react-redux";
 import SwapInput from 'components/swap/input';
 import SwapSetting from 'components/swap/setting';
@@ -9,7 +8,7 @@ import {Button} from 'antd';
 
 import styles from 'styles/swap_trade.module.less'
 
-import {ArrowNarrowDown} from 'heroicons-react';
+import {ArrowNarrowDownIcon} from '@heroicons/react/outline';
 
 class SwapTrade extends React.Component {
 
@@ -93,7 +92,7 @@ class SwapTrade extends React.Component {
                         </div>
                         <div className={styles.to}>
                             <div className={styles.to_icon}>
-                                <ArrowNarrowDown size={20} />
+                                <ArrowNarrowDownIcon className={'icon-20'} />
                             </div>
                         </div>
                         <div className={styles.box_from_input}>

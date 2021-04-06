@@ -2,7 +2,7 @@ import React from 'react';
 import {Button,Popover} from 'antd';
 
 import styles from 'styles/components/header/more.module.less'
-import {DotsHorizontal,ChevronRight} from 'heroicons-react'
+import {ChevronRightIcon,DotsHorizontalIcon} from '@heroicons/react/solid';
 
 class More extends React.Component {
 
@@ -12,14 +12,12 @@ class More extends React.Component {
         }
     }   
 
-
-
     render() {
 
         let content = <div className="dropdown-menu">
             <ul>
-                <li><a className="with-arrow">Github<ChevronRight size={16}/></a></li>
-                <li><a className="with-arrow">WhitePaper<ChevronRight size={16}/></a></li>
+                <li><a className="with-arrow">Github<ChevronRightIcon className={'icon-16'}/></a></li>
+                <li><a className="with-arrow">WhitePaper<ChevronRightIcon className={'icon-16'}/></a></li>
             </ul>
         </div>
 
@@ -29,7 +27,7 @@ class More extends React.Component {
                 <Button
                     className={styles.more_btn}
                 >
-                    <DotsHorizontal size={24}/>
+                    <DotsHorizontalIcon className={'icon-24'}/>
                 </Button>
 
             </Popover>

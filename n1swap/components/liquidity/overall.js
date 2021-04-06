@@ -8,8 +8,9 @@ import {Button,Divider,Tooltip} from 'antd';
 
 import styles from 'styles/swap_trade.module.less'
 
-import {CogOutline,ArrowNarrowDown,QuestionMarkCircleOutline} from 'heroicons-react';
 import { withRouter } from 'next/router'
+
+import {QuestionMarkCircleIcon} from '@heroicons/react/outline';
 
 
 class SwapTrade extends React.Component {
@@ -98,7 +99,7 @@ class SwapTrade extends React.Component {
                         <div className={styles.liquidity_head}>
                             <h3>your liquidity</h3>
                             <Tooltip placement="top" title={'When you add liquidity, you are given pool tokens that represent your share. If you don’t see a pool you joined in this list, try importing a pool below.'}>
-                                <QuestionMarkCircleOutline size={16} />
+                                <QuestionMarkCircleIcon className={'icon-16'} />
                             </Tooltip>
                         </div>
                     </div>

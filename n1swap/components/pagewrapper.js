@@ -6,9 +6,10 @@ import { Layout, Menu, Breadcrumb, Button,Divider} from 'antd';
 const { Header, Content, Footer, Sider } = Layout;
 import { UserOutlined, VideoCameraOutlined,MenuFoldOutlined,MenuUnfoldOutlined } from '@ant-design/icons';
 
-import {HomeOutline,SwitchHorizontal,LightningBoltOutline} from 'heroicons-react';
+import {LightningBoltIcon,HomeIcon,SwitchHorizontalIcon} from '@heroicons/react/outline';
 
-import ConnectWallet from 'components/header/connect'
+
+import WalletConnectBtn from 'components/wallet/connectbtn'
 import N1SBtn from 'components/header/n1s'
 import LanguageBtn from 'components/language/btn'
 import MoreBtn from 'components/header/more'
@@ -76,12 +77,21 @@ class PageWrapper extends React.Component {
 
         const selectedKeys = this.getSelectKey(router.pathname)
         return (
-            <div className='fullpage-container' >
+            <div>
                 <Head>
                     <title>N1Swap</title>
                     <link rel="icon" href="/img/favicon.png" />
                 </Head>
+                <div className='fullpage-container'>
+                    <div className="top-header">
+                        <a>Lending</a>
+                        <a>Swap</a>
+                        <a>NFT</a>
+                        <a>Farms</a>
+                        <a>Pixelschain</a>
+                    </div>
                 <Layout>
+                    
                     <Sider
                       breakpoint="lg"
                       collapsedWidth="0"
@@ -116,13 +126,13 @@ class PageWrapper extends React.Component {
                             </span>
                         </div>
                         <Menu theme="light" mode="inline" onClick={this.handleClick} selectedKeys={selectedKeys}>
-                            <Menu.Item key="home" icon={<HomeOutline />}>
+                            <Menu.Item key="home" icon={<HomeIcon className='icon-24' />}>
                               Home
                             </Menu.Item>
-                            <Menu.Item key="exchange" icon={<SwitchHorizontal />}>
+                            <Menu.Item key="exchange" icon={<SwitchHorizontalIcon className='icon-24' />}>
                               Exchange
                             </Menu.Item>
-                            <Menu.Item key="liquidity" icon={<LightningBoltOutline />}>
+                            <Menu.Item key="liquidity" icon={<LightningBoltIcon className='icon-24' />}>
                               Liquidity
                             </Menu.Item>
                         </Menu>
@@ -166,7 +176,7 @@ class PageWrapper extends React.Component {
                         </div>
                         <div className="block-right-menu">
                             <N1SBtn />
-                            <ConnectWallet />
+                            <WalletConnectBtn />
                             <MoreBtn />
                         </div>
                     </Header>
@@ -178,6 +188,7 @@ class PageWrapper extends React.Component {
                       </Content>
                     </Layout>
                 </Layout>
+            </div>
             </div>
         );
     }

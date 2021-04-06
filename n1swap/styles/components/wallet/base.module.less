@@ -1,3 +1,5 @@
+@import "./../../variables.less";
+
 .block_account_btn {
     display: flex;
     align-items: center;    
@@ -6,8 +8,13 @@
     overflow: hidden;
     height: 40px;
     padding:0 0 0 20px;
+}
+
+.block_account_btn,
+.block_account_btn_empty {
     margin-right: 20px;
 }
+
 .tron_info {
     display: flex;
     justify-content: center;
@@ -20,7 +27,6 @@
     }
 }
 .wallet_btn {
-    background: #FFFFFF;
     box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.06);
     border-radius:20px;
     height: 40px;
@@ -61,5 +67,70 @@
                 margin-right: 6px;
             }
         }
+    }
+}
+
+.wallet_list_btn {
+    border-radius:10px;
+    border: 1px solid #F0F0F0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+    padding:18px 20px;
+    .name {
+        color: @black-color;
+        font-size: 16px;
+        font-family: 'Poppins';
+    }
+    .icon {
+        display: flex;
+        align-items:center;
+    }
+    &:hover {
+        background: #ECF0F6;
+        border:1px solid #E6EBF2;
+    }
+}
+
+.block_wallet_list {
+    margin:-12px 0;
+    ul {
+        margin:0;
+        padding:0;
+        li {
+            margin:12px 0;
+            list-style: none;
+            a {
+
+            }
+        }
+    }
+}
+
+
+.block_connecting {
+    .hd {
+        display: flex;
+        justify-content: center;
+        align-items:center;
+        .icon {
+            display: flex;
+            align-items:center;
+            margin-right: 12px;
+        }
+        .name {
+            font-size:20px;
+            font-weight: bold;
+        }
+    }
+    .p {
+        text-align: center;
+        font-size: 16px;
+        margin-bottom: 15px;
+    }
+    .connecting {
+        text-align: center;
+        padding:24px 0;
     }
 }

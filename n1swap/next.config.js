@@ -16,5 +16,14 @@ let config =  withAntdLess({
 
 });
 
+let global_config = null
+if (process.env.NODE_ENV === 'production') {
+    global_config = require('./config/production.js')
+}else {
+    global_config = require('./config/dev.js')
+}
 
-module.exports = config
+
+
+
+module.exports = Object.assign(config,global_config)

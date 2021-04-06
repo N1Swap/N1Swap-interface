@@ -1,8 +1,8 @@
 import React,{ Component }  from 'react'
-import TranslateContext from '~/common/translate/context'
+import TranslateContext from 'helper/translate/context'
 import { PencilOutline } from 'heroicons-react';
 
-import {strFormat} from '~/helper/str'
+import {strFormat} from 'helper/str'
 
 export default class Text extends Component {
 

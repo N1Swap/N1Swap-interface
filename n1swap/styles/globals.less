@@ -1,6 +1,7 @@
 
 html {
   font-size: 16px;
+  font-size: "Poppins";
 }
 html,
 body {
@@ -29,6 +30,41 @@ a {
     filter: drop-shadow(rgba(0, 0, 0, 0.15) 0px 2px 4px);
 }
 
+.icon-16 {
+    height: 16px;
+    width: 16px;
+}
+.icon-20 {
+    height: 20px;
+    width: 20px;
+}
+
+.icon-24 {
+    height: 24px;
+    width: 24px;
+}
+
+.flex-start {
+    display: flex;
+    justify-content: flex-start;
+    align-items:center;
+}
+
+.flex-center {
+    display: flex;
+    align-items:center;
+}
+
+.modal-title-with-icon {
+    .icon {
+        margin-right: 12px;
+    }
+}
+
+.ant-modal-close-x {
+    line-height: 66px;
+}
+ 
 .container {
   min-height: 100vh;
   padding: 0 0.5rem;
@@ -66,6 +102,67 @@ a {
 .input-radius {
     padding:12px;
     border-radius: 12px;
+}
+
+@keyframes line-scale-pulse-out {
+  0% {
+    transform: scaley(1.0);
+  }
+  50% {
+    transform: scaley(0.4);
+  }
+  100% {
+    transform: scaley(1.0);
+  }
+}
+.loader {
+    padding:40px 0;
+}
+
+.loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.loader-container,
+.loader {
+    box-sizing: border-box;
+}
+.line-scale-pulse-out > div {
+    background-color: #fff;
+    width: 4px;
+    height: 35px;
+    border-radius: 2px;
+    margin: 2px;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    display: inline-block;
+    -webkit-animation: line-scale-pulse-out 0.9s -0.6s infinite cubic-bezier(0.85, 0.25, 0.37, 0.85);
+    animation: line-scale-pulse-out 0.9s -0.6s infinite cubic-bezier(0.85, 0.25, 0.37, 0.85);
+}
+.line-scale-pulse-out > div:nth-child(1), 
+.line-scale-pulse-out > div:nth-child(5) {
+    -webkit-animation-delay: -0.2s !important;
+    animation-delay: -0.2s !important;
+}
+.line-scale-pulse-out > div:nth-child(2), .line-scale-pulse-out > div:nth-child(4) {
+    -webkit-animation-delay: -0.4s !important;
+    animation-delay: -0.4s !important;
+}
+.loader.dark {
+    .line-scale-pulse-out > div {
+        background-color:#000;
+    }
+}
+.loader.white {
+    .line-scale-pulse-out > div {
+        background-color:#fff;
+    }
+}
+.loader.gray {
+    .line-scale-pulse-out > div {
+        background-color:#aaa;
+    }
 }
 
 
@@ -313,6 +410,20 @@ body,
 
 .margin-bottom-20 {
     margin-bottom: 20px;
+}
+
+.top-header {
+    background: #2c2c2c;
+    padding:0 12px;
+    a {
+        color: #4da3ff;
+        margin:0;
+        display: inline-block;
+        padding:6px 12px;
+    }
+    a:hover {
+        background:#000;
+    }
 }
 
 @media (max-width: 600px) {

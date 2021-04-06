@@ -7,8 +7,7 @@ import Image from 'next/image'
 
 import styles from 'styles/components/swap/setting.module.less'
 
-import {CogOutline,QuestionMarkCircleOutline} from 'heroicons-react';
-// import CommonLite from 'components/hoc/lite'
+import {CogIcon,QuestionMarkCircleIcon} from '@heroicons/react/outline';
 
 class SwapInput extends React.Component {
 
@@ -65,7 +64,7 @@ class SwapInput extends React.Component {
             <div className={styles.input_wrapper}>
 
                 <a className={styles.btn} onClick={this.toggleOpenModal}>
-                    <CogOutline />
+                    <CogIcon className="icon-20" />
                 </a>
                 
                 {
@@ -83,7 +82,7 @@ class SwapInput extends React.Component {
                                 <div className={styles.head}>
                                     <h3>Slippage tolerance</h3>
                                     <Tooltip placement="top" title={'your transaction will revert'}>
-                                        <QuestionMarkCircleOutline size={16} />
+                                        <QuestionMarkCircleIcon className='icon-16' />
                                     </Tooltip>
                                 </div>
                                 <div className={styles.ct}>
@@ -97,7 +96,7 @@ class SwapInput extends React.Component {
                                 <div className={styles.head}>
                                     <h3>Transaction deadline</h3>
                                     <Tooltip placement="top" title={'your transaction will revert'}>
-                                        <QuestionMarkCircleOutline size={16} />
+                                        <QuestionMarkCircleIcon className='icon-16' />
                                     </Tooltip>
                                 </div>
                                 <div className={styles.ct}>

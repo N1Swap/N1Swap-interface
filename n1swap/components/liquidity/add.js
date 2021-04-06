@@ -9,10 +9,7 @@ import {Button,Divider,Tooltip} from 'antd';
 
 import styles from 'styles/swap_trade.module.less'
 
-import {CogOutline,ArrowNarrowDown,ArrowLeft,QuestionMarkCircleOutline,Plus} from 'heroicons-react';
-
-// React.useLayoutEffect = React.useEffect 
-
+import {PlusIcon,ArrowLeftIcon} from '@heroicons/react/solid';
 
 
 class LiquidityAdd extends React.Component {
@@ -74,7 +71,7 @@ class LiquidityAdd extends React.Component {
                 <div className={styles.box_head}>
 
                     <div className={styles.nav}>
-                        <a onClick={()=>this.props.router.push('/liquidity')}><ArrowLeft /></a>
+                        <a onClick={()=>this.props.router.push('/liquidity')}><ArrowLeftIcon className="icon-16" /></a>
                     </div>
                     <div className={styles.title}>
                         Add Liquidity
@@ -99,7 +96,7 @@ class LiquidityAdd extends React.Component {
                         </div>
                         <div className={styles.to}>
                             <div className={styles.to_icon}>
-                                <Plus size={20} />
+                                <PlusIcon className={'icon-20'} />
                             </div>
                         </div>
                         <div className={styles.box_from_input}>
