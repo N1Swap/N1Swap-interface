@@ -1,6 +1,5 @@
 import React,{ Component }  from 'react'
 import TranslateContext from 'helper/translate/context'
-import { PencilOutline } from 'heroicons-react';
 
 import {strFormat} from 'helper/str'
 
@@ -38,7 +37,7 @@ export default class Text extends Component {
 
                 if (provider_value['edit_mode']) {
                     return <span className="trans-edit-span">
-                        <a className="out-edit-a" onClick={provider_value.handleEdit.bind({},edit_text)}><PencilOutline size={16} /></a>
+                        <a className="out-edit-a" onClick={provider_value.handleEdit.bind({},edit_text)}>edit</a>
                         {translated}
                     </span>
                 }
