@@ -31,7 +31,7 @@ const tronlinkHoc = WrappedComponent => {
             let tronlink_account = getTronLinkLoginAccount();
 
             if (tronlink_account && !tronlink.get('is_logined')) {
-                this.props.tronlink_logined(is_logined);
+                this.props.tronlink_logined(true);
             }
 
             //如果原来就已经有登陆账户，这里检查的是是否退出了用户

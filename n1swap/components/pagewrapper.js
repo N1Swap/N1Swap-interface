@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Image from 'next/image'
 import styles from '../styles/components/pagewrapper.module.less'
 
-import { Layout, Menu, Breadcrumb, Button,Divider} from 'antd';
+import { Layout, Menu, Breadcrumb, Button,Divider, Row, Col } from 'antd';
 const { Header, Content, Footer, Sider } = Layout;
 import { UserOutlined, VideoCameraOutlined,MenuFoldOutlined,MenuUnfoldOutlined } from '@ant-design/icons';
 
@@ -82,111 +82,80 @@ class PageWrapper extends React.Component {
                     <title>N1Swap</title>
                     <link rel="icon" href="/img/favicon.png" />
                 </Head>
-                <div className='fullpage-container'>
-                    <div className="top-header">
-                        <a>Lending</a>
-                        <a>Swap</a>
-                        <a>NFT</a>
-                        <a>Farms</a>
-                        <a>Pixelschain</a>
-                    </div>
-                <Layout>
-                    
-                    <Sider
-                      breakpoint="lg"
-                      collapsedWidth="0"
-                      onBreakpoint={broken => {
-                        console.log(broken);
-                      }}
-                      collapsed={collapsed}
-                      theme={'light'}
-                      width={250}
-                      onCollapse={(collapsed, type) => {
-                        console.log(collapsed, type);
-                      }}
-                      className="block-sider"
-                    >   
-                        <div className="block-sider-top">
-                        <div className='block-logo'>
-                            <Image
-                                src="/img/logo/logo_square.png"
-                                alt="N1Swap Logo"
-                                width={28}
-                                height={28}
-                                className="logo"
-                              />
-                            <span className='word'>
-                            <Image
-                                src="/img/logo/word.svg"
-                                alt="N1Swap"
-                                width={93}
-                                height={22}
-                                className="logo"
-                              />
-                            </span>
-                        </div>
-                        <Menu theme="light" mode="inline" onClick={this.handleClick} selectedKeys={selectedKeys}>
-                            <Menu.Item key="home" icon={<HomeIcon className='icon-24' />}>
-                              Home
-                            </Menu.Item>
-                            <Menu.Item key="exchange" icon={<SwitchHorizontalIcon className='icon-24' />}>
-                              Exchange
-                            </Menu.Item>
-                            <Menu.Item key="liquidity" icon={<LightningBoltIcon className='icon-24' />}>
-                              Liquidity
-                            </Menu.Item>
-                        </Menu>
-                        </div>
 
-                        <div className={styles.block_sider_bottom}>
 
-                            <div className={styles.block_social}>
-                                <a>
-                                    <Image src="/img/social/discord.svg" 
-                                    width={24}
-                                    height={24}/></a>
-                                <a>
-                                    <Image src="/img/social/twitter.svg" 
-                                    width={24}
-                                    height={24}/></a>
-                                <a>
-                                    <Image src="/img/social/telegram.svg" 
-                                    width={24}
-                                    height={24}/></a>
+
+
+                <div className="fullpage-container">
+
+                <div className="top-bg">
+                <div className="max-width">
+                    <Row gutter={{ xs: 8, sm: 16, md: 24}}>
+                        <Col sm={24} lg={12}>
+                            <div className="top-header-left">
+                                <div className='block-logo'>
+                                    <Image
+                                            src="/img/logo/logo_square.png"
+                                            alt="N1Swap Logo"
+                                            width={28}
+                                            height={28}
+                                            className="logo"
+                                          />
+                                    <span className='word'>
+                                    <Image
+                                        src="/img/logo/word.svg"
+                                        alt="N1Swap"
+                                        width={93}
+                                        height={22}
+                                        className="logo"
+                                      />
+                                    </span>
+                                </div>
+                                <div className="top-nav">
+                                    <a className="active">Swap</a>
+                                    <a>Lending</a>
+                                    <a>NFT</a>
+                                    <a>Farms</a>
+                                    <a>Pixelschain</a>
+                                </div>
+
                             </div>
+                        </Col>
+                        <Col sm={24} lg={12}>
 
-                            <Divider />
-                            <div className={styles.block_lang}>
+                            <div className="top-header-right">
+                                <N1SBtn />
+                                <WalletConnectBtn />
+                                <MoreBtn />
+                            </div>
+                        </Col>
+                    </Row>
+                </div>
+                </div>
+
+                <div className="top-bg nav">
+                <div className="max-width">
+                    <Row gutter={{ xs: 8, sm: 16, md: 24}}>
+                        <Col span={24}>
+                            <div className="nav-menu">
+                                <div className="one"><a href="/liquidity">Liquidity</a></div>
+                                <div className="one"><a href="/exchange">Exchange</a></div>
+                                <div className="one"><a>Analytics</a></div>
+                                <div className="one"><a>Mine</a></div>
+                                <div className="one"><a>Introduce</a></div>
                                 <LanguageBtn />
                             </div>
-                        </div>
+                        </Col>
+                    </Row>
+                </div>
+                </div>
 
-                    </Sider>
-                    <Layout>
-
-                    <Header className="site-layout-background" style={{ padding: 0 }}>
-                        
-                        <div className="block-left-menu">
-                            {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
-                              className: 'trigger',
-                              onClick: () => {
-                                this.setCollapsed(!collapsed);
-                              },
-                            })}
-                        </div>
-                        <div className="block-right-menu">
-                            <N1SBtn />
-                            <WalletConnectBtn />
-                            <MoreBtn />
-                        </div>
-                    </Header>
-
-                      <Content style={{ margin: '24px 16px 0' }}>
+                <Layout>
+                    <Content style={{ margin: '24px 16px 0' }}>
                         <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
                             {this.props.children}
                         </div>
-                      </Content>
-                    </Layout>
+                    </Content>
                 </Layout>
             </div>
             </div>
