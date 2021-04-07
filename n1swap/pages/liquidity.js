@@ -7,8 +7,7 @@ import TradeBox from 'components/liquidity/overall'
 
 import Head from 'next/head'
 
-import {Fire,ArrowCircleRight} from 'heroicons-react'
-
+import {FireIcon,ArrowCircleRightIcon} from '@heroicons/react/solid';
 const Home = () => {
 
     return <PageWrapper>
@@ -22,7 +21,7 @@ const Home = () => {
 
                 <div className="color-box margin-bottom-20">
                     <div className="head">
-                        <div className="icon"><Fire size={16} /></div>
+                        <div className="icon"><FireIcon className={'icon-16'} /></div>
                         <div className="title">Liquidity provider rewards</div>
                     </div>
                     <div className="content">
@@ -32,7 +31,7 @@ const Home = () => {
                         <a className="with-end-icon">
                             <span>Read more about providing liquidity</span>
                             <div className="icon">
-                                <ArrowCircleRight size={16} />
+                                <ArrowCircleRightIcon className={'icon-16'}/>
                             </div>
                         </a>
                     </div>

@@ -137,12 +137,14 @@ class PageWrapper extends React.Component {
                 <div className="max-width">
                     <Row gutter={{ xs: 8, sm: 16, md: 24}}>
                         <Col span={24}>
-                            <div className="nav-menu">
+                            <div className="flex-between">
+                                <div className="nav-menu">
                                 <div className="one"><a href="/liquidity">Liquidity</a></div>
                                 <div className="one"><a href="/exchange">Exchange</a></div>
                                 <div className="one"><a>Analytics</a></div>
                                 <div className="one"><a>Mine</a></div>
                                 <div className="one"><a>Introduce</a></div>
+                                </div>
                                 <LanguageBtn />
                             </div>
                         </Col>
