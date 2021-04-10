@@ -1,5 +1,3 @@
-require('../styles/globals.less');
-
 import {wrapper,makeStore} from '../redux/store';
 import App, {Container} from "next/app";
 import {Suspense} from 'react';
@@ -9,6 +7,7 @@ import TranslateProvider from 'helper/translate/provider'
 import Immutable from 'immutable';
 import PageWrapper from '../components/pagewrapper'
 
+require('../styles/globals.less');
 
 class MyApp extends App {
     
