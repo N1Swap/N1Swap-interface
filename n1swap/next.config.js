@@ -2,7 +2,7 @@ const withAntdLess = require('next-plugin-antd-less');
 
 let config =  withAntdLess({
     // optional
-    modifyVars: { '@primary-color': '#F00' },
+    // modifyVars: { '@primary-color': '#F00' },
     // optional
     lessVarsFilePath: './styles/variables.less',
     // optional https://github.com/webpack-contrib/css-loader#object
