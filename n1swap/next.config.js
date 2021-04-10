@@ -23,6 +23,8 @@ if (process.env.NODE_ENV === 'production') {
     global_config = require('./config/dev.js')
 }
 
+console.log('config',config);
+
 
 
 
