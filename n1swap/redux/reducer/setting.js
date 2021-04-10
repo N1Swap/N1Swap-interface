@@ -15,7 +15,7 @@ export const reducer = createReducer({
   [tronlink_logined]    : (state,payload)   =>  state.setIn(['tronlink','is_logined'],payload),
   [tronlink_set_account]: (state, payload)  =>  state.setIn(['tronlink','account'],payload),
   [tronlink_set_balance]: (state, payload)  =>  state.setIn(['tronlink','balance'],Number(payload)),
-  [set_language]        : (state, payload)  =>  state.setIn(['language'],payload.toUpperCase()),
+  [set_language]        : (state, payload)  =>  state.setIn(['language'],payload.toLowerCase()),
 }, Immutable.fromJS({
     'tronlink' : {
         'is_installed' : false,
@@ -23,5 +23,5 @@ export const reducer = createReducer({
         'account'      : '',
         'balance'      : 0
     },
-    'language' : 'EN',
+    'language' : 'en',
 })); 

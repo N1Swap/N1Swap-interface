@@ -5,10 +5,17 @@ import TranslateContext from 'helper/translate/context'
 
 import en from 'public/locales/en';
 import zh from 'public/locales/zh';
+import de from 'public/locales/de';
+import fr from 'public/locales/fr';
+import ko from 'public/locales/ko';
+import ja from 'public/locales/ja';
+import id from 'public/locales/id';
+import it from 'public/locales/it';
+import ru from 'public/locales/ru';
 
-export const messagesCache = { zh, en }
+export const messagesCache = { zh, en , de, fr,ko ,ja, id , it,ru }
 
-console.log('debug0,messagesCache',messagesCache);
+// console.log('debug0,messagesCache',messagesCache);
 
 
 function getMessages(language) {
@@ -30,7 +37,7 @@ class TranslateProvider extends React.Component {
     }
 
     render() {
-        let { language , edit_mode } = this.props;
+        let { language  } = this.props;
         const {text } = this.state;
 
         return (
@@ -47,7 +54,7 @@ class TranslateProvider extends React.Component {
 
 
 const mapStateToProps = (state, ownProps) => ({
-    language        :  state.getIn(['setting','language']),
+    language        :  state.getIn(['setting','language']).toLowerCase(),
 });
 
 export default connect(mapStateToProps)(TranslateProvider);

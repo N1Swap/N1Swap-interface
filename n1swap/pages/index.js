@@ -12,13 +12,11 @@ import {getTronWeb,Base58ToHex} from 'helper/tron'
 
 const Home = () => {
 
-
-
     return <PageWrapper>
             <Head>
                 <title>Home</title>
             </Head>
-            <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
+            <div>
                 <h1>Home</h1>
             </div>
     </PageWrapper>

@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import Image from 'next/image'
 import styles from '../styles/components/pagewrapper.module.less'
 
-import { Layout, Menu, Breadcrumb, Button,Divider, Row, Col } from 'antd';
+import { Layout, Menu, Breadcrumb, Button,Divider, Col } from 'antd';
 const { Header, Content, Footer, Sider } = Layout;
 import { UserOutlined, VideoCameraOutlined,MenuFoldOutlined,MenuUnfoldOutlined } from '@ant-design/icons';
 
 import {LightningBoltIcon,HomeIcon,SwitchHorizontalIcon} from '@heroicons/react/outline';
 
+import Row from 'components/common/row'
 
 import WalletConnectBtn from 'components/wallet/connectbtn'
 import N1SBtn from 'components/header/n1s'
@@ -18,7 +19,6 @@ import Head from 'next/head'
 
 import { withRouter } from 'next/router'
 
-                            // <TelegramSvg />
 
 class PageWrapper extends React.Component {
 
@@ -90,7 +90,7 @@ class PageWrapper extends React.Component {
 
                 <div className="top-bg">
                 <div className="max-width">
-                    <Row gutter={{ xs: 8, sm: 16, md: 24}}>
+                    <Row>
                         <Col sm={24} lg={12}>
                             <div className="top-header-left">
                                 <div className='block-logo'>
@@ -135,7 +135,7 @@ class PageWrapper extends React.Component {
 
                 <div className="top-bg nav">
                 <div className="max-width">
-                    <Row gutter={{ xs: 8, sm: 16, md: 24}}>
+                    <Row>
                         <Col span={24}>
                             <div className="flex-between">
                                 <div className="nav-menu">
@@ -153,12 +153,34 @@ class PageWrapper extends React.Component {
                 </div>
 
                 <Layout>
-                    <Content style={{ margin: '24px 16px 0' }}>
-                        <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
+                    <Content>
+                        <div className="site-layout-background">
                             {this.props.children}
                         </div>
                     </Content>
                 </Layout>
+
+                <Footer>
+                    <div className="max-width">
+                        <Row>
+                            <Col span={24}>
+                                <div className="flex-between footer">
+                                    <div className="left">
+                                        <Image
+                                            src="/img/logo/word.svg"
+                                            alt="N1Swap"
+                                            width={54}
+                                            height={16}
+                                            className="logo"
+                                          />
+                                        
+                                    </div>
+                                    <LanguageBtn />
+                                </div>
+                            </Col>
+                        </Row>
+                    </div>
+                </Footer>
             </div>
             </div>
         );

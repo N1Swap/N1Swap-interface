@@ -17,7 +17,7 @@ const Home = () => {
 
 
 
-            <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
+            <div>
 
                 <div className="color-box margin-bottom-20">
                     <div className="head">
