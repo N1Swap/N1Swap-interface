@@ -2,7 +2,7 @@ const withAntdLess = require('next-plugin-antd-less');
 
 let config =  withAntdLess({
     // optional
-    // modifyVars: { '@primary-color': '#04f' },
+    // modifyVars: { '@primary-color': '#F00' },
     // optional
     lessVarsFilePath: './styles/variables.less',
     // optional https://github.com/webpack-contrib/css-loader#object
@@ -22,10 +22,6 @@ if (process.env.NODE_ENV === 'production') {
 }else {
     global_config = require('./config/dev.js')
 }
-
-console.log('config',config);
-
-
 
 
 module.exports = Object.assign(config,global_config)

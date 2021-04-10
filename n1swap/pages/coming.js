@@ -104,17 +104,18 @@ const Home = () => {
                                 <p>{t('We would greatly appreciate your help in sharing')}</p>
                             </div>
 
+                            <Divider />
+
                             <h2>{t('Notice')}</h2>
                             <div className={styles.airdophelp}>
                                 <p>{t('1 ip address, 1 device only 1 airdop trx address per day, that means if one user send more then 1 address, the others will be ignore.')}</p>
-                                <p>{t('Please join in our community and get our message')}</p>
+                                <p>{t('Please join in our community and get our new messages')}</p>
                             </div>
 
 
                         </div>
                     </Col>
                 </Row>
-                <Divider />
                 <Modal
                     closeIcon={<XIcon className="icon-20" />}
                     className={'border_modal color_modal'}
