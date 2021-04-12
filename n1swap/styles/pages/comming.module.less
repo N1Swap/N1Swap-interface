@@ -10,6 +10,16 @@
         padding:30px;
         border-radius: 20px;
         background:#fff;
+        width: 100%;
+
+
+
+
+
+
+
+
+
         .t {
             font-size: 18px;
             font-weight: bold;
@@ -215,5 +225,58 @@
     }
     span {
         margin-left: 6px;
+    }
+}
+
+@media (max-width: 600px) {
+    .block1 {
+        padding:40px 0;
+        border-bottom:1px solid #ccc;
+        h1 {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+        .icon_wapper {
+            margin:12px 0;
+        }
+        .points {
+            .one {
+                min-width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+    }
+    .block2 {
+        padding:40px 0;
+        border-bottom:1px solid #ccc;
+        h1 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            text-align: left;
+            justify-content: flex-start;
+        }
+        .icon_wapper {
+            margin:12px 0;
+        }
+        .points {
+            .one {
+                min-width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+        .step {
+            flex-direction: column;
+            width: 100%;
+            .step_l {
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+            .step_r {
+                width: 100%;
+            }
+        }
+        .notice {
+            width: 100%;
+        }
     }
 }

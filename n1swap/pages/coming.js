@@ -178,19 +178,19 @@ const Home = () => {
                 <div className={styles.points}>
 
                 <Row>
-                    <Col sm={24} lg={8}>
+                    <Col span={24} lg={8}>
                         <div className={styles.one}>
                             <div className={styles.t}><span className={styles.icon}><ArrowCircleRightIcon className="icon-16"/></span>{t('Base on TRX network')}</div>
                             <div className={styles.i}>{t('low transaction GAS')}</div>
                         </div>
                     </Col>
-                    <Col sm={24} lg={8}>
+                    <Col span={24} lg={8}>
                         <div className={styles.one}>
                             <div className={styles.t}><span className={styles.icon}><ArrowCircleRightIcon className="icon-16"/></span>{t('NST holder')}</div>
                             <div className={styles.i}>{t('Liquidity providers will receive a 0.25% transaction fee rate,NST holders receive a 0.05% transaction fee rate')}</div>
                         </div>
                     </Col>
-                    <Col sm={24} lg={8}>
+                    <Col span={24} lg={8}>
                         <div className={styles.one}>
                             <div className={styles.t}><span className={styles.icon}><ArrowCircleRightIcon className="icon-16"/></span>{t('Lower Stablecoin trading slippage')}</div>
                             <div className={styles.i}>{t('Stablecoin trading pairs use a lower slippage algorithm (similar to Curve.fi)')}</div>
