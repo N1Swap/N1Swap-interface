@@ -1,13 +1,13 @@
 @import "variables.less";
+@import "font.less";
 
 html {
-  font-size: 16px;
-  font-size: "Poppins";
-}
+  }
 html,
 body {
   padding: 0;
   margin: 0;
+  font-size: 16px;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
@@ -356,10 +356,9 @@ body,
 
 a.ant-btn-lg {
     padding-top: 0 ;
-    line-height: 24px;
     height: 50px;
-    line-height: 24px;
-    padding: 10px 15px;
+    padding:0;
+    margin:0;
 }
 
 .btn-telegram {
@@ -526,6 +525,29 @@ a.ant-btn-lg {
     border-bottom:1px solid #ddd;
     padding:12px 0;
 }
+.headnav {
+    .top-nav {
+        height: 60px;
+        display: flex;
+        justify-content: flex-start;
+        a {
+            display: block;
+            height: 60px;
+            border-bottom:3px solid #fff;
+            display: flex;
+            align-items:center;
+            font-family: "Poppins";
+        }
+        a.active {
+            border-bottom:3px solid @primary-color;
+            color: @primary-color;
+        }
+        span.with-icon {
+            margin-right:0.25rem;
+        }
+    }
+}
+
 .top-header-left {
     display: flex;
     justify-content: flex-start;

@@ -101,10 +101,10 @@ class PageWrapper extends React.Component {
 
                 <div className="fullpage-container">
 
-                <div className="top-bg nav">
+                <div className="top-bg headnav">
                 <div className="max-width">
                     <Row>
-                        <Col span={12}>
+                        <Col sm={24} lg={24}>
                             <div className="top-header-left">
                                 <div className='block-logo'>
                                     <Image
@@ -125,13 +125,13 @@ class PageWrapper extends React.Component {
                                     </span>
                                 </div>
                                 <div className="top-nav">
+                                    <a className="active" href="/coming">Airdrop</a>
+                                    <a href="https://www.pixelschain.com" target="_blank">
+                                        <span className="with-icon">Pixelschain</span>
+                                        <Image src="/img/common/newwindow.svg" width={16} height={16} />
+                                    </a>
                                 </div>
 
-                            </div>
-                        </Col>
-                        <Col span={12}>
-                            <div className="top-header-right">
-                                <LanguageBtn />
                             </div>
                         </Col>
                     </Row>
