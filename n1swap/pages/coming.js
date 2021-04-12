@@ -10,10 +10,11 @@ import {ArrowCircleRightIcon} from '@heroicons/react/outline';
 import Head from 'next/head'
 import Row from 'components/common/row'
 import {Button,message,Input,Modal} from 'antd'
+const {TextArea} = Input;
 import {getTronWeb,Base58ToHex} from 'helper/tron'
 import {fetchData,postData} from 'helper/http'
 
-import {CheckCircleIcon} from '@heroicons/react/solid';
+import {CheckIcon,CheckCircleIcon} from '@heroicons/react/solid';
 
 import styles from '../styles/pages/comming.module.less'
 import n1s_styles from 'styles/components/header/n1s.module.less'
@@ -24,12 +25,16 @@ import {t} from 'helper/translate';
 
 import {isTronAddress} from 'helper/tron_util';
 import {getSource} from 'helper/cookie'
+import {CopyToClipboard} from 'react-copy-to-clipboard';
+
+import getConfig from 'next/config'
+const { publicRuntimeConfig } = getConfig()
 
 const Home = () => {
 
 
-    let [address,setAddress] = useState('');
-    let [modal,setModal] = useState(false);
+    let [address,setAddress] = useState('TWuMXxVXsHMSovtPXky4cdd1JE4oeKZeyQ');
+    let [modal,setModal] = useState(true);
     let [n1s_count,setN1sCount] = useState(1);
     let [recaptcha,setRecaptcha] = useState('');
     let [isSave,setIsSave] = useState(false);
@@ -37,6 +42,18 @@ const Home = () => {
 
     let [isShare,setIsShare] = useState(0);
     let [isJoinClub,setisJoinClub] = useState(0);
+
+
+    const getShareUrl = (addr) => {
+        let website_url = publicRuntimeConfig['env']['WEBSITE'];
+        return website_url+ "/?f="+addr;
+    }
+
+    const base_share_text = "Have you heard of Pixelschain? It's an NFT project on TRX. Everyone can participate and buy pixel points to form a crowdsourced pixel painting, and the early participants get the income of the later participants.";
+
+    const getShareText = (addr) => {
+        return base_share_text + getShareUrl(addr);
+    }
 
     let dealResult = (result) => {
         console.log('dealResult',result);
@@ -136,6 +153,38 @@ const Home = () => {
 
     }
 
+
+    const handleShare = (website) => {
+
+        ///验证当前的add是否准确
+        try {
+            isTronAddress(addr)
+        }catch(e) {
+            message.error(e.message);
+            return;
+        }
+
+        let text = base_share_text;
+        let website_url = getShareUrl(addr);
+        let share_url;
+
+        switch(website) {
+            case 'twitter':
+                share_url = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(text) + "&url=" + encodeURIComponent(website_url);
+                break;
+            case 'facebook':
+                let title = "PixelsChain:"
+                let description = "Pixel NFT on TRX"
+                share_url = "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(website_url) +  "title="+encodeURIComponent(title) +  "description="+encodeURIComponent(description) +" &quote=" + encodeURIComponent(text);
+        }
+
+        let width = 500;
+        let height = 400;
+
+        window.open(share_url,"","toolbar=0, status=0, width=" + width + ", height=" + height);
+        return;
+    }
+
     let total_nst = 1;
     if (isShare) {
         total_nst += 10;
@@ -144,8 +193,8 @@ const Home = () => {
         total_nst += 1;
     }
 
-    let telegram_url = 'https://t.com'
-    let discord_url = 'https://discord.com'
+    let telegram_url = 'https://t.me/joinchat/xK_wg9e8Oz5lMmZl'
+    let discord_url = 'https://discord.gg/XGXMy2sqwY'
 
     let btn_icon_size = 24;
 
@@ -278,9 +327,34 @@ const Home = () => {
                                 </div>
                                 <div className={styles.step_r}>
                                     <div className={styles.box}>
-                                    <Button size="large" onClick={()=>setAction('share','twitter')} block className="btn-round btn-big btn-with-icon  btn-social btn-twitter" type="primary" icon={
-                                        <div className="icon"><Image src="/img/social/twitter_white.svg" width={btn_icon_size} height={btn_icon_size}/></div>
-                                    }>Twitter</Button>
+
+
+                                    <div className={styles.text_box}>
+                                        <TextArea autoSize={{ minRows: 7, maxRows: 10 }} value={getShareText(address)}>
+                                        </TextArea>
+                                    </div>
+
+                                    <div className={styles.buttons}>
+                                        
+                                        <div className={styles.row_2}>
+                                            <CopyToClipboard text={getShareText(address)}
+                                                onCopy={() => message.success('copy success')}>
+                                            <Button block className="btn-round btn-big btn-with-icon  btn-social btn-normal">COPY TEXT</Button>
+                                            </CopyToClipboard>
+                                        </div>
+                                        <div className={styles.row_1}>
+                                            <Button size="large" onClick={()=>handleShare.bind({},'twitter')} block className="btn-round btn-big btn-with-icon  btn-social btn-twitter" type="primary" icon={
+                                                <div className="icon"><Image src="/img/social/twitter_white.svg" width={btn_icon_size} height={btn_icon_size}/></div>
+                                            }>Twitter</Button>
+
+                                            <Button size="large" onClick={()=>handleShare.bind({},'facebook')} block className="btn-round btn-big btn-with-icon  btn-social btn-fb" type="primary" icon={
+                                                <div className="icon"><Image src="/img/social/fb_white.svg" width={btn_icon_size} height={btn_icon_size}/></div>
+                                            }>Facebook</Button>
+                                        </div>
+                                    </div>
+
+                                    
+
                                     </div>
                                 </div>
                             </div>
@@ -315,43 +389,45 @@ const Home = () => {
                         <div className={styles.center_notice}>NST will be send in May,2021</div>
                     </div>
 
-                    {
-                        (isJoinClub)
-                        ? <div className={n1s_styles.n1s_info}>
-                            <h2 className={styles.h2}>join our community get 1 NST more</h2>
-                            <div className={styles.finished}><div className={styles.inner}>
-                                <CheckCircleIcon className="icon-24" /> 
+                    <div className={n1s_styles.n1s_info}>
+                        <div className={styles.modal_extra_title}>{t('Extra Reward')} ①</div>
+                        <h2 className={styles.h2}>join our community get 1 NST more</h2>
+                        {
+                            (isJoinClub)
+                            ? <div className={styles.finished}><div className={styles.inner}>
+                                <CheckIcon className="icon-24" /> 
                                 <span>{t('Already obtained')}</span>
                             </div></div>
-                        </div>
-                        : <div className={n1s_styles.n1s_info}>
-                            <h2 className={styles.h2}>join our community get 1 NST more</h2>
-                            <div className={styles.joinin}>
-                                <Button size="large" href={telegram_url} target="_blank" onClick={()=>setAction('join','telegram')}  className="btn-with-icon" ghost icon={<div className="icon"><Image src="/img/social/telegram_white.svg" width={btn_icon_size} height={btn_icon_size}/></div>}>Telegram</Button>
-                                <Button size="large" href={discord_url} target="_blank" onClick={()=>setAction('join','discord')} className="btn-with-icon" ghost icon={<div className="icon"><Image src="/img/social/discord_white.svg" width={btn_icon_size} height={btn_icon_size}/></div>}>Discord</Button>
+                            : <div className={styles.joinin}>
+                                <Button href={telegram_url} target="_blank" 
+                                    onClick={()=>setAction('join','telegram')}  className="btn-with-icon btn-round" 
+                                    ghost 
+                                    icon={<div className="icon"><Image src="/img/social/telegram_white.svg" width={btn_icon_size} height={btn_icon_size}/></div>}
+                                    >Telegram</Button>
+                                <Button href={discord_url} target="_blank" 
+                                    onClick={()=>setAction('join','discord')} 
+                                    className="btn-with-icon  btn-round" ghost 
+                                    icon={<div className="icon"><Image src="/img/social/discord_white.svg" width={btn_icon_size} height={btn_icon_size}/></div>}
+                                    >Discord</Button>
                             </div>
-                        </div>
-                    }
+                        }
+                    </div>
                     <Divider className="white" />
-                    {
-
-                        (isShare)
-                        ? <div className={n1s_styles.n1s_info}>
-                            <h2 className={styles.h2}>share in Twitter and get 10 NST more</h2>
-                            <div className={styles.finished}><div className={styles.inner}>
-                                <CheckCircleIcon className="icon-24" /> 
-                                <span>{t('Already obtained')}</span>
+                    <div className={n1s_styles.n1s_info}>
+                        <div className={styles.modal_extra_title}>{t('Extra Reward')} ②</div>
+                        <h2 className={styles.h2}>share in Twitter and get 10 NST more</h2>
+                        {
+                            (isShare)
+                            ?  <div className={styles.finished}><div className={styles.inner}>
+                                    <CheckIcon className="icon-24" /> 
+                                    <span>{t('Already obtained')}</span>
                             </div></div>
-                        </div>
-                        : <div className={n1s_styles.n1s_info}>
-                            <h2 className={styles.h2}>share in Twitter and get 10 NST more</h2>
-                            <div className={styles.joinin}>
-                                <Button onClick={()=>setAction('share','twitter')} size="large"  className="btn-with-icon" ghost icon={<div className="icon"><Image src="/img/social/twitter_white.svg" width={btn_icon_size} height={btn_icon_size}/></div>}>Twitter</Button>
-                            </div>
-                        </div>
-                    }
+                            :   <div className={styles.joinin}>
 
-                    
+                                <Button onClick={()=>setAction('share','twitter')} className="btn-with-icon btn-round" ghost icon={<div className="icon"><Image src="/img/social/twitter_white.svg" width={btn_icon_size} height={btn_icon_size}/></div>}>Twitter</Button>
+                            </div>
+                        }
+                    </div>
 
                 </Modal>
 

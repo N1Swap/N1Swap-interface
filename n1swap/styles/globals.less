@@ -353,14 +353,37 @@ body,
 .round-btn {
     border-radius: 40px;
 }
-
+.ant-btn.ant-btn-background-ghost {
+    &:hover,
+    &:active {
+        background-color: rgba(255, 255, 255, 0.1) !important;
+        border-color:#fff;
+    }
+}
+button.ant-btn,
+a.ant-btn {
+    padding-top: 0 ;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 18px;
+    height: 40px;
+}
 a.ant-btn-lg {
     padding-top: 0 ;
     height: 50px;
     padding:0;
     margin:0;
 }
-
+.btn-fb {
+    border-color:#2c4892;
+    background:#2c4892;
+    &:hover,
+    &:focus {
+        background: #223c82;
+        border-color:#223c82;
+    }
+}
 .btn-telegram {
     border-color:#4FA3DE;
     background:#4FA3DE;
