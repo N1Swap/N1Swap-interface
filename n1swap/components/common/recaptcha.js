@@ -1,5 +1,6 @@
 import React from 'react'
 import ReCAPTCHA from "react-google-recaptcha";
+// import {autobind} from 'react-decoration'
 
 import getConfig from 'next/config'
 import Cookies from 'universal-cookie';
@@ -17,10 +18,6 @@ class Recaptcha extends React.Component {
         this.recaptchaRef = React.createRef();
         this.getValue = this.getValue.bind(this);
         this.key = publicRuntimeConfig['env']['RECAPTCHA_V2_KEY'];
-    }
-
-    onChange() {
-
     }
 
     getValue() {
@@ -65,7 +62,7 @@ class Recaptcha extends React.Component {
             <ReCAPTCHA
                 ref={this.recaptchaRef}
                 sitekey={this.key}
-                onChange={this.onChange}
+                onChange={this.props.onChange}
               />
             </div>
         );

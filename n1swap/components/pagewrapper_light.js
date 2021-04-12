@@ -3,10 +3,10 @@ import Image from 'next/image'
 import styles from '../styles/components/pagewrapper.module.less'
 
 import { Layout, Menu, Breadcrumb, Button,Divider, Col } from 'antd';
-const { Header, Content, Footer, Sider } = Layout;
+const { Header, Content, Sider } = Layout;
 import { UserOutlined, VideoCameraOutlined,MenuFoldOutlined,MenuUnfoldOutlined } from '@ant-design/icons';
 
-import {LightningBoltIcon,HomeIcon,SwitchHorizontalIcon} from '@heroicons/react/outline';
+import {LightningBoltIcon,HomeIcon,SwitchHorizontalIcon,ArrowCircleRightIcon} from '@heroicons/react/outline';
 
 import Row from 'components/common/row'
 
@@ -14,6 +14,7 @@ import WalletConnectBtn from 'components/wallet/connectbtn'
 import N1SBtn from 'components/header/n1s'
 import LanguageBtn from 'components/language/btn'
 import MoreBtn from 'components/header/more'
+import Footer from 'components/common/footer'
 
 import Head from 'next/head'
 
@@ -98,14 +99,12 @@ class PageWrapper extends React.Component {
                 </Head>
 
 
-
-
                 <div className="fullpage-container">
 
-                <div className="top-bg">
+                <div className="top-bg nav">
                 <div className="max-width">
                     <Row>
-                        <Col sm={24} lg={12}>
+                        <Col span={12}>
                             <div className="top-header-left">
                                 <div className='block-logo'>
                                     <Image
@@ -126,39 +125,12 @@ class PageWrapper extends React.Component {
                                     </span>
                                 </div>
                                 <div className="top-nav">
-                                    <a className="active">Swap</a>
-                                    <a>Lending</a>
-                                    <a>NFT</a>
-                                    <a>Farms</a>
-                                    <a>Pixelschain</a>
                                 </div>
 
                             </div>
                         </Col>
-                        <Col sm={24} lg={12}>
-
+                        <Col span={12}>
                             <div className="top-header-right">
-                                <N1SBtn />
-                                <WalletConnectBtn />
-                                <MoreBtn />
-                            </div>
-                        </Col>
-                    </Row>
-                </div>
-                </div>
-
-                <div className="top-bg nav">
-                <div className="max-width">
-                    <Row>
-                        <Col span={24}>
-                            <div className="flex-between">
-                                <div className="nav-menu">
-                                <div className="one"><a href="/liquidity">Liquidity</a></div>
-                                <div className="one"><a href="/exchange">Exchange</a></div>
-                                <div className="one"><a>Analytics</a></div>
-                                <div className="one"><a>Mine</a></div>
-                                <div className="one"><a>Introduce</a></div>
-                                </div>
                                 <LanguageBtn />
                             </div>
                         </Col>
@@ -174,27 +146,8 @@ class PageWrapper extends React.Component {
                     </Content>
                 </Layout>
 
-                <Footer>
-                    <div className="max-width">
-                        <Row>
-                            <Col span={24}>
-                                <div className="flex-between footer">
-                                    <div className="left">
-                                        <Image
-                                            src="/img/logo/word.svg"
-                                            alt="N1Swap"
-                                            width={54}
-                                            height={16}
-                                            className="logo"
-                                          />
-                                        
-                                    </div>
-                                    <LanguageBtn />
-                                </div>
-                            </Col>
-                        </Row>
-                    </div>
-                </Footer>
+                <Footer />
+                    
             </div>
             </div>
         );

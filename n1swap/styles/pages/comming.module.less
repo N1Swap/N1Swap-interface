@@ -1,52 +1,145 @@
 
-// @import "./../variables.less";
+@import "./../variables.less";
+
 
 .points {
     color: #333;
     .one {
-        padding-left: 20px;
+        min-height: 180px;
+        box-shadow:@card-box-shadow;
+        padding:30px;
+        border-radius: 20px;
+        background:#fff;
+        .t {
+            font-size: 18px;
+            font-weight: bold;
+            text-align: left;
+            display: flex;
+            align-content: center;
+            justify-content: flex-start;
+            margin-bottom: 15px;
+            .icon {
+                display: flex;
+                align-items:center;
+                margin-right: 0.5rem;
+            }
+        }
+        .i {
+            text-align: left;
+            color: @black-color-2;
+        }
     }
 }
 
 .block1 {
     text-align: center;
-    padding:40px 0;
+    padding:80px 0;
     h1 {
-        font-size: 32px;
-        margin-bottom: 40px;
-        color: @primary-color;
-    }
-    .points {
-        text-align: left;
-        margin:0 auto;
-        width: 550px;
-        max-width: 90%;
-    }
-    .one {
-        margin-bottom: 0.25rem;
+        font-size: 48px;
+        line-height: 1.2;
+        color: @black-color;
+        font-weight:bold;
+        max-width: 750px;
+        margin:0 auto 50px;
     }
     font-size: 16px;
+    .icon_wapper {
+        margin:40px 0;
+    }
 }
 
 .block2 {
     text-align: center;
     padding:40px 0;
+    color: @black-color;
+    background:url('/img/coming/bg.svg') right bottom no-repeat;
     h1 {
         font-size: 32px;
         margin-bottom: 40px;
+        display: flex;
+        align-items:center;
+        justify-content: center;
+        color: @black-color;
     }
-    h2 {
-        margin-top: 60px;
+    
+    .step {
+        display: flex;
+        justify-content: space-between;
+        width: 760px;
+        margin:60px auto;
+        .step_l {
+            text-align: left;
+            flex-shrink: 1;
+            flex-grow: 1;
+            margin-right: 40px;
+        }
+        .step_r {
+            width: 400px;
+        }
+        h2 {
+            margin-bottom: 12px;
+        }
+        .step_n {
+            font-weight: bold;
+            font-size: 20px;
+            line-height: 30px;
+            color: @black-color;
+
+        }
+        .step_n1 {
+            text-shadow: 4px 4px 0px #FFE7D6;
+        }
+        .step_n2 {
+            text-shadow: 4px 4px 0px #C8FEF1;
+        }
+        .step_n3 {
+            text-shadow: 4px 4px 0px #C5EAFF;
+        }
+        .airdophelp {
+            p {
+                margin-bottom: 0.25rem;
+                color: @black-color-2;
+                font-size: 14px;
+                line-height: 1.25;
+            }
+        }
     }
-    .airdop {
+    .notice {
+        background: #ECF0F6;
+        border-radius: 20px;
+        width: 760px;
+        margin:60px auto;
+        padding:30px;
+        p {
+            text-align: left;
+            font-size: 16px;
+            color: @black-color-2;
+            margin-bottom: 0.24rem;
+        }
+    }
+    .title_icon {
+        display: flex;
+        align-items:center;
+        margin-right: 1rem;
+    }
+    .box {
         text-align: center;
         background: #fff;
-        box-shadow: 0 0 10px #ccc;
+        box-shadow:@card-box-shadow2;
+        // box-shadow: 0 0 10px #ccc;
         width:500px;
         max-width:90%;
         margin:0 auto;
         padding:20px 20px;
         border-radius: 12px;
+    }
+    .box2 {
+        a {
+            margin-bottom: 20px;
+        }
+        a:last-child {
+            margin-bottom: 0;
+        }
     }
     .address {
         width: 100%;
@@ -58,13 +151,7 @@
         display: flex;
         justify-content: center;
     }
-    .airdophelp {
-        margin:20px 0;
-        font-size: 16px;
-        p {
-            margin-bottom: 0.25rem;
-        }
-    }
+    
     
 }
 .center_notice2 {
@@ -89,7 +176,43 @@
     display: flex;
     justify-content: center;
     align-items:center;
-    button {
+    a {
         margin:0 10px;
+    }
+}
+.airdop_saved {
+    border:2px solid @primary-color;
+    border-radius:20px;
+    width: 400px;
+    max-width: 90%;
+    margin:40px auto;
+    padding:40px;
+    .address {
+        margin:20px 0 0 0 ;
+    }
+    .nst {
+        margin:14px 0;
+        font-size: 18px;
+        font-weight: bold;
+        color:#000;
+    }
+}
+.finished {
+    display: flex;
+    justify-content: center;
+    align-items:center;
+    .inner {
+        display: flex;
+        justify-content: center;
+        align-items:center;
+        font-size: 16px;
+        background-color: @success-color;
+        color: #fff;
+        padding:6px 12px;
+        border-radius:50px;
+        margin:0 auto;
+    }
+    span {
+        margin-left: 6px;
     }
 }

@@ -117,7 +117,7 @@ class LanguageBtn extends React.Component {
     }
 
     render() {
-        const {language} = this.props;
+        const {language,ghost,size} = this.props;
 
         const country = this.transferLanguageToCountry(language);
 
@@ -144,13 +144,17 @@ class LanguageBtn extends React.Component {
             </ul>
         </div>
 
+        console.log('ghost',ghost)
+
         return (
             <div>
                 <Popover content={content} title={null} placement="topRight" trigger="click" visible={this.state.visible}
                     onVisibleChange={this.handleVisibleChange}>
                     <Button  
+                        ghost={ghost}
+                        size={size?size:'normal'}
                         type="normal"
-                        className={styles.language_btn}
+                        className={(ghost)?styles.language_btn_ghost:styles.language_btn}
                         icon={<div className={styles.flag}>{this.getFlag(country)}</div>}>{this.transferLanguageToFullName(language)}</Button>
                 </Popover>
             </div>

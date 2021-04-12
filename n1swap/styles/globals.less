@@ -1,4 +1,4 @@
-// @import "variables.less";
+@import "variables.less";
 
 html {
   font-size: 16px;
@@ -26,6 +26,10 @@ a {
   100% { transform: perspective(1000px) rotateY(360deg); }
 }
 
+.ant-divider.white {
+    border-top:1px solid rgba(255, 255, 255, 0.3)
+}
+
 .flip {
     animation: 5s cubic-bezier(0.83, 0, 0.17, 1) 0s infinite normal none running flip;
     filter: drop-shadow(rgba(0, 0, 0, 0.15) 0px 2px 4px);
@@ -44,6 +48,15 @@ a {
     height: 24px;
     width: 24px;
 }
+.icon-48 {
+    height: 48px;
+    width: 48px;
+}
+
+.green {
+    color: @success-color;
+}
+
 .emoji {
     margin-right:1rem;
 }
@@ -52,7 +65,11 @@ a {
     justify-content: flex-start;
     align-items:center;
 }
-
+.flex-end {
+    display: flex;
+    justify-content: flex-end;
+    align-items:center;
+}
 .flex-center {
     display: flex;
     align-items:center;
@@ -81,7 +98,7 @@ a {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    padding:16px 20px;
+    padding:16px 20px 16px 0;
 }
 
 .block-logo .word {
@@ -105,6 +122,10 @@ a {
 .input-radius {
     padding:12px;
     border-radius: 12px;
+}
+
+.white-bg {
+    background:#fff;
 }
 
 @keyframes line-scale-pulse-out {
@@ -169,9 +190,12 @@ a {
 }
 
 .footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     .left {
         display: flex;
-        justify-content: flex-start;
+        justify-content: center;
         align-items: center;
         font-size: 12px;
         span {
@@ -185,7 +209,12 @@ a {
     border-radius: 24px;
     overflow: hidden;
 }
-
+.btn-round {
+    border-radius:40px;
+}
+.btn-big {
+    height: 50px;
+}
 .btn-with-icon {
     display: flex;
     align-items:center;
@@ -195,6 +224,11 @@ a {
         align-items:center;
     }
 }
+
+.btn-social {
+    justify-content: center;
+}
+
 .ant-layout-footer {
     background:#fff;
     border-top:1px solid #ddd;
@@ -323,11 +357,38 @@ body,
 a.ant-btn-lg {
     padding-top: 0 ;
     line-height: 24px;
-    height: 40px;
+    height: 50px;
     line-height: 24px;
     padding: 10px 15px;
 }
 
+.btn-telegram {
+    border-color:#4FA3DE;
+    background:#4FA3DE;
+    &:hover,
+    &:focus {
+        background: #3b89bf;
+        border-color:#3b89bf;
+    }
+}
+.btn-discord {
+    border-color:#8D9FDB;
+    background:#8D9FDB;
+    &:hover,
+    &:focus {
+        background: #7788c3;
+        border-color:#7788c3;
+    }
+}
+.btn-twitter {
+    border-color:#499FE8;
+    background:#499FE8;
+    &:hover,
+    &:focus {
+        background: #3c90d8;
+        border-color:#3c90d8;
+    }
+}
 .block-token-one {
     a.link-all {
         display: flex;
@@ -502,7 +563,18 @@ a.ant-btn-lg {
         padding:5px 0;
     }
 }
-
+.ant-layout-footer {
+    background:#000;
+    .f2 {
+        font-size: 11px;
+        color: #A1A2A5;
+    }
+}
 @media (max-width: 600px) {
-
+    .max-width  {
+        padding:0 15px;
+    }
+    .ant-layout-footer {
+        padding:15px 0;
+    }
 }

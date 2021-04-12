@@ -29,6 +29,6 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 
-console.log('finnal_config',Object.assign(config,global_config));
+// console.log('finnal_config',Object.assign(config,global_config));
 
 module.exports = Object.assign(config,global_config)
