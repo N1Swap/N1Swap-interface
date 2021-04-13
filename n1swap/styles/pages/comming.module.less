@@ -11,15 +11,6 @@
         border-radius: 20px;
         background:#fff;
         width: 100%;
-
-
-
-
-
-
-
-
-
         .t {
             font-size: 18px;
             font-weight: bold;
@@ -57,7 +48,50 @@
         margin:40px 0;
     }
 }
+.pixelschain_banner {
+    color: @black-color;
+    background:url('/img/coming/pixelschain_bg.png') -15px -15px repeat;
+    width: 760px;
+    margin:50px auto;    
+    display: flex;
+    justify-content: space-between;
+    border-radius:20px;
+    overflow: hidden;
+    filter: drop-shadow(0px 2px 15px rgba(0, 0, 0, 0.06));
 
+    .left {
+        flex-grow: 0;
+        flex-shrink:0;
+        padding:48px;
+    }
+    .right {
+        color: #fff;
+        display: flex;
+        padding:10px 40px 10px 0;
+        flex-direction: column;
+        justify-content: center;
+        .t1 {
+            font-family: Poppins;
+            font-weight: bold;
+            font-size: 16px;
+            line-height: 24px;
+            text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px;
+        }
+        .pixelbutton {
+            background: #BA12E3;
+            box-shadow: 0px 6px 0px #9508B9;
+            border-color:#BA12E3;
+            border-radius: 10px;
+            font-family: Poppins;
+            font-weight: bold;
+            font-size: 16px;
+            line-height: 24px;
+            text-align: center;
+            color: #FFFFFF;
+        }
+    }
+}
 .block2 {
     text-align: center;
     padding:40px 0;
@@ -70,8 +104,15 @@
         align-items:center;
         justify-content: center;
         color: @black-color;
+        font-family: Poppins;
     }
-    
+    .notice {
+        h2 {
+            font-family: Poppins;
+            font-weight:700;
+        }
+    }
+
     .step {
         display: flex;
         justify-content: space-between;
@@ -153,14 +194,14 @@
         box-shadow:@card-box-shadow2;
         // box-shadow: 0 0 10px #ccc;
         width:500px;
-        max-width:90%;
+        max-width:95%;
         margin:0 auto;
         padding:20px 20px;
         border-radius: 12px;
     }
     .box2 {
         a {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
         a:last-child {
             margin-bottom: 0;
@@ -196,7 +237,7 @@
     display: flex;
     justify-content: center;
     align-items:center;
-    a {
+    a,button {
         margin:0 10px;
     }
 }
@@ -205,17 +246,26 @@
     border-radius:20px;
     width: 400px;
     max-width: 90%;
-    margin:40px auto;
-    padding:40px 15px;
-    .address {
-        margin:20px 0 0 0 ;
-        font-size: 12px;
+    margin:0 auto;
+    padding:25px 30px;
+    .icon {
+        display: flex;
+        align-items:center;
+        margin-right: 6px;
     }
-    .nst {
-        margin:14px 0;
-        font-size: 18px;
+    .t1 {
+        font-family: Poppins;
         font-weight: bold;
-        color:#000;
+        font-size: 20px;
+        color: #2DCC8E;
+        display: flex;
+        justify-content: flex-start;
+        align-items:center;
+        margin-bottom: 10px;
+    }
+    .t2 {
+        text-align: left;
+        color: @black-color-2;
     }
 }
 .finished {
@@ -256,12 +306,32 @@
     margin-bottom: 20px;
 }
 
+.copied {
+    text-align: center;
+    padding:10px;
+    max-width: 250px;
+    .t1 {
+        display: flex;
+        justify-content: center;
+        align-items:center;
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        padding-bottom: 10px;
+        border-bottom:1px solid #eee;
+    }
+    .t2 {
+        font-size: 14px;
+    }
+}
+
+
 @media (max-width: 600px) {
     .block1 {
         padding:40px 0 0 0;
-        border-bottom:1px solid #ccc;
+        border-bottom:none;
         h1 {
-            font-size: 20px;
+            font-size: 34px;
             margin-bottom: 20px;
         }
         .icon_wapper {
@@ -272,6 +342,8 @@
             .one {
                 min-width: 100%;
                 margin-bottom: 10px;
+                height: auto;
+                min-height: auto;
             }
         }
     }
@@ -283,6 +355,16 @@
             margin-bottom: 20px;
             text-align: left;
             justify-content: flex-start;
+            flex-direction: column;
+            font-size: 24px;
+            line-height: 34px;
+            text-align: center;
+            margin:0 40px;
+            font-weight: 700;
+            .title_icon {
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
         }
         h2 {
             font-size: 18px;
@@ -306,9 +388,34 @@
             .step_r {
                 width: 100%;
             }
+            .step_n {
+                text-align: center;
+            }
+            h2 {
+                text-align: center;
+            }
+            .airdophelp {
+                margin:0 20px;
+                font-size: 14px;
+                color: @black-color-2;
+            }
         }
+
         .notice {
             width: 100%;
+        }
+    }
+    .pixelschain_banner {
+        flex-direction: column;
+        width: 100%;
+        padding:20px 0;
+        .left {
+            margin:0;
+            padding:20px 0;
+            text-align:center;
+        }
+        .right {
+            padding:0 20px;
         }
     }
 }

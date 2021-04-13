@@ -1,12 +1,36 @@
 import React, { Component,useContext } from 'react';
 import Text from 'helper/translate/text'
-import translateContext from 'helper/translate/context'
 
-export function t(word) {
+const t = function(word) {
     return <Text>{word}</Text>
 }
 
-export function text(word) {
+const translate = function(word) {
     const translate = useContext(translateContext);
-    return translate.localeMessage[word] ? translate.localeMessage[word] : word;
+    return ;
+}
+
+const tpure = function(word,translate) {
+    return translate.localeMessage[word] ? translate.localeMessage[word] : word
+}
+
+const strFormat = function(str,args) {
+    // console.log('typeof str',typeof str)
+    if (typeof str == 'object') {
+        str = str.props.children;
+        // console.log('str',str)
+    }
+    var keys = Object.keys(args);
+    keys.forEach(one=>{
+        // console.log('正在替换字符串预计替换',str)
+        str = str.toString().replace(new RegExp("\\{" + one + "\\}", "g"), args[one]);
+    })
+
+    return str;
+
+}
+module.exports = {
+    t           : t,
+    tpure       : tpure,
+    strFormat   : strFormat
 }

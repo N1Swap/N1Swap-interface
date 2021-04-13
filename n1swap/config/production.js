@@ -3,7 +3,7 @@ module.exports =  {
         'env' :  {
             'API'               : 'https://api.n1swap.com',
             'TRONSCAN_URL'      : 'https://shasta.tronscan.org',
-            'WEBSITE'           : 'https://www.pixelschain.com',
+            'WEBSITE'           : 'https://www.n1swap.com',
             'CONTRACT_ADDRESS'  : 'TJPUJWATUCDwfTZrqWxqUqaio7dSht3Sy1',
             'RECAPTCHA_V2_KEY'  : '6LdvIqEaAAAAAGLBf9ikxM5CnbCXamjVu6_fTuj9'
         },

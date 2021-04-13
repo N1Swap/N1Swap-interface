@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useContext} from 'react';
 
 
 import classNames from 'classnames';
@@ -9,7 +9,7 @@ import {ArrowNarrowLeftIcon,XIcon} from '@heroicons/react/solid';
 import {ArrowCircleRightIcon} from '@heroicons/react/outline';
 import Head from 'next/head'
 import Row from 'components/common/row'
-import {Button,message,Input,Modal} from 'antd'
+import {Button,message,Input,Modal,Popover} from 'antd'
 const {TextArea} = Input;
 import {getTronWeb,Base58ToHex} from 'helper/tron'
 import {fetchData,postData} from 'helper/http'
@@ -21,7 +21,8 @@ import n1s_styles from 'styles/components/header/n1s.module.less'
 
 import {  Col,Divider } from 'antd';
 
-import {t} from 'helper/translate';
+import {t,tpure,strFormat} from 'helper/translate';
+import translateContext from 'helper/translate/context'
 
 import {isTronAddress} from 'helper/tron_util';
 import {getSource} from 'helper/cookie'
@@ -33,15 +34,19 @@ const { publicRuntimeConfig } = getConfig()
 const Home = () => {
 
 
-    let [address,setAddress] = useState('');
+    let [address,setAddress] = useState('TWuMXxVXsHMSovtPXky4cdd1JE4oeKZeyQ');
     let [modal,setModal] = useState(false);
     let [n1s_count,setN1sCount] = useState(1);
     let [recaptcha,setRecaptcha] = useState('');
     let [isSave,setIsSave] = useState(false);
+    let [isCopied,setIsCopied] = useState(false);
 
 
     let [isShare,setIsShare] = useState(0);
     let [isJoinClub,setisJoinClub] = useState(0);
+
+    const translatemap = useContext(translateContext);
+
 
 
     const getShareUrl = (addr) => {
@@ -49,7 +54,7 @@ const Home = () => {
         return website_url+ "/?f="+addr;
     }
 
-    const base_share_text = "Have you heard of Pixelschain? It's an NFT project on TRX. Everyone can participate and buy pixel points to form a crowdsourced pixel painting, and the early participants get the income of the later participants.";
+    const base_share_text = tpure("Share a new free airdrop token, N1Swap, which is based on a decentralized exchange on the Tron network and is expected to be officially released at the end of April. You can now get free NST tokens by filling in your wallet address.",translatemap);
 
     const getShareText = (addr) => {
         return base_share_text + getShareUrl(addr);
@@ -153,19 +158,25 @@ const Home = () => {
 
     }
 
+    const setCopied = () => {
+        setIsCopied(true);
+        setTimeout(()=>{
+            setIsCopied(false)
+        },5000);
+    }
 
     const handleShare = (website) => {
 
+        console.log('handleShare',website);
+
         ///验证当前的add是否准确
-        try {
-            isTronAddress(addr)
-        }catch(e) {
-            message.error(e.message);
-            return;
-        }
+        // if (!isTronAddress(address)) {
+        //     message.error(tpure('请先填写钱包地址',translatemap));
+        //     return;
+        // }
 
         let text = base_share_text;
-        let website_url = getShareUrl(addr);
+        let website_url = getShareUrl(address);
         let share_url;
 
         switch(website) {
@@ -173,15 +184,19 @@ const Home = () => {
                 share_url = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(text) + "&url=" + encodeURIComponent(website_url);
                 break;
             case 'facebook':
-                let title = "PixelsChain:"
-                let description = "Pixel NFT on TRX"
+                let title = "N1Swap Airdrop:"
+                let description = "Free Airdrop of N1Swap"
                 share_url = "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(website_url) +  "title="+encodeURIComponent(title) +  "description="+encodeURIComponent(description) +" &quote=" + encodeURIComponent(text);
+            default:
+                return;
         }
 
         let width = 500;
         let height = 400;
 
         window.open(share_url,"","toolbar=0, status=0, width=" + width + ", height=" + height);
+       
+        setAction('share',website);
         return;
     }
 
@@ -197,6 +212,11 @@ const Home = () => {
     let discord_url = 'https://discord.gg/XGXMy2sqwY'
 
     let btn_icon_size = 24;
+
+    let short_address = '';
+    if (address.length == 34) {
+        short_address = address.slice(0,5) + '...' + address.slice(-5);
+    }
 
     return <PageWrapper>
             <Head>
@@ -270,7 +290,6 @@ const Home = () => {
                                     </div>
                                     <h2>{t('Submit your Trx address')}</h2>
                                     <div className={styles.airdophelp}>
-                                        <p>{t('We will be issuing airdrops of NST after N1Swap goes live')}</p>
                                         <p>{t('you can submit your address and get NST airdrops for free')}</p>
                                     </div>
                                 </div>
@@ -278,17 +297,19 @@ const Home = () => {
                                     {
                                         (isSave)
                                         ? <div className={styles.airdop_saved}>
-                                            <div className={styles.icon}>
-                                            <CheckCircleIcon className="icon-48 green" />
+                                            <div className={styles.t1}>
+                                                <div className={styles.icon}>
+                                                    <CheckCircleIcon className="icon-40" />
+                                                </div>
+                                                {strFormat(t('You got {number} NST!'),{'number':total_nst})}
+
                                             </div>
-                                            <div className={styles.address}>{address}</div>
-                                            <div className={styles.nst}>{total_nst} NST</div>
-                                            <div className={styles.info}>{t('will receive NST in May,2021')}</div>
+                                            <div className={styles.t2}>{strFormat(t('Your wallet address ({address}) will receive NST in May,2021'),{'address':short_address})}</div>
                                         </div>
                                         : <div className={styles.box}>
                                             <Input size="large" className={styles.address} placeholder={'your Trx Wallet Address'} value={address} onChange={(e)=>setAddress(e.target.value)}/>
                                             <div className={styles.recaptcha}><Recaptcha onChange={setRecaptcha}/></div>
-                                            <Button size="large" type="primary" block className="btn-round btn-big" onClick={submitAddress}>{t('Submit')}</Button>
+                                            <Button type="primary" block className="btn-round btn-big" onClick={submitAddress}>{t('Submit')}</Button>
                                         </div>
                                     }
                                 </div>
@@ -301,15 +322,14 @@ const Home = () => {
                                     </div>
                                     <h2>{t('Join in our community')}</h2>
                                     <div className={styles.airdophelp}>
-                                        <p>{t('To ensure that the drops are made by real people and not bots')}</p>
-                                        <p>{t('You will need to join our telegram or Discord community and we will verify your identity in the group.')}</p>
+                                        <p>{t('Join our community get 1 NST more')}</p>
                                     </div>
                                 </div>
                                 <div className={styles.step_r}><div className={classNames(styles.box,styles.box2)}>
-                                    <Button size="large" href={telegram_url} block className="btn-round btn-big btn-with-icon btn-social btn-telegram"  target="_blank" onClick={()=>setAction('join','telegram')}  type="primary" icon={
+                                    <Button href={telegram_url} block className="btn-round btn-big btn-with-icon btn-social btn-telegram"  target="_blank" onClick={()=>setAction('join','telegram')}  type="primary" icon={
                                         <div className="icon"><Image src="/img/social/telegram_white.svg" width={btn_icon_size} height={btn_icon_size}/></div>
                                     }>Telegram</Button>
-                                    <Button size="large" href={discord_url} block className="btn-round btn-big btn-with-icon btn-social btn-discord"  target="_blank" onClick={()=>setAction('join','discord')} type="primary" icon={
+                                    <Button href={discord_url} block className="btn-round btn-big btn-with-icon btn-social btn-discord"  target="_blank" onClick={()=>setAction('join','discord')} type="primary" icon={
                                         <div className="icon"><Image src="/img/social/discord_white.svg" width={btn_icon_size} height={btn_icon_size}/></div>
                                     }>Discord</Button>
                                 </div></div>
@@ -322,7 +342,8 @@ const Home = () => {
                                     </div>
                                     <h2>{t('Share in Twitter or FB')}</h2>
                                     <div className={styles.airdophelp}>
-                                        <p>{t('if someone fill the airdop with your share url, you will get 10X airdop.')}</p>
+                                        <p>{t('if someone fill the airdop with your share url, you will get 10 NFT more.')}</p>
+                                        <p>{t('you can share anywhere like telegram ,discord, whatsapp ...')}</p>
                                     </div>
                                 </div>
                                 <div className={styles.step_r}>
@@ -337,17 +358,25 @@ const Home = () => {
                                     <div className={styles.buttons}>
                                         
                                         <div className={styles.row_2}>
+                                            <Popover
+                                                visible={isCopied}
+                                                content={<div className={styles.copied}>
+                                                <div className={styles.t1}><CheckCircleIcon className="icon-24 green" />Copied</div>
+                                                <div className={styles.t2}>you can share in whatsapp,discord,telegram...</div>
+                                            </div>}>
                                             <CopyToClipboard text={getShareText(address)}
-                                                onCopy={() => message.success('copy success')}>
-                                            <Button block className="btn-round btn-big btn-with-icon  btn-social btn-normal">COPY TEXT</Button>
+                                                onCopy={() => {setCopied(true)}}>
+                                            <Button block className="btn-round btn-big btn-with-icon btn-social btn-normal">COPY TEXT</Button>
                                             </CopyToClipboard>
+                                            </Popover>
                                         </div>
                                         <div className={styles.row_1}>
-                                            <Button size="large" onClick={()=>handleShare.bind({},'twitter')} block className="btn-round btn-big btn-with-icon  btn-social btn-twitter" type="primary" icon={
+                                            <Button 
+                                                onClick={()=>handleShare('twitter')} block className="btn-round btn-big btn-with-icon  btn-social btn-twitter" type="primary" icon={
                                                 <div className="icon"><Image src="/img/social/twitter_white.svg" width={btn_icon_size} height={btn_icon_size}/></div>
                                             }>Twitter</Button>
 
-                                            <Button size="large" onClick={()=>handleShare.bind({},'facebook')} block className="btn-round btn-big btn-with-icon  btn-social btn-fb" type="primary" icon={
+                                            <Button onClick={()=>handleShare('facebook')} block className="btn-round btn-big btn-with-icon  btn-social btn-fb" type="primary" icon={
                                                 <div className="icon"><Image src="/img/social/fb_white.svg" width={btn_icon_size} height={btn_icon_size}/></div>
                                             }>Facebook</Button>
                                         </div>
@@ -371,6 +400,33 @@ const Home = () => {
                 </Row>
                 </div>
                 </div>
+                <div className="max-width">
+                    
+                    <Row>
+                        <Col span={24}>
+
+                            <div className={styles.pixelschain_banner}>
+
+                                <div className={styles.left}>
+                                    <Image src="/img/coming/pixelschain_logo_big.svg" width={200} height={80}/>
+                                </div>
+
+                                <div className={styles.right}>
+                                    <div className={styles.t1}>While the N1Swap exchange is in development, the N1Swap team's NFT project Pixelschain is now live and you can click the button to play with it.</div>
+                                    <div className={styles.t2}>
+                                        <Button block className={styles.pixelbutton}>Visit Pixelschain.com</Button>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                        </Col>
+                    </Row>
+
+                </div>
+
+
                 <Modal
                     closeIcon={<XIcon className="icon-20" />}
                     className={'border_modal color_modal'}
@@ -400,7 +456,8 @@ const Home = () => {
                             </div></div>
                             : <div className={styles.joinin}>
                                 <Button href={telegram_url} target="_blank" 
-                                    onClick={()=>setAction('join','telegram')}  className="btn-with-icon btn-round" 
+                                    onClick={()=>setAction('join','telegram')}  
+                                    className="btn-with-icon btn-round" 
                                     ghost 
                                     icon={<div className="icon"><Image src="/img/social/telegram_white.svg" width={btn_icon_size} height={btn_icon_size}/></div>}
                                     >Telegram</Button>
@@ -423,8 +480,14 @@ const Home = () => {
                                     <span>{t('Already obtained')}</span>
                             </div></div>
                             :   <div className={styles.joinin}>
-
-                                <Button onClick={()=>setAction('share','twitter')} className="btn-with-icon btn-round" ghost icon={<div className="icon"><Image src="/img/social/twitter_white.svg" width={btn_icon_size} height={btn_icon_size}/></div>}>Twitter</Button>
+                                <Button onClick={()=>handleShare('facebook')} 
+                                    className="btn-with-icon btn-round" ghost icon={
+                                    <div className="icon"><Image src="/img/social/fb_white.svg" width={btn_icon_size} height={btn_icon_size}/></div>
+                                    }>Facebook</Button>
+                                <Button onClick={()=>handleShare('facebook')} 
+                                    className="btn-with-icon btn-round" ghost icon={
+                                    <div className="icon"><Image src="/img/social/twitter_white.svg" width={btn_icon_size} height={btn_icon_size}/></div>
+                                    }>Twitter</Button>
                             </div>
                         }
                     </div>
