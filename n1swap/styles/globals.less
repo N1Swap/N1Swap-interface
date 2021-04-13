@@ -554,6 +554,7 @@ a.ant-btn-lg {
     padding:12px 0;
 }
 .headnav {
+    box-shadow:0px 2px 4px rgba(0, 0, 0, 0.05);
     .top-nav {
         height: 60px;
         display: flex;
@@ -620,6 +621,21 @@ a.ant-btn-lg {
         color: #A1A2A5;
     }
 }
+
+.headnav-inner {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+
+.menu-trigger { width: 18px; height: 18px; position: relative; }
+.menu-trigger:before, .menu-trigger:after { content: ""; display: block; width: 18px; height: 2px; background: #000; border-radius: 8px; position: absolute; left: 0; -webkit-transition: all 0.15s ease-in-out; transition: all 0.15s ease-in-out; }
+.menu-trigger:before { top: 2px; box-shadow: 0 6px #000; }
+.menu-trigger:after { bottom: 2px; }
+.open .menu-trigger:before { top: 8px; box-shadow: none; -webkit-transform: rotate(225deg); transform: rotate(225deg); }
+.open .menu-trigger:after { bottom: 8px; -webkit-transform: rotate(135deg); transform: rotate(135deg); }
+
 @media (max-width: 600px) {
     .max-width  {
         padding:0 15px;

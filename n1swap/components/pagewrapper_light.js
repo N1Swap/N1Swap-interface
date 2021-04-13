@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image'
 import styles from '../styles/components/pagewrapper.module.less'
+import classNames from 'classnames';
 
 import { Layout, Menu, Breadcrumb, Button,Divider, Col } from 'antd';
 const { Header, Content, Sider } = Layout;
@@ -15,6 +16,7 @@ import N1SBtn from 'components/header/n1s'
 import LanguageBtn from 'components/language/btn'
 import MoreBtn from 'components/header/more'
 import Footer from 'components/common/footer'
+import { BrowserView, MobileView, isMobile} from "react-device-detect";
 
 import Head from 'next/head'
 
@@ -28,9 +30,9 @@ class PageWrapper extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            collapsed : false
+            show_mobile_menu : false
         }
-        this.setCollapsed = ::this.setCollapsed
+        this.setMenu = ::this.setMenu
         this.handleClick = ::this.handleClick
         this.handleReffer = ::this.handleReffer
     }
@@ -39,9 +41,9 @@ class PageWrapper extends React.Component {
         this.handleReffer();
     }
 
-    setCollapsed(collapsed) {
+    setMenu() {
         this.setState({
-            'collapsed' : collapsed
+            'show_mobile_menu' : !this.state.show_mobile_menu
         })   
     }
 
@@ -85,7 +87,7 @@ class PageWrapper extends React.Component {
 
     render() {
 
-        const {collapsed} = this.state;
+        const {show_mobile_menu} = this.state;
         const {router} = this.props;
 
         const selectedKeys = this.getSelectKey(router.pathname)
@@ -103,38 +105,50 @@ class PageWrapper extends React.Component {
 
                 <div className="top-bg headnav">
                 <div className="max-width">
-                    <Row>
-                        <Col sm={24} lg={24}>
-                            <div className="top-header-left">
-                                <div className='block-logo'>
-                                    <Image
-                                            src="/img/logo/logo_square.png"
-                                            alt="N1Swap Logo"
-                                            width={28}
-                                            height={28}
-                                            className="logo"
-                                          />
-                                    <span className='word'>
-                                    <Image
-                                        src="/img/logo/word.svg"
-                                        alt="N1Swap"
-                                        width={93}
-                                        height={22}
+                    <div className="headnav-inner">
+                        <div className="top-header-left">
+                            <div className='block-logo'>
+                                <Image
+                                        src="/img/logo/logo_square.png"
+                                        alt="N1Swap Logo"
+                                        width={28}
+                                        height={28}
                                         className="logo"
                                       />
-                                    </span>
-                                </div>
-                                <div className="top-nav">
-                                    <a className="active" href="/coming">Airdrop</a>
-                                    <a href="https://www.pixelschain.com" target="_blank">
-                                        <span className="with-icon">Pixelschain</span>
-                                        <Image src="/img/common/newwindow.svg" width={16} height={16} />
-                                    </a>
-                                </div>
-
+                                <span className='word'>
+                                <Image
+                                    src="/img/logo/word.svg"
+                                    alt="N1Swap"
+                                    width={93}
+                                    height={22}
+                                    className="logo"
+                                  />
+                                </span>
                             </div>
-                        </Col>
-                    </Row>
+                            <BrowserView>
+                            <div className="top-nav">
+                                <a className="active" href="/coming">Airdrop</a>
+                                <a href="https://www.pixelschain.com" target="_blank">
+                                    <span className="with-icon">Pixelschain</span>
+                                    <Image src="/img/common/newwindow.svg" width={16} height={16} />
+                                </a>
+                            </div>
+                            </BrowserView>
+                        </div>
+                        <div className="top-header-right">
+                        <MobileView>
+                            
+                            <div className={classNames("mobile-menu-wrapper",{"open":show_mobile_menu})}>
+                                <div class="box">
+                                    <div class="menu-trigger" onClick={()=>this.setMenu()}></div>
+                                </div>
+                               <div className="mobile-menu">
+
+                               </div>
+                            </div>
+                        </MobileView>
+                        </div>
+                    </div>
                 </div>
                 </div>
 
