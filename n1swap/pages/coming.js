@@ -33,8 +33,8 @@ const { publicRuntimeConfig } = getConfig()
 const Home = () => {
 
 
-    let [address,setAddress] = useState('TWuMXxVXsHMSovtPXky4cdd1JE4oeKZeyQ');
-    let [modal,setModal] = useState(true);
+    let [address,setAddress] = useState('');
+    let [modal,setModal] = useState(false);
     let [n1s_count,setN1sCount] = useState(1);
     let [recaptcha,setRecaptcha] = useState('');
     let [isSave,setIsSave] = useState(false);
