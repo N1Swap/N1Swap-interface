@@ -31,7 +31,7 @@ class PageWrapper extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            show_mobile_menu : true
+            show_mobile_menu : false
         }
         this.setMenu = ::this.setMenu
         this.handleClick = ::this.handleClick
