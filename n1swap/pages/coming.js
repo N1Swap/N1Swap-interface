@@ -223,7 +223,7 @@ const Home = () => {
                 <title>Home</title>
             </Head>
             <div>
-                <div className={styles.block1}>
+                <div className={classNames(styles.block1,'color-bg')}>
                 <div className="max-width">
 
                 <Row>
@@ -400,6 +400,8 @@ const Home = () => {
                 </Row>
                 </div>
                 </div>
+
+                <div className={classNames('color-bg')}>
                 <div className="max-width">
                     
                     <Row>
@@ -423,7 +425,7 @@ const Home = () => {
 
                         </Col>
                     </Row>
-
+                </div>
                 </div>
 
 
