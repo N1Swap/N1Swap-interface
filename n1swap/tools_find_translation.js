@@ -8,6 +8,7 @@ const stat = util.promisify(fs.stat);
 const stringify = require('csv-stringify')
 
 const csv_path = './public/locales/un_translate.csv';
+const already_translate_csv_path = './public/locales/translate.csv';
 
 let total_result = [];
 
@@ -19,11 +20,21 @@ let chars = [
     [
         "{t(\"",
         "\")}"
+    ],
+    [
+        "tpure(\"",
+        "\""
+    ],
+    [
+        "tpure('",
+        "'"
     ]
 ]
 
 function saveResult(text) {
-    total_result.push(text);
+    if (text && text.length > 0) {
+        total_result.push(text);
+    }
 }
 
 function findTranlateText(filedir) {
@@ -64,14 +75,16 @@ function findChar(text,before,end) {
     };
 
     if (find_l != -1) {
-        find_r = text.indexOf(end);
+        let temp_text = text.slice(find_l+before.length);
+        find_r = temp_text.indexOf(end);
         if (find_r != -1) {
 
-            // console.log('find数据',find_l,find_r,text.slice(find_l,find_r),text);
+            console.log('find数据',find_l+before.length,find_r);
+            let r_pos = find_l+before.length+find_r;
 
             result['status'] = 'find';
-            result['text'] = text.slice(find_l+before.length,find_r);
-            result['rest_text'] = text.slice(find_r+end.length);
+            result['text'] = text.slice(find_l+before.length,r_pos);
+            result['rest_text'] = text.slice(r_pos+end.length);
         }
     }
 
@@ -108,15 +121,137 @@ const fileDisplay = async function(filePath){
 
 }
 
+const compareWithTranslated = async function(total_result) {
+
+    const parser = fs
+          .createReadStream(already_translate_csv_path)
+          .pipe(parse({columns: true}));
+
+    let records = [];
+    let translated_map = {};
+    let all_translated = [];
+    for await (const record of parser) {
+        // Work with each record
+        records.push(record['En'])
+        translated_map[record['En']] = 1;
+        all_translated.push(record);
+    }
+
+    let lang_keys =[];
+    if (all_translated.length > 0) {
+        lang_keys = Object.keys(all_translated[0]);
+    }
+
+
+    console.log('已经被翻译过的文字',records);
+    console.log('现在扫描到的文字',total_result);
+
+    ///已经翻译的
+    let already_translated = [];
+
+    ///还没有翻译的
+    let un_translated = [];
+
+    ///更改上次翻译的数据
+    let need_remove_translated = [];
+    let need_remove_translated_map = {};
+
+    let new_scan_map = {}
+    total_result.map(one=>{
+        if (translated_map[one]) {
+            already_translated.push(one)
+        }else {
+            un_translated.push(one)
+        }
+        new_scan_map[one] = 1;
+    });
+
+    records.map(one=>{
+        if (new_scan_map[one]) {
+
+        }else {
+            // need_remove_translated.push(one);
+            need_remove_translated_map[one] = 1;
+        }
+    })
+
+    ////对比现在的文字
+    console.log('already_translated',already_translated)
+    console.log('un_translated',un_translated)
+    console.log('need_remove_translated',need_remove_translated)
+
+    ////更新已经翻译的文字
+    if (all_translated.length > 0) {
+
+        let update_translated = [];
+        all_translated.map(one=>{
+            if (need_remove_translated_map[one['En']]) {
+
+            }else {
+                update_translated.push(one);
+            }
+        })
+
+
+        console.log('update_translated',update_translated)
+        let new_translated = [];
+        update_translated.map(one=>{
+            let row = []
+            lang_keys.map(k=>{
+                row.push(one[k])
+            })
+            new_translated.push(row);
+        })
+        console.log('new_translated',new_translated)
+
+        let columns = {};
+        lang_keys.map(one=>{
+            columns[one] = one;
+        })
+
+        ///写入文件（更新翻译）
+        const temp_csv_file = './public/locales/translate.csv';
+        stringify(new_translated, { header: true, columns: columns }, (err, output) => {
+          if (err) throw err;
+          fs.writeFile(temp_csv_file, output, (err) => {
+            if (err) throw err;
+            console.log('translate_temp.csv saved.');
+          });
+        });
+    }
+
+    ///写入文件还没有翻译的
+    columns = {
+      en: 'En',
+    };
+    let data = []
+    un_translated.map(one=>{
+        data.push([one])
+    })
+
+    const csv_file = './public/locales/un_translate.csv';
+    stringify(data, { header: true, columns: columns }, (err, output) => {
+      if (err) throw err;
+      fs.writeFile(csv_file, output, (err) => {
+        if (err) throw err;
+        console.log('my.csv saved.');
+      });
+    });
+
+    return records
+}
 
 
 const loop = async function() {
 
+
+    ///扫描的目录
     let loop_dirs = [
         'components',
         'pages'
     ];
 
+    ///寻找翻译
     const promises =loop_dirs.map(async dir=>{
         var filePath = path.resolve('./'+dir);
         await fileDisplay(filePath);
@@ -127,6 +262,9 @@ const loop = async function() {
     console.log('执行到这里');
     console.log('total_result2',total_result)
 
+    ///对比已经翻译过的插件中翻译的部分
+    compareWithTranslated(total_result);
+    return;
 
     let columns = {
       en: 'En',
@@ -150,4 +288,6 @@ const loop = async function() {
 }
 
 loop();
+
+// compareWithTranslated({});
 

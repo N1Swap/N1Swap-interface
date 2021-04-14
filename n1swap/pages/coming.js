@@ -54,7 +54,7 @@ const Home = () => {
         return website_url+ "/?f="+addr;
     }
 
-    const base_share_text = tpure("Share a new free airdrop token, N1Swap, which is based on a decentralized exchange on the Tron network and is expected to be officially released at the end of April. You can now get free NST tokens by filling in your wallet address.",translatemap);
+    const base_share_text = tpure('Share a new free airdrop token, N1Swap, which is based on a decentralized exchange on the Tron network and is expected to be officially released at the end of April. You can now get free NST tokens by filling in your wallet address.',translatemap);
 
     const getShareText = (addr) => {
         return base_share_text + getShareUrl(addr);
@@ -169,11 +169,6 @@ const Home = () => {
 
         console.log('handleShare',website);
 
-        ///验证当前的add是否准确
-        // if (!isTronAddress(address)) {
-        //     message.error(tpure('请先填写钱包地址',translatemap));
-        //     return;
-        // }
 
         let text = base_share_text;
         let website_url = getShareUrl(address);
@@ -281,7 +276,7 @@ const Home = () => {
                                     src="/img/coming/cal.svg"
                                     width={40}
                                     height={40}
-                                  /></span>{t('Coming in End of April, Get NST Airdop now')}</h1>
+                                  /></span>{t('Coming in End of April, Get Free NST Airdop now')}</h1>
                            
                             <div className={styles.step}>
                                 <div className={styles.step_l}>
@@ -414,9 +409,9 @@ const Home = () => {
                                 </div>
 
                                 <div className={styles.right}>
-                                    <div className={styles.t1}>While the N1Swap exchange is in development, the N1Swap team's NFT project Pixelschain is now live and you can click the button to play with it.</div>
+                                    <div className={styles.t1}>{t("While the N1Swap exchange is in development, the N1Swap team's NFT project Pixelschain is now live and you can click the button to play with it.")}</div>
                                     <div className={styles.t2}>
-                                        <Button block className={styles.pixelbutton}>Visit Pixelschain.com</Button>
+                                        <Button block className={styles.pixelbutton}><span className="margin-right-12">{t("Visit")}</span> Pixelschain.com</Button>
                                     </div>
                                 </div>
 
