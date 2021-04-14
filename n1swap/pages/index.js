@@ -39,6 +39,7 @@ const Home = () => {
     let [n1s_count,setN1sCount] = useState(1);
     let [recaptcha,setRecaptcha] = useState('');
     let [isSave,setIsSave] = useState(false);
+    let [isFetching,setIsFetching] = useState(false);
     let [isCopied,setIsCopied] = useState(false);
 
 
@@ -134,6 +135,8 @@ const Home = () => {
 
         try {
 
+            setIsFetching(true)
+
             // isTronAddress(address);
             let result = await postData("/v1/airdrop/save",{
                 'address'           : address,
@@ -142,6 +145,8 @@ const Home = () => {
             });
 
             console.log('请求API的结果是',result)
+
+            setIsFetching(false)
 
             if (result.status == 'success') {
                 dealResult(result.data);
@@ -173,15 +178,18 @@ const Home = () => {
         let text = base_share_text;
         let website_url = getShareUrl(address);
         let share_url;
+        console.log('share_url',website_url,address);
 
+        let title,description;
         switch(website) {
             case 'twitter':
                 share_url = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(text) + "&url=" + encodeURIComponent(website_url);
                 break;
             case 'facebook':
-                let title = "N1Swap Airdrop:"
-                let description = "Free Airdrop of N1Swap"
+                title = "N1Swap Airdrop:"
+                description = "Free Airdrop of N1Swap"
                 share_url = "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(website_url) +  "title="+encodeURIComponent(title) +  "description="+encodeURIComponent(description) +" &quote=" + encodeURIComponent(text);
+                break;
             default:
                 return;
         }
@@ -267,7 +275,7 @@ const Home = () => {
                 </div>
                 </div>
 
-                <div className="white-bg">
+                <div className="white-bg white-bg-shadow">
                 <div className="max-width">
                 <Row>
                     <Col span="24">
@@ -304,7 +312,7 @@ const Home = () => {
                                         : <div className={styles.box}>
                                             <Input size="large" className={styles.address} placeholder={'your Trx Wallet Address'} value={address} onChange={(e)=>setAddress(e.target.value)}/>
                                             <div className={styles.recaptcha}><Recaptcha onChange={setRecaptcha}/></div>
-                                            <Button type="primary" block className="btn-round btn-big" onClick={submitAddress}>{t('Submit')}</Button>
+                                            <Button loading={isFetching} type="primary" block className="btn-round btn-big" onClick={submitAddress}>{t('Submit')}</Button>
                                         </div>
                                     }
                                 </div>
