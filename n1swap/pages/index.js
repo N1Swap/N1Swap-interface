@@ -411,7 +411,7 @@ const Home = () => {
                                 <div className={styles.right}>
                                     <div className={styles.t1}>{t("While the N1Swap exchange is in development, the N1Swap team's NFT project Pixelschain is now live and you can click the button to play with it.")}</div>
                                     <div className={styles.t2}>
-                                        <Button block className={styles.pixelbutton}><span className="margin-right-12">{t("Visit")}</span> Pixelschain.com</Button>
+                                        <Button target="_blank" href="https://pixelschain.com" block className={styles.pixelbutton}><span className="margin-right-12">{t("Visit")}</span> Pixelschain.com</Button>
                                     </div>
                                 </div>
 
