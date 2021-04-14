@@ -21,6 +21,7 @@ import { BrowserView, MobileView, isMobile} from "react-device-detect";
 import Head from 'next/head'
 
 import { withRouter,useRouter } from 'next/router'
+import {t} from 'helper/translate'
 
 import {setSource} from 'helper/cookie'
 
@@ -30,7 +31,7 @@ class PageWrapper extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            show_mobile_menu : false
+            show_mobile_menu : true
         }
         this.setMenu = ::this.setMenu
         this.handleClick = ::this.handleClick
@@ -139,12 +140,17 @@ class PageWrapper extends React.Component {
                         <MobileView>
                             
                             <div className={classNames("mobile-menu-wrapper",{"open":show_mobile_menu})}>
-                                <div class="box">
-                                    <div class="menu-trigger" onClick={()=>this.setMenu()}></div>
-                                </div>
-                               <div className="mobile-menu">
-
+                                <div className="global-mask"></div>
+                                <div className="mobile-menu">
+                                    <div className="one">
+                                        <div className="t"><a>{t('Home')}</a></div>
+                                    </div>
+                                    <div className="one">
+                                        <div className="t"><a>Pixelschain<span><Image src="/img/common/newwindow.svg" width={16} height={16} /></span></a></div>
+                                        <div className="t2">{t('A pixel NFT project from official N1Swap team')}</div>
+                                    </div>
                                </div>
+                                <div class="menu-trigger" onClick={()=>this.setMenu()}></div>
                             </div>
                         </MobileView>
                         </div>
