@@ -8,6 +8,7 @@ const { Header, Content, Sider } = Layout;
 import { UserOutlined, VideoCameraOutlined,MenuFoldOutlined,MenuUnfoldOutlined } from '@ant-design/icons';
 
 import {LightningBoltIcon,HomeIcon,SwitchHorizontalIcon,ArrowCircleRightIcon} from '@heroicons/react/outline';
+import Link from 'next/link'
 
 import Row from 'components/common/row'
 
@@ -143,7 +144,10 @@ class PageWrapper extends React.Component {
                                 <div className="global-mask"></div>
                                 <div className="mobile-menu">
                                     <div className="one">
-                                        <div className="t"><a>{t('Home')}</a></div>
+                                        <div className="t"><Link href="/"><a>{t('Home')}</a></Link></div>
+                                    </div>
+                                    <div className="one">
+                                        <div className="t"><Link href="/cmm"><a>{t('CMM Token')}</a></Link></div>
                                     </div>
                                     <div className="one">
                                         <div className="t"><a>Pixelschain<span><Image src="/img/common/newwindow.svg" width={16} height={16} /></span></a></div>
