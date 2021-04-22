@@ -67,10 +67,34 @@ const getTrxBalance = async (addr) => {
     }
     
     let balance = await tronWeb.trx.getBalance(addr);
+
+    console.log('trx余额',balance)
     return balance;
 
 }
 
+const getTokenBalance = async (addr,contract_address) => {
+    const {tronWeb} = window;
+
+    if (!getIsTronlinkReady()) {
+        return false;
+    }
+
+    let balance = null;
+    try {
+        let contract = await tronWeb.contract().at(contract_address);
+        let result = await contract.balanceOf(addr).call();
+        balance = parseInt(result._hex, 16)
+        console.log('getTokenBalance:', balance);
+
+    } catch(error) {
+        console.error("trigger smart contract error",error)
+    }
+
+    
+    return balance;
+
+}
 // export const sendTx = (account_name,amount,fun = null) => {
 //     var obj = setInterval(async ()=>{
 //         if (window.tronWeb && window.tronWeb.defaultAddress.base58) {
@@ -226,6 +250,8 @@ const getTx = async(txid) => {
 module.exports = {
     getTx           : getTx,
     getTrxBalance   : getTrxBalance,
+
+    getTokenBalance : getTokenBalance,
 
     HexToBase58     : HexToBase58,
     Base58ToHex     : Base58ToHex,

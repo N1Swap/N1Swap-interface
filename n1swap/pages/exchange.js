@@ -14,8 +14,10 @@ const Home = () => {
             <Head>
                 <title>Exchange</title>
             </Head>
-            <div>
+            <div className="color-bg">
+            <div className="max-width page-all">
                 <TradeBox />
+            </div>
             </div>
     </PageWrapper>
     

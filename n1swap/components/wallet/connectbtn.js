@@ -153,9 +153,12 @@ class WalletConnectBtn extends React.Component {
     render() {
 
         const {is_loading,is_show_modal,modal_type,active_wallet} = this.state;
-        const {tronlink} = this.props;
+        const {tronlink,balance} = this.props;
 
-        let balance = Number(getTrxFromSun(tronlink.get('balance'),true));
+        let trx_balance = 0;
+        if (balance.getIn(['trx','show_balance'])) {
+            trx_balance = Number(balance.getIn(['trx','show_balance']));
+        }
 
         return (    
             <div>
@@ -163,7 +166,7 @@ class WalletConnectBtn extends React.Component {
                     (tronlink.get('is_logined'))
                     ? <div className={styles.block_account_btn}>
                         <div className={styles.tron_info}>
-                            <div className={styles.amount}>{balance.toFixed(2)}</div>
+                            <div className={styles.amount}>{trx_balance.toFixed(2)}</div>
                             <div className={styles.token}>TRX</div>
                         </div>
                         <Button

@@ -25,6 +25,7 @@ class More extends React.Component {
             <Popover placement="bottomRight" title={null} content={content} trigger="click">
 
                 <Button
+                    type="primary"
                     className={styles.more_btn}
                 >
                     <DotsHorizontalIcon className={'icon-24'}/>

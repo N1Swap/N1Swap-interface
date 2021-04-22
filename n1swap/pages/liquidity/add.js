@@ -14,8 +14,10 @@ const Home = () => {
             <Head>
                 <title>Home</title>
             </Head>
-            <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
+            <div className="color-bg">
+            <div className="max-width page-all">
                 <TradeBox />
+            </div>
             </div>
     </PageWrapper>
     

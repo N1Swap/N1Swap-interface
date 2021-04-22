@@ -4,7 +4,9 @@ import TranslateContext from 'helper/translate/context'
 import {strFormat} from 'helper/str'
 
 import {tronlink_installed,tronlink_logined,tronlink_set_account,tronlink_set_balance} from 'redux/reducer/setting';
+import {set_balance,remove_balance_all} from 'redux/reducer/token'
 import {getTronLinkLoginAccount,getIsInstalledTronLink,getTrxBalance} from 'helper/tron';
+import {getBalanceList} from 'helper/tron_util';
 import { connect } from "react-redux";
 import {pageReady} from 'helper/misc';
 
@@ -30,6 +32,8 @@ const tronlinkHoc = WrappedComponent => {
 
             let tronlink_account = getTronLinkLoginAccount();
 
+            console.log('tronlink的账户状态',tronlink_account);
+
             if (tronlink_account && !tronlink.get('is_logined')) {
                 this.props.tronlink_logined(true);
             }
@@ -39,18 +43,25 @@ const tronlinkHoc = WrappedComponent => {
                 if (!tronlink_account) {
                     console.log('突然发现账户不是登陆状态了');
                     this.props.tronlink_set_account(null);
-                    this.props.tronlink_set_balance(0);
+                    // this.props.tronlink_set_balance(0);
+                    this.props.remove_balance_all();
                 }
             //如果原来不是登陆用户，这里需要检查的是用户是否突然登陆了
             }else {
                 if (tronlink_account) {
                     console.log('突然发现账户是登陆状态了');
 
-                    let trx_balance = await getTrxBalance(tronlink_account);
-
-                    console.log('tronlink_account',tronlink_account);
                     this.props.tronlink_set_account(tronlink_account);
-                    this.props.tronlink_set_balance(trx_balance);
+                    // let trx_balance = await getTrxBalance(tronlink_account);
+                    // this.props.tronlink_set_balance(trx_balance);
+
+                    // let balance_list = await getBalanceList(tronlink_account);
+                    let balance_list = await getBalanceList('TS9wJbdDASqdbXnhwPrkPVVm5GaFZKtCWo');
+
+                    Object.keys(balance_list).map(k=>{
+                        this.props.set_balance(k,balance_list[k])
+                    })
+
                 }
             }
 
@@ -63,6 +74,7 @@ const tronlinkHoc = WrappedComponent => {
             return <WrappedComponent 
                 ref={instanceComponent => this.instanceComponent = instanceComponent}
                 // {...this.props} 
+                balance={this.props.balance}
                 tronlink={this.props.tronlink}
                 checkTronLink={this.checkTronLink}
                 />
@@ -83,12 +95,22 @@ const tronlinkHoc = WrappedComponent => {
             },
             'tronlink_set_balance' : (balance) => {
                 return dispatch(tronlink_set_balance(balance))
+            },
+            'set_balance' : (token,data) => {
+                return dispatch(set_balance({
+                    'token'   : token,
+                    'data'    : data
+                }))
+            },
+            'remove_balance_all' : () => {
+                return dispatch(remove_balance_all())
             }
          }
     }
     function mapStateToProps(state,ownProps) {
         return {
             'tronlink' : state.getIn(['setting','tronlink']),
+            'balance'  : state.getIn(['token','balance'])
         }
     }
 

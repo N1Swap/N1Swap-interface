@@ -16,8 +16,8 @@ const Home = () => {
             </Head>
 
 
-
-            <div>
+            <div className="color-bg">
+            <div className="max-width page-all">
 
                 <div className="color-box margin-bottom-20">
                     <div className="head">
@@ -39,6 +39,7 @@ const Home = () => {
 
 
                 <TradeBox />
+            </div>
             </div>
     </PageWrapper>
     

@@ -1,5 +1,6 @@
 import React from 'react';
 import {Modal,Input,Button,Divider} from 'antd';
+import { connect } from "react-redux";
 
 import classNames from 'classnames';
 
@@ -15,13 +16,63 @@ class TokenSelect extends React.Component {
         super(props)
         this.state = {
             'is_open_token_modal'   : false,
-            'kw'             : ''
+            'kw'             : '',
+            'token_list' : [
+                {
+                    'name'             : 'trx',
+                    'contract_address' : 'trx',
+                    'icon'             : 'trx.svg',
+                    'type'             : 'trc10',
+                },
+                {
+                    'name'             : 'btt',
+                    'contract_address' : 'TF5Bn4cJCT6GVeUgyCN4rBhDg42KBrpAjg'.toLowerCase(),
+                    'icon'             : 'btt.svg',
+                    'type'             : 'trc10',
+                },
+                {
+                    'name'             : 'usdt',
+                    'contract_address' : 'TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t'.toLowerCase(),
+                    'sub'              : 'the usdt of trx',
+                    'icon'             : 'usdt.svg',
+                    'type'             : 'trc20',
+                },
+                {
+                    'name'             : 'n1s',
+                    'contract_address' : 'TQS3q4S7TnXrHhby5tGLXYX76eMps3QBuy'.toLowerCase(),
+                    'sub'              : 'n1swap',
+                    'icon'             : 'n1s.svg',
+                    'type'             : 'trc20',
+                }
+            ],
         }
         this.toggleOpenTokenList = this.toggleOpenTokenList.bind(this)
         this.handleValueChange = this.handleValueChange.bind(this)
         this.selectToken = this.selectToken.bind(this)
+        this.setDefaultToken = ::this.setDefaultToken
     }
 
+    componentDidMount() {
+        this.setDefaultToken(this.props.default_token_name)
+    }
+
+    componentDidUpdate(prevProps,prevState) {
+        console.log('componentDidUpdate',prevProps,prevState)
+        if (prevProps.default_token_name != this.props.default_token_name) {
+            this.setDefaultToken(this.props.default_token_name);
+        }
+    }
+
+    setDefaultToken(name) {
+        if (!name) {
+            return;
+        }
+
+        let default_token = this.getSelect(this.state.token_list,name);
+        if (default_token) {
+            this.props.onChange(default_token);
+        }
+    }
 
     toggleOpenTokenList() {
         this.setState({
@@ -48,16 +99,23 @@ class TokenSelect extends React.Component {
         return result;
     }
 
-    selectToken(name) {
+    selectToken(token) {
 
         const {disable_token} = this.props;
 
-        if (disable_token == name) {
+        console.log('selectToken',token,disable_token)
+
+        if (disable_token && disable_token.name == token.name) {
             return false;
         }
 
-        this.props.onChange(name)
-        this.toggleOpenTokenList();
+
+        if (typeof this.props.onChange == 'function') {
+            console.log('this.props.onChange ',this.props.onChange )
+            this.props.onChange(token);
+            this.toggleOpenTokenList();
+        }
+
     }
 
     getSelect(token_list,token) {
@@ -76,44 +134,29 @@ class TokenSelect extends React.Component {
 
     render() {
 
+        const {is_open_token_modal,kw,token_list} = this.state;
+        const {token,disable_token,balance} = this.props;
 
-        const {is_open_token_modal,kw} = this.state;
-        const {token,disable_token} = this.props;
-
-        let token_list = [
-            {
-                'name'             : 'trx',
-                'contract_address' : '0x113232323',
-                'icon'             : 'trx.svg'
-            },
-            {
-                'name'             : 'btt',
-                'contract_address' : '0x113232323',
-                'icon'             : 'btt.svg'
-            },
-            {
-                'name'             : 'usdt',
-                'contract_address' : '0x113232323',
-                'sub'              : 'the usdt of trx',
-                'icon'             : 'usdt.svg'
-            },
-            {
-                'name'             : 'n1s',
-                'contract_address' : 'TQS3q4S7TnXrHhby5tGLXYX76eMps3QBuy',
-                'sub'              : 'n1swap',
-                'icon'             : 'n1s.svg'
-            }
-        ]
+        // console.log('传入的disable_token',disable_token)
 
         if (kw) {
             token_list = this.getList(token_list,kw);
         }
 
-        let select_token = null;
-        if (token) {
-            select_token = this.getSelect(token_list,token);
+        let select_token = null
+        if (typeof token == 'string') {
+            select_token = this.getSelect(token_list,token)
+        }else if (typeof token == 'object'){
+            select_token = token
         }
 
+        let disable_token_name = null
+        if (typeof disable_token == 'string') {
+            let disable_token_obj = this.getSelect(token_list,disable_token)
+            disable_token_name = (disable_token_obj) ? disable_token_obj.name : '';
+        }else if (typeof disable_token == 'object' && disable_token) {
+            disable_token_name = disable_token.name
+        } 
 
         return (
             <React.Fragment>
@@ -122,7 +165,7 @@ class TokenSelect extends React.Component {
                     onClick={this.toggleOpenTokenList} 
                     >
                     {
-                        (select_token)
+                        (select_token != null)
                         ? <span className={styles.token_name}>
                             <span className={styles.token_icon}>
                             <Image
@@ -156,12 +199,13 @@ class TokenSelect extends React.Component {
                             {
                                 token_list.map(token=>{
                                     let is_disable = false;
-                                    if (token.name == disable_token) {
+                                    if (token.name == disable_token_name) {
                                         is_disable = true;
                                     }
-                                    return <div className={'block-token-one'}><a 
+                                    let contract_address_lower = token.contract_address;
+                                    return <div className={'block-token-one'} key={token.name}><a 
                                         className={classNames("link-all",{"disable":is_disable})} 
-                                        onClick={this.selectToken.bind({},token.name)}>
+                                        onClick={this.selectToken.bind({},token)}>
                                         <div className="icon">
                                             <Image
                                                 src={"/img/token/"+token.icon}
@@ -173,6 +217,13 @@ class TokenSelect extends React.Component {
                                         <div className={'name'}>
                                             <div className="main">{token.name}</div>
                                             <div className="sub">{token.sub ? token.sub : token.main}</div>
+                                        </div>
+                                        <div className="balance">
+                                            {
+                                                (balance.get(contract_address_lower))
+                                                ? balance.getIn([contract_address_lower,'show_balance'])
+                                                : 0
+                                            }
                                         </div>
                                     </a></div>
                                 })
@@ -186,4 +237,15 @@ class TokenSelect extends React.Component {
     }
 }
 
-module.exports = TokenSelect
+
+const mapDispatchToProps = (dispatch) => {
+     return {
+     }
+}
+function mapStateToProps(state,ownProps) {
+    return {
+        'balance' : state.getIn(['token','balance']),
+    }
+}
+
+module.exports = connect(mapStateToProps,mapDispatchToProps)(TokenSelect)

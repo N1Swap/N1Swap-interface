@@ -1,3 +1,5 @@
+@import "./variables.less";
+
 .box_wrapper {
     position: relative;
     max-width: 420px;
@@ -90,6 +92,15 @@
     background-color: rgb(255, 255, 255);
     background: #fafafa;
     border:1px solid #F0F0F0;
+    .box_title {
+        display: flex;
+        justify-content: space-between;
+    }
+    .balance {
+        padding: 0.75rem 1rem 0px;
+        font-size: 14px;
+        color: #595D68;
+    }
 }
 
 .box_footer {
@@ -164,5 +175,29 @@
     color: #aaa;
     border-radius:12px;
     color: #999;
+    }
+}
+
+.liquidity_pool_info {
+    border: 1px solid #F0F0F0;
+    border-radius: 12px;
+    padding:10px 15px;
+    margin-top:30px;
+    h2 {
+        font-size: 16px;
+        color: @black-color;
+    }
+    dl {
+        display: flex;
+        justify-content: space-between;
+        margin:5px 0;
+        font-size:14px;
+        dt {
+            font-weight: normal;
+            margin-bottom: 0;
+        }
+        dd {
+            margin-bottom: 0;
+        }
     }
 }

@@ -54,9 +54,9 @@ class LanguageBtn extends React.Component {
 
     transferLanguageToCountry(lang) {
 
-        console.log('transferLanguageToCountry',lang,this.countryMap.hasOwnProperty(lang),this.countryMap[lang])
+        // console.log('transferLanguageToCountry',lang,this.countryMap.hasOwnProperty(lang),this.countryMap[lang])
         if (this.countryMap.hasOwnProperty(lang)) {
-            console.log('transferLanguageToCountry0',this.langMap[lang])
+            // console.log('transferLanguageToCountry0',this.langMap[lang])
             return this.countryMap[lang];
         }
         return lang;
@@ -99,7 +99,7 @@ class LanguageBtn extends React.Component {
     }
 
     getFlag(country) {
-        console.log('传入的国家是',country);
+        // console.log('传入的国家是',country);
         let flag = null;
 
         if (!country) {
@@ -108,7 +108,7 @@ class LanguageBtn extends React.Component {
 
         let country_lower = country.toLowerCase();
         flag = <Image src={'/img/flag/country-4x3/'+country_lower+'.svg'} width={24} height={18}/>
-        console.log('得到的flag是',flag);
+        // console.log('得到的flag是',flag);
         return flag;
     }
 
@@ -121,7 +121,7 @@ class LanguageBtn extends React.Component {
 
         const country = this.transferLanguageToCountry(language);
 
-        console.log('debug-language-coutnry',language,country)
+        // console.log('debug-language-coutnry',language,country)
 
         const default_langs = ['en','zh','ja','id','it','ru','de','fr','ko'];
         let content = <div className={classNames("dropdown-menu",styles.language_list)}>

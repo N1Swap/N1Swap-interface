@@ -3,8 +3,10 @@ import Image from 'next/image'
 import styles from '../styles/components/pagewrapper.module.less'
 
 import { Layout, Menu, Breadcrumb, Button,Divider, Col } from 'antd';
-const { Header, Content, Footer, Sider } = Layout;
+const { Header, Content, Sider } = Layout;
 import { UserOutlined, VideoCameraOutlined,MenuFoldOutlined,MenuUnfoldOutlined } from '@ant-design/icons';
+
+import NavLink from 'components/common/navlink'
 
 import {LightningBoltIcon,HomeIcon,SwitchHorizontalIcon} from '@heroicons/react/outline';
 
@@ -15,11 +17,14 @@ import N1SBtn from 'components/header/n1s'
 import LanguageBtn from 'components/language/btn'
 import MoreBtn from 'components/header/more'
 
+import Footer from 'components/common/footer'
+
 import Head from 'next/head'
 
 import { withRouter,useRouter } from 'next/router'
 
 import {setSource} from 'helper/cookie'
+import {t} from 'helper/translate'
 
 class PageWrapper extends React.Component {
 
@@ -37,6 +42,7 @@ class PageWrapper extends React.Component {
     componentDidMount() {
         this.handleReffer();
     }
+
 
     setCollapsed(collapsed) {
         this.setState({
@@ -63,8 +69,6 @@ class PageWrapper extends React.Component {
     }
 
     getSelectKey(pathname) {
-
-
         switch(pathname) {
             case '/liquidity':
             case '/liquidity/add':
@@ -98,11 +102,9 @@ class PageWrapper extends React.Component {
                 </Head>
 
 
-
-
                 <div className="fullpage-container">
 
-                <div className="top-bg">
+                <div className="top-bg headnav nav-shadow-light">
                 <div className="max-width">
                     <Row>
                         <Col sm={24} lg={12}>
@@ -126,11 +128,11 @@ class PageWrapper extends React.Component {
                                     </span>
                                 </div>
                                 <div className="top-nav">
-                                    <a className="active">Swap</a>
-                                    <a>Lending</a>
-                                    <a>NFT</a>
-                                    <a>Farms</a>
-                                    <a>Pixelschain</a>
+                                    <a className="active">{t('Swap')}</a>
+                                    <a>{t('Lending')}</a>
+                                    <a>{'NFT'}</a>
+                                    <a>{t('Farms')}</a>
+                                    <a>{'Pixelschain'}</a>
                                 </div>
 
                             </div>
@@ -147,19 +149,16 @@ class PageWrapper extends React.Component {
                 </div>
                 </div>
 
-                <div className="top-bg nav">
+                <div className="top-bg nav  nav-shadow">
                 <div className="max-width">
                     <Row>
                         <Col span={24}>
-                            <div className="flex-between">
-                                <div className="nav-menu">
-                                <div className="one"><a href="/liquidity">Liquidity</a></div>
-                                <div className="one"><a href="/exchange">Exchange</a></div>
-                                <div className="one"><a>Analytics</a></div>
-                                <div className="one"><a>Mine</a></div>
-                                <div className="one"><a>Introduce</a></div>
-                                </div>
-                                <LanguageBtn />
+                            <div className="nav-menu">
+                                <div className="one"><NavLink href="/">{t('Home')}</NavLink></div>
+                                <div className="one"><NavLink href="/exchange" matchstart>{t('Swap')}</NavLink></div>
+                                <div className="one"><NavLink href="/liquidity" matchstart>{t('Liquidity')}</NavLink></div>
+                                <div className="one"><NavLink href="/status" matchstart>{t('Status')}</NavLink></div>
+                                <div className="one"><NavLink href="/protfolio" matchstart>{t('portfolio')}</NavLink></div>
                             </div>
                         </Col>
                     </Row>
@@ -174,27 +173,7 @@ class PageWrapper extends React.Component {
                     </Content>
                 </Layout>
 
-                <Footer>
-                    <div className="max-width">
-                        <Row>
-                            <Col span={24}>
-                                <div className="flex-between footer">
-                                    <div className="left">
-                                        <Image
-                                            src="/img/logo/word.svg"
-                                            alt="N1Swap"
-                                            width={54}
-                                            height={16}
-                                            className="logo"
-                                          />
-                                        
-                                    </div>
-                                    <LanguageBtn />
-                                </div>
-                            </Col>
-                        </Row>
-                    </div>
-                </Footer>
+                <Footer />
             </div>
             </div>
         );

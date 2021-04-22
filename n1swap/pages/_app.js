@@ -3,6 +3,7 @@ import App, {Container} from "next/app";
 import {Suspense} from 'react';
 
 import TranslateProvider from 'helper/translate/provider'
+import PageAll from 'components/pageall'
 
 import Immutable from 'immutable';
 import PageWrapper from '../components/pagewrapper'
@@ -24,18 +25,22 @@ class MyApp extends App {
     };
 
     render() {
+
+
         const {Component, pageProps} = this.props;
 
         const isServer = (typeof window === 'undefined');
 
-        console.log('isServer',isServer);
+        console.log('debug:this.props',this.props,wrapper);
 
         if (isServer) {
-            return  <TranslateProvider><Component {...pageProps} /></TranslateProvider>
+            return  <TranslateProvider><PageAll><Component {...pageProps} /></PageAll></TranslateProvider>
         }else {
             return <Suspense fallback={<h1>Loading translate data...</h1>}>
                 <TranslateProvider>
+                    <PageAll>
                     <Component {...pageProps} />
+                    </PageAll>
                 </TranslateProvider>
             </Suspense>
             // return <TranslateProvider><Component {...pageProps} /></TranslateProvider>

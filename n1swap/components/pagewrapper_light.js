@@ -104,7 +104,7 @@ class PageWrapper extends React.Component {
 
                 <div className="fullpage-container">
 
-                <div className="top-bg headnav">
+                <div className="top-bg headnav nav-shadow">
                 <div className="max-width">
                     <div className="headnav-inner">
                         <div className="top-header-left">

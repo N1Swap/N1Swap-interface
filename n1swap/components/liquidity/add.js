@@ -3,14 +3,19 @@ import React,{useRef} from 'react';
 import { connect } from "react-redux";
 import SwapInput from 'components/swap/input';
 import SwapSetting from 'components/swap/setting';
+import CheckModal from 'components/liquidity/modal/check'
+import SuccessModal from 'components/liquidity/modal/success'
+import ConfirmModal from 'components/liquidity/modal/confirm'
+import Loading from 'components/common/loading'
+
 import { withRouter } from 'next/router'
 
-import {Button,Divider,Tooltip} from 'antd';
+import {Button} from 'antd';
 
 import styles from 'styles/swap_trade.module.less'
 
 import {PlusIcon,ArrowLeftIcon} from '@heroicons/react/solid';
-
+import {t} from 'helper/translate'
 
 class LiquidityAdd extends React.Component {
 
@@ -18,8 +23,13 @@ class LiquidityAdd extends React.Component {
         super(props)
         this.state = {
             is_loading  : false,
-            from_token_disable : null,
-            to_token_disable   : null
+            token1      : null,
+            token2      : null,
+
+            token1_pool     : null,
+            token2_pool     : null,
+            is_fetched_pool : false,
+            is_fetching_pool: false
         }
 
         this.fromRef = React.createRef();
@@ -27,15 +37,29 @@ class LiquidityAdd extends React.Component {
 
         this.handleTokenChange = this.handleTokenChange.bind(this)
         this.handleAmountChange = this.handleAmountChange.bind(this)
-        this.handleTokenDisable = this.handleTokenDisable.bind(this)
+        this.getBalance = ::this.getBalance
+        this.afterTokenChange = ::this.afterTokenChange
+        this.getTokenSwap = ::this.getTokenSwap
 
     }   
-    
-    handleTokenChange(key_name,token_name) {
-        let new_state = {};
-        new_state[key_name] = token_name
-        this.setState(new_state);
-    }
+
+    getTokenSwap() {
+
+        this.setState({
+            'is_fetching_pool' : true
+        })
+
+        var that = this;
+        setTimeout(()=>{
+            that.setState({
+                'token1_pool'       : 400,
+                'token2_pool'       : 20,
+                'is_fetched_pool'   : true,
+                'is_fetching_pool'  : false
+            })
+        },2000)
+        
+    }    
 
     handleAmountChange(key_name,e) {
         let new_state = {};
@@ -44,27 +68,52 @@ class LiquidityAdd extends React.Component {
     }
 
 
-    handleTokenDisable(name,token) {
-        if (name == 'from') {
-            this.setState({
-                'from_token_disable' : token
-            })
-        }else if (name == 'to') {
-            this.setState({
-                'to_token_disable' : token
-            })
+    handleTokenChange(name,token) {
+        console.log('调用了handleTokenChange')
+
+        let state = {}
+        state[name] = token;
+
+        this.setState(state,this.afterTokenChange);
+    }
+
+    afterTokenChange() {
+        console.log('afterTokenChange');
+        if (this.state.token1 && this.state.token2) {
+            this.getTokenSwap();
         }
+    }
+
+    getBalance(token) {
+
+        // console.log('debug,getBalanceList,input',token,this.props.balance)
+        if (!token) {
+            return 0
+        }
+
+        // console.log('debug,getBalanceList,token1',this.props.balance.get(token.contract_address))
+        let b = this.props.balance.get(token.contract_address);
+        if (!b) {
+            return 0
+        }
+        // console.log('debug,getBalanceList,token_balance',b.toJS())
+
+
+        return b.get('show_balance')
     }
 
     render() {
 
         const {is_loading,
             from_token_name,from_token_amount,
-            to_token_amount,to_token_name} = this.state;
+            to_token_amount,to_token_name,token1,token2,is_fetching_pool,is_fetched_pool} = this.state;
         const {tronlink} = this.props;
 
-        console.log('debug,tronlink',tronlink.toJS());
-        // console.log('debug-t',t);
+        console.log('debug,is_fetching_pool',is_fetching_pool);
+        console.log('debug,is_fetched_pool',is_fetched_pool);
+
+        let token1_balance = this.getBalance(token1);
+        let token2_balance = this.getBalance(token2);
 
         return (
             <div className={styles.box_wrapper}>
@@ -74,7 +123,7 @@ class LiquidityAdd extends React.Component {
                         <a onClick={()=>this.props.router.push('/liquidity')}><ArrowLeftIcon className="icon-16" /></a>
                     </div>
                     <div className={styles.title}>
-                        Add Liquidity
+                        {t('Add Liquidity')}
                     </div>
                     <div className={styles.tool}>
                         <SwapSetting />
@@ -84,13 +133,21 @@ class LiquidityAdd extends React.Component {
                 <div className={styles.box_content_top}>
                     <div className={styles.box_form}>
                         <div className={styles.box_from_input}>
-                            <h3>From</h3>
+                            <div className={styles.box_title}>
+                                <h3>{t('input')}</h3>
+                                <div className={styles.balance}>
+                                    {t('balance')}
+                                    : 
+                                    <span className={styles.amount}>{token1_balance?token1_balance:'-'}</span>
+                                </div>
+                            </div>
                             <div className={styles.currency_input}>
                                 <SwapInput 
                                     ref={this.fromRef}
-                                    default_token={'TRX'} 
-                                    disable_token={this.state.from_token_disable}
-                                    setDisableToken={this.handleTokenDisable.bind({},'to')}
+                                    max={token1_balance}
+                                    default_token_name='trx'
+                                    disable_token={token2}
+                                    setToken={this.handleTokenChange.bind({},'token1')}
                                     />
                             </div>
                         </div>
@@ -100,21 +157,61 @@ class LiquidityAdd extends React.Component {
                             </div>
                         </div>
                         <div className={styles.box_from_input}>
-                            <h3>To</h3>
+                            <div className={styles.box_title}>
+                                <h3>{t('input')}</h3>
+                                <div className={styles.balance}>
+                                    {t('balance')}
+                                    : 
+                                    <span className={styles.amount}>{token2_balance?token2_balance:'-'}</span>
+                                </div>
+                            </div>
                             <div className={styles.currency_input}>
                                 <SwapInput 
                                     ref={this.toRef}
-                                    disable_token={this.state.to_token_disable}
-                                    setDisableToken={this.handleTokenDisable.bind({},'from')}
+                                    max={token2_balance}
+                                    disable_token={token1}
+                                    setToken={this.handleTokenChange.bind({},'token2')}
                                     />
                             </div>
                         </div>
+                        {
+                            (is_fetching_pool)
+                            ? <div className={styles.liquidity_pool_info}>
+                                <Loading theme="gray"/>
+                            </div>
+                            : null
+                        }
+
+                        {
+                            (token1 && token2 && is_fetched_pool)
+                            ? <div className={styles.liquidity_pool_info}>
+                                <h2>Price and pool share</h2>
+                                <dl>
+                                    <dd>1817.22</dd>
+                                    <dt><span className="upper">{token1.name}</span> {t('per')} <span className="upper">{token2.name}</span></dt>
+                                </dl>
+                                <dl>
+                                    <dd>0.00044441</dd>
+                                    <dt><span className="upper">{token2.name}</span> {t('per')} <span className="upper">{token1.name}</span></dt>
+                                </dl>
+                                <dl>
+                                    <dd>{"<"}0.01%</dd>
+                                    <dt>{t('share of pool')}</dt>
+                                </dl>
+                            </div>
+                            : null
+                        }
                     </div>
                     <div className={styles.box_footer}>
-                        <Button block size="large" className="big-radius-btn" type="primary" onClick={this.test}>{'add'}</Button>
+                        <Button block size="large" className="big-radius-btn" type="primary" onClick={this.test}>{t('submit')}</Button>
                     </div>
                 </div>
 
+                <CheckModal visible={false} />
+
+                <SuccessModal visible={false} />
+
+                <ConfirmModal visible={false} />
             </div>
         );
     }
@@ -127,6 +224,7 @@ const mapDispatchToProps = (dispatch) => {
 function mapStateToProps(state,ownProps) {
     return {
         'tronlink' : state.getIn(['setting','tronlink']),
+        'balance'  : state.getIn(['token','balance'])
     }
 }
 
