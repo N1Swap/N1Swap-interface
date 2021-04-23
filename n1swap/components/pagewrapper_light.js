@@ -111,12 +111,12 @@ class PageWrapper extends React.Component {
                         <div className="top-header-left">
                             <div className='block-logo'>
                                 <Image
-                                        src="/img/logo/logo_square.png"
-                                        alt="N1Swap Logo"
-                                        width={28}
-                                        height={28}
-                                        className="logo"
-                                      />
+                                    src="/img/logo/logo_square.png"
+                                    alt="N1Swap Logo"
+                                    width={28}
+                                    height={28}
+                                    className="logo"
+                                  />
                                 <span className='word'>
                                 <Image
                                     src="/img/logo/word.svg"

@@ -73,6 +73,8 @@ const getTrxBalance = async (addr) => {
 
 }
 
+const address0 = 'T9yD14Nj9j7xAB4dbGeiX9h8unkKHxuWwb';
+
 const getTokenBalance = async (addr,contract_address) => {
     const {tronWeb} = window;
 
@@ -261,6 +263,8 @@ module.exports = {
     getTronLinkLoginAccount : getTronLinkLoginAccount,
     // getIsLoginTronLink : getIsLoginTronLink,
     getTronWeb         : getTronWeb,
+
+    address0           : address0
 
 
 }

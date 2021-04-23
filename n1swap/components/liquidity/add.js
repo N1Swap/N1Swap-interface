@@ -10,12 +10,15 @@ import Loading from 'components/common/loading'
 
 import { withRouter } from 'next/router'
 
-import {Button} from 'antd';
+import {Button,Alert} from 'antd';
 
 import styles from 'styles/swap_trade.module.less'
 
 import {PlusIcon,ArrowLeftIcon} from '@heroicons/react/solid';
 import {t} from 'helper/translate'
+
+import {percentDecimal} from 'helper/number'
+import {getLiquidity} from 'helper/contract'
 
 class LiquidityAdd extends React.Component {
 
@@ -23,8 +26,12 @@ class LiquidityAdd extends React.Component {
         super(props)
         this.state = {
             is_loading  : false,
+
             token1      : null,
             token2      : null,
+
+            token1_amount : 0,
+            token2_amount : 0,
 
             token1_pool     : null,
             token2_pool     : null,
@@ -41,29 +48,53 @@ class LiquidityAdd extends React.Component {
         this.afterTokenChange = ::this.afterTokenChange
         this.getTokenSwap = ::this.getTokenSwap
 
+        this.handleAmountChange = ::this.handleAmountChange
+
     }   
 
-    getTokenSwap() {
+    async getTokenSwap() {
 
         this.setState({
             'is_fetching_pool' : true
         })
+        const {token1,token2} = this.state;
 
-        var that = this;
-        setTimeout(()=>{
-            that.setState({
-                'token1_pool'       : 400,
-                'token2_pool'       : 20,
-                'is_fetched_pool'   : true,
-                'is_fetching_pool'  : false
-            })
-        },2000)
+        if (token1.contract_address == '') {
+            token1.contract_address = ''
+        }
+
+        let token_pool = await getLiquidity(token1.contract_address,token2.contract_address);
+
+        this.setState({
+            'token1_pool'       : token_pool.token1Amount,
+            'token2_pool'       : token_pool.token2Amount,
+            'is_fetched_pool'   : true,
+            'is_fetching_pool'  : false
+        })
         
     }    
 
-    handleAmountChange(key_name,e) {
+    handleAmountChange(key_name,value) {
+
+        // console.log('debug,handleAmountChange',key_name,value)
+
         let new_state = {};
-        new_state[key_name] = e.target.value
+        new_state[key_name] = value
+
+        if (this.state.token1_pool && this.state.token2_pool && this.state.is_fetched_pool) {
+
+            switch(key_name) {
+                case 'token1_amount':
+                    new_state['token2_amount'] = value * this.state.token2_pool / this.state.token1_pool
+                    break;
+                case 'token2_amount':
+                    new_state['token1_amount'] = value * this.state.token1_pool / this.state.token2_pool
+                    break;
+
+            }
+
+        }
+
         this.setState(new_state);
     }
 
@@ -86,31 +117,45 @@ class LiquidityAdd extends React.Component {
 
     getBalance(token) {
 
-        // console.log('debug,getBalanceList,input',token,this.props.balance)
         if (!token) {
             return 0
         }
 
-        // console.log('debug,getBalanceList,token1',this.props.balance.get(token.contract_address))
         let b = this.props.balance.get(token.contract_address);
         if (!b) {
             return 0
         }
-        // console.log('debug,getBalanceList,token_balance',b.toJS())
-
 
         return b.get('show_balance')
+    }
+
+    getPoolPercent(token_amount,total_amount) {
+        token_amount = Number(token_amount);
+        total_amount = Number(total_amount);
+        console.log('计算我占据的算力，原始输入',token_amount,total_amount)
+        if (token_amount) {
+            let p = token_amount / (total_amount + token_amount)
+            console.log('计算我占据的算力大约是',p)
+            if (p < 0.0001) {
+                return  "<" + percentDecimal(token_amount / (total_amount + token_amount)) + '%'
+            }else {
+                return "≈" + percentDecimal(token_amount / (total_amount + token_amount)) + '%'
+            }
+        }else {
+            return '-';
+        }
     }
 
     render() {
 
         const {is_loading,
-            from_token_name,from_token_amount,
-            to_token_amount,to_token_name,token1,token2,is_fetching_pool,is_fetched_pool} = this.state;
+            token1_amount,token2_amount,
+            token1_pool,token2_pool,
+            token1,token2,
+            is_fetching_pool,is_fetched_pool} = this.state;
         const {tronlink} = this.props;
 
-        console.log('debug,is_fetching_pool',is_fetching_pool);
-        console.log('debug,is_fetched_pool',is_fetched_pool);
+        console.log('debug,token1_amount',token1_amount);
 
         let token1_balance = this.getBalance(token1);
         let token2_balance = this.getBalance(token2);
@@ -145,8 +190,11 @@ class LiquidityAdd extends React.Component {
                                 <SwapInput 
                                     ref={this.fromRef}
                                     max={token1_balance}
+                                    amount={token1_amount}
+                                    token={token1}
                                     default_token_name='trx'
                                     disable_token={token2}
+                                    setAmount={this.handleAmountChange.bind({},'token1_amount')}
                                     setToken={this.handleTokenChange.bind({},'token1')}
                                     />
                             </div>
@@ -169,7 +217,10 @@ class LiquidityAdd extends React.Component {
                                 <SwapInput 
                                     ref={this.toRef}
                                     max={token2_balance}
+                                    token={token2}
+                                    amount={token2_amount}
                                     disable_token={token1}
+                                    setAmount={this.handleAmountChange.bind({},'token2_amount')}
                                     setToken={this.handleTokenChange.bind({},'token2')}
                                     />
                             </div>
@@ -183,24 +234,39 @@ class LiquidityAdd extends React.Component {
                         }
 
                         {
-                            (token1 && token2 && is_fetched_pool)
+                            (token1 && token2 && is_fetched_pool && !is_fetching_pool)
                             ? <div className={styles.liquidity_pool_info}>
                                 <h2>Price and pool share</h2>
+                                {
+                                    (token1_pool && token2_pool)
+                                    ? <React.Fragment>
+                                        <dl>
+                                            <dd>{token1_pool/token2_pool}</dd>
+                                            <dt><span className="upper">{token1.name}</span> {t('per')} <span className="upper">{token2.name}</span></dt>
+                                        </dl>
+                                        <dl>
+                                            <dd>{token2_pool/token1_pool}</dd>
+                                            <dt><span className="upper">{token2.name}</span> {t('per')} <span className="upper">{token1.name}</span></dt>
+                                        </dl>
+                                    </React.Fragment>
+                                    : null
+                                }
                                 <dl>
-                                    <dd>1817.22</dd>
-                                    <dt><span className="upper">{token1.name}</span> {t('per')} <span className="upper">{token2.name}</span></dt>
-                                </dl>
-                                <dl>
-                                    <dd>0.00044441</dd>
-                                    <dt><span className="upper">{token2.name}</span> {t('per')} <span className="upper">{token1.name}</span></dt>
-                                </dl>
-                                <dl>
-                                    <dd>{"<"}0.01%</dd>
+                                    <dd>{this.getPoolPercent(token1_amount,token1_pool)}</dd>
                                     <dt>{t('share of pool')}</dt>
                                 </dl>
                             </div>
                             : null
                         }
+                        {
+                            (token1 && token2 && is_fetched_pool && !token1_pool && !token2_pool)
+                            ? <div className={styles.notice}>
+                                <h3>You are the first liquidity provider.</h3>
+                                <p>The ratio of tokens you add will set the price of this pool. Once you are happy with the rate click supply to review.</p>
+                            </div>
+                            : null
+                        }
+                        
                     </div>
                     <div className={styles.box_footer}>
                         <Button block size="large" className="big-radius-btn" type="primary" onClick={this.test}>{t('submit')}</Button>
