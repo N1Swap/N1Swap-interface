@@ -22,6 +22,7 @@ class CheckModal extends React.Component {
 
     render() {
 
+        const {token1,token2} = this.props;
 
         return (
             <Modal
@@ -30,8 +31,7 @@ class CheckModal extends React.Component {
                 title={null}
                 visible={this.props.visible} 
                 footer={null}
-                onClose={this.handleClose}
-                onOk={this.handleOk} 
+                onCancel={this.props.onCancel}
                 >
 
                 <div className="block-success">
@@ -44,20 +44,20 @@ class CheckModal extends React.Component {
                         </svg>
                     </div>
 
-                    <h1>{t('You liquidity has been Added')}</h1>
+                    <h1>{t('You liquidity has been added')}</h1>
 
                     <Divider />
 
                     <div className="info">
-                        <span className="tk1">1282.22</span> 
-                        <span className="token">TRX</span> 
+                        <span className="tk1">{token1.amount}</span> 
+                        <span className="token upper">{token1.token.name}</span> 
                         <span className="add"><PlusIcon className="icon-24"/></span>
-                        <span className="tk1">182.22</span> 
-                        <span className="token">USDT</span> 
+                        <span className="tk1">{token2.amount}</span> 
+                        <span className="token upper">{token2.token.name}</span> 
                     </div>
 
                     <div className="ft">
-                        <Button block size="large" className="big-radius-btn" type="primary" onClick={this.test}>{t('close')}</Button>
+                        <Button block size="large" className="big-radius-btn" type="primary" onClick={()=>{this.props.onCancel(true)}}>{t('close')}</Button>
                     </div>
 
                     <div className="info-end">

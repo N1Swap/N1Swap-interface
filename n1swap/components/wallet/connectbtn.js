@@ -160,6 +160,7 @@ class WalletConnectBtn extends React.Component {
             trx_balance = Number(balance.getIn(['trx','show_balance']));
         }
 
+
         return (    
             <div>
                 {
@@ -181,7 +182,7 @@ class WalletConnectBtn extends React.Component {
                         </Button>
                     </div>
                     : <div className={styles.block_account_btn_empty}>
-                        <Button className={styles.wallet_btn} type="primary" onClick={this.toggleShowModal}>Connect Wallet</Button>
+                        <Button className={styles.wallet_btn} type="primary" block={this.props.block} size={(this.props.size)?this.props.size:'normal'} onClick={this.toggleShowModal}>Connect Wallet</Button>
                     </div>
                 }
 

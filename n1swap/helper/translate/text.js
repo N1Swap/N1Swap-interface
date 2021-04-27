@@ -22,7 +22,7 @@ export default class Text extends Component {
 
         return <TranslateContext.Consumer>{
             provider_value => {
-                // console.log('text-value',provider_value)
+                {/*console.log('text-value',provider_value)*/}
 
                 ///获得翻译文本
                 var translated = provider_value['localeMessage'][text]

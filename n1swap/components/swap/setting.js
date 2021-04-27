@@ -24,6 +24,7 @@ class SwapInput extends React.Component {
         this.toggleOpenModal = this.toggleOpenModal.bind(this)
         this.handleEventValueChange = this.handleEventValueChange.bind(this)
         this.setTolerance = this.setTolerance.bind(this)
+        this.getTolerance = ::this.getTolerance
     }
 
     getValue() {
@@ -46,6 +47,9 @@ class SwapInput extends React.Component {
         })
     }
 
+    getTolerance() {
+        return this.state.tolerance / 100;
+    }
 
     handleEventValueChange(key_name,event){
         // var value = event.target.value;

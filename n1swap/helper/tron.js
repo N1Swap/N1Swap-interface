@@ -32,10 +32,15 @@ const getTronWeb = () => {
 
 const getIsTronlinkReady = (with_message = true) => {
 
+    if (typeof window == 'undefined') {
+        return false;
+    }
+
     let {tronWeb} = window;
 
     if (!tronWeb) {
         if (with_message) {
+
             message.error('tronlink is not installed');
         }
         return false;

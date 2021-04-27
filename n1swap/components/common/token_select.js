@@ -20,15 +20,17 @@ class TokenSelect extends React.Component {
             'token_list' : [
                 {
                     'name'             : 'trx',
-                    'contract_address' : '',
+                    'contract_address' : 'T9yD14Nj9j7xAB4dbGeiX9h8unkKHxuWwb',
                     'icon'             : 'trx.svg',
                     'type'             : 'trc10',
+                    'decimal'          : 6,
                 },
                 {
                     'name'             : 'wbtt',
                     'contract_address' : 'TF5Bn4cJCT6GVeUgyCN4rBhDg42KBrpAjg',
                     'icon'             : 'btt.svg',
                     'type'             : 'trc20',
+                    'decimal'          : 6,
                 },
                 {
                     'name'             : 'usdt',
@@ -36,13 +38,15 @@ class TokenSelect extends React.Component {
                     'sub'              : 'the usdt of trx',
                     'icon'             : 'usdt.svg',
                     'type'             : 'trc20',
+                    'decimal'          : 6,
                 },
                 {
-                    'name'             : 'n1s',
-                    'contract_address' : 'TQS3q4S7TnXrHhby5tGLXYX76eMps3QBuy',
+                    'name'             : 'NST',
+                    'contract_address' : 'TYuUHP9v2ye3LMwGQP7YZhqRxbHiCLXFJy',
                     'sub'              : 'n1swap',
-                    'icon'             : 'n1s.svg',
+                    'icon'             : 'nst.svg',
                     'type'             : 'trc20',
+                    'decimal'          : 6,
                 }
             ],
         }

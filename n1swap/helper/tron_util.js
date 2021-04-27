@@ -22,6 +22,14 @@ const getShowBlance = (balance,decimal) => {
     }
 }
 
+const getAmountFromHex = (amount,decimal) => {
+    return parseInt(amount._hex, 16) / Math.pow(10,Number(decimal))
+}
+
+const getAmountToInt = (amount,decimal = 6) => {
+    return amount * Math.pow(10,Number(decimal))
+}
+
 
 const getBalanceList = async (address) => {
 
@@ -83,5 +91,7 @@ const getBalanceList = async (address) => {
 
 module.exports = {
     isTronAddress  : isTronAddress,
-    getBalanceList : getBalanceList
+    getBalanceList : getBalanceList,
+    getAmountFromHex  : getAmountFromHex,
+    getAmountToInt    : getAmountToInt
 }

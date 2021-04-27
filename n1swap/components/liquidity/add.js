@@ -1,4 +1,4 @@
-import React,{useRef} from 'react';
+import React,{useRef,useContext} from 'react';
 
 import { connect } from "react-redux";
 import SwapInput from 'components/swap/input';
@@ -8,17 +8,25 @@ import SuccessModal from 'components/liquidity/modal/success'
 import ConfirmModal from 'components/liquidity/modal/confirm'
 import Loading from 'components/common/loading'
 
+import Immutable from "immutable";
+
+import WalletConnectBtn from 'components/wallet/connectbtn'
+
 import { withRouter } from 'next/router'
 
-import {Button,Alert} from 'antd';
+import {Button,Alert,message,Modal,notification} from 'antd';
 
 import styles from 'styles/swap_trade.module.less'
 
-import {PlusIcon,ArrowLeftIcon} from '@heroicons/react/solid';
+import {PlusIcon,ArrowLeftIcon,ExclamationIcon} from '@heroicons/react/solid';
 import {t} from 'helper/translate'
+import TranslateHoc from 'helper/translate/hoc'
 
-import {percentDecimal} from 'helper/number'
-import {getLiquidity} from 'helper/contract'
+import {percentDecimal,getPoolPercent,getIntAmount} from 'helper/number'
+import {getLiquidity,addLiquidity,tokenApprove} from 'helper/contract'
+
+import {getIsTronlinkReady,getTx,address0} from 'helper/tron'
+import {getAmountToInt} from 'helper/tron_util'
 
 class LiquidityAdd extends React.Component {
 
@@ -35,12 +43,43 @@ class LiquidityAdd extends React.Component {
 
             token1_pool     : null,
             token2_pool     : null,
+            total_lp_token  : 0,
             is_fetched_pool : false,
-            is_fetching_pool: false
+            is_fetching_pool: false,
+
+            show_submit_confirm_modal : false,
+            show_step_confirm_modal   : false,
+            show_success_modal        : false,
+
+            steps : [],
+
+            active_step : 0,
         }
 
-        this.fromRef = React.createRef();
-        this.toRef   = React.createRef();
+
+        // this.state['token1'] = {
+        //     'name'             : 'trx',
+        //     'contract_address' : 'T9yD14Nj9j7xAB4dbGeiX9h8unkKHxuWwb',
+        //     'icon'             : 'trx.svg',
+        //     'type'             : 'trc10',
+        //     'decimal'          : 6,
+        // }
+
+        // this.state['token2'] = {
+        //     'name'             : 'NST',
+        //     'contract_address' : 'TYuUHP9v2ye3LMwGQP7YZhqRxbHiCLXFJy',
+        //     'sub'              : 'n1swap',
+        //     'icon'             : 'nst.svg',
+        //     'type'             : 'trc20',
+        //     'decimal'          : 6,
+        // }
+
+        // this.state['token1_amount'] = 100;
+        // this.state['token2_amount'] = 10;
+
+        this.settingRef = React.createRef();
+
+        this.timer = {};
 
         this.handleTokenChange = this.handleTokenChange.bind(this)
         this.handleAmountChange = this.handleAmountChange.bind(this)
@@ -50,7 +89,55 @@ class LiquidityAdd extends React.Component {
 
         this.handleAmountChange = ::this.handleAmountChange
 
+        this.submitConfirm = ::this.submitConfirm
+
+        this.handleCloseModals = ::this.handleCloseModals
+        this.beginAddLiquidity = ::this.beginAddLiquidity
+
+        this.checkModalConfirm = ::this.checkModalConfirm
+
+        this._listenTx = ::this._listenTx
+        this.openListenTx = ::this.openListenTx
+
     }   
+
+    componentDidMount() {
+
+        // setTimeout(()=>this.checkModalConfirm(),3000)
+        // ;
+    }
+
+    handleCloseModals(ignore_confirm = false) {
+
+        console.log('调用关闭所有modals的方法',ignore_confirm);
+        var that = this;
+        if (ignore_confirm) {
+            that.setState({
+                show_submit_confirm_modal : false,
+                show_step_confirm_modal   : false,
+                show_success_modal        : false,
+            })
+        }else {
+            Modal.confirm({
+                title: this.props.getTranslate('The process is not yet complete'),
+                icon: <ExclamationIcon className="icon-24 anticon" />,
+                content: this.props.getTranslate('Do you confirm to terminate the process and exit?'),
+                okText: this.props.getTranslate('Confirm'),
+                cancelText: this.props.getTranslate('Cancel'),
+                onOk() {
+                    that.setState({
+                        show_submit_confirm_modal : false,
+                        show_step_confirm_modal   : false,
+                        show_success_modal        : false,
+                    })
+                },
+            });
+        }
+        
+
+
+        
+    }
 
     async getTokenSwap() {
 
@@ -63,11 +150,14 @@ class LiquidityAdd extends React.Component {
             token1.contract_address = ''
         }
 
-        let token_pool = await getLiquidity(token1.contract_address,token2.contract_address);
+        let token_pool = await getLiquidity(token1,token2);
+
+        // console.log('token_pool',token_pool);
 
         this.setState({
-            'token1_pool'       : token_pool.token1Amount,
-            'token2_pool'       : token_pool.token2Amount,
+            'token1_pool'       : token_pool.token1_amount,
+            'token2_pool'       : token_pool.token2_amount,
+            'total_lp_token'    : token_pool.total_lp_token,
             'is_fetched_pool'   : true,
             'is_fetching_pool'  : false
         })
@@ -76,7 +166,7 @@ class LiquidityAdd extends React.Component {
 
     handleAmountChange(key_name,value) {
 
-        // console.log('debug,handleAmountChange',key_name,value)
+        console.log('debug,handleAmountChange',key_name,value)
 
         let new_state = {};
         new_state[key_name] = value
@@ -100,7 +190,7 @@ class LiquidityAdd extends React.Component {
 
 
     handleTokenChange(name,token) {
-        console.log('调用了handleTokenChange')
+        console.log('debug,调用了handleTokenChange')
 
         let state = {}
         state[name] = token;
@@ -109,7 +199,7 @@ class LiquidityAdd extends React.Component {
     }
 
     afterTokenChange() {
-        console.log('afterTokenChange');
+        console.log('debug,afterTokenChange');
         if (this.state.token1 && this.state.token2) {
             this.getTokenSwap();
         }
@@ -129,36 +219,272 @@ class LiquidityAdd extends React.Component {
         return b.get('show_balance')
     }
 
-    getPoolPercent(token_amount,total_amount) {
-        token_amount = Number(token_amount);
-        total_amount = Number(total_amount);
-        console.log('计算我占据的算力，原始输入',token_amount,total_amount)
-        if (token_amount) {
-            let p = token_amount / (total_amount + token_amount)
-            console.log('计算我占据的算力大约是',p)
-            if (p < 0.0001) {
-                return  "<" + percentDecimal(token_amount / (total_amount + token_amount)) + '%'
-            }else {
-                return "≈" + percentDecimal(token_amount / (total_amount + token_amount)) + '%'
-            }
-        }else {
-            return '-';
+
+    submitConfirm() {
+
+        //1.检查数据
+        if (!this.state.token1) {
+            message.error('need select token1')
+            return false;
         }
+
+        if (!this.state.token2) {
+            message.error('need select token2')
+            return false;
+        }
+
+        if (!this.state.token1_amount || !this.state.token2_amount) {
+            message.error('need input amount,and amount must > 0')
+            return false;
+        }
+
+        //1.首先要确认是否真的添加流动性
+        this.setState({
+            'show_submit_confirm_modal' : true
+        })
+    }
+
+    async checkModalConfirm() {
+
+        console.log('checkModalConfirm')
+        const {token1_amount,token2_amount,token1,token2} = this.state;
+        
+        ///1.开始计算需要几步
+        let steps = Immutable.List([]);
+        if (token1.contract_address != address0) {
+            var stepone = Immutable.Map({
+                'type'              : 'approve',
+                'contract_address'  : token1.contract_address,
+                'status'            : 'init',
+                'result'            : false,
+                'token_name'        : token1.name,
+                'amount'            : getIntAmount(token1_amount,token1.decimal)
+            })
+            steps = steps.push(stepone);
+        }
+
+        if (token2.contract_address != address0) {
+            var stepone = Immutable.Map({
+                'type'              : 'approve',
+                'contract_address'  : token2.contract_address,
+                'status'            : 'init',
+                'result'            : false,
+                'token_name'        : token2.name,
+                'amount'            : getIntAmount(token2_amount,token2.decimal)
+            })
+            steps = steps.push(stepone);
+        }
+
+
+        var stepone = Immutable.Map({
+            'type'              : 'add_liquidity',
+            'status'            : 'init',
+            'result'            : false
+        })
+        steps = steps.push(stepone);
+
+        this.setState({
+            'steps'                     : steps,
+            'active_step'               : 0,
+            'show_step_confirm_modal'   : true
+        },()=>{
+            this.beginAddLiquidity();
+        })
+
+
+    }
+
+    async beginAddLiquidity() {
+        console.log('T2执行到：beginAddLiquidity')
+        ///2.准备开始按照step来检查
+        let {active_step,steps,token1,token2,token1_amount,token2_amount} = this.state;
+
+        let step = steps.get(active_step);
+        if (!step) {
+            return;
+        }
+
+        console.log('T2准备进行这一步',step.toJS())
+
+        console.log('T2获得的setting',this.settingRef);
+
+        let new_active_step = active_step;
+
+
+        try {
+            ///开始检查这一步要做什么
+            switch(step.get('type')) {
+                case 'approve':
+                    var result = await tokenApprove(step.get('contract_address'),step.get('amount'));
+
+                    if (result.status == 'success') {
+                        console.log('T2，准备开启轮询')
+
+                        ///开启一个轮询结果的方法
+                        this.openListenTx(result.tx_id,'approve',{
+                            'token_name' : token1.name
+                        });
+
+                        console.log('T2，已经开启了轮询继续执行')
+
+                        steps = steps.setIn([active_step,'status'],result.status)
+                                    .setIn([active_step,'tx_id'],result.tx_id)
+                        new_active_step += 1;
+
+                    }else {
+                        steps = steps.setIn([active_step,'status'],result.status)
+                                    .setIn([active_step,'message'],result.message)
+                    }
+                    break;
+
+                case 'add_liquidity':
+                    
+                    var tolerance = this.settingRef.current.getTolerance();
+                    var tolerance_ppt = tolerance * Math.pow(10,12);
+                    console.log('tolerance',tolerance,tolerance_ppt);
+
+                    var token1_amount_int = getAmountToInt(token1_amount,token1.decimal);
+                    var token2_amount_int = getAmountToInt(token2_amount,token1.decimal);
+
+                    var result = await addLiquidity(token1.contract_address,token1_amount_int,token2.contract_address,token2_amount_int,tolerance_ppt);
+
+                   
+
+                    if (result.status == 'success') {
+
+                        this.setState({
+                            'show_success_modal' : true
+                        });
+
+                        ///开启一个轮询结果的方法
+                        // this.openListenTx(result.tx_id,'add_liquidity',{
+                        //     'token1_name' : token1.name,
+                        //     'token1_amount' : token1_amount,
+                        //     'token2_name' : token2.name,
+                        //     'token2_amount' : token2_amount
+                        // });
+
+                        steps = steps.setIn([active_step,'status'],result.status)
+                                    .setIn([active_step,'tx_id'],result.tx_id)
+                        new_active_step = null;
+                    }else {
+                        steps = steps.setIn([active_step,'status'],result.status)
+                                    .setIn([active_step,'message'],result.message)
+                    }
+                    break;
+                
+                default:
+                    break;
+            }
+        }catch(e) {
+            console.log('T2调用合约的时候出错了',e);
+        }
+
+        if (new_active_step != active_step) {
+            this.setState({
+                'steps'         : steps,
+                'active_step'   : new_active_step
+            },()=>{
+                this.beginAddLiquidity();
+            });
+        }else {
+            console.log('T2这个是测试的部分，证明调用但是却没有进行下一步',steps,new_active_step)
+            this.setState({
+                'steps'         : steps,
+                'active_step'   : new_active_step
+            });
+        }
+        
+    }
+
+
+    ///轮询tx的数据
+    openListenTx(tx_id,type,ext_data = {}) {
+        ///开启定时获得监听
+        var that = this;
+        this.timer[tx_id] = setTimeout(function(){
+            that._listenTx(tx_id,type,ext_data);
+        },3000);
+    }
+
+
+    async _listenTx(tx_id,type,ext_data) {
+        console.log('T3获得交易的数据',tx_id);
+
+        let result = await getTx(tx_id);
+        console.log('T3最终结果是',result);
+
+        if (result[0]['contractRet'] == "REVERT") {
+            console.log('T3交易失败');
+
+            let title = null;
+            if (type == 'approve') {
+                title = this.props.getTranslate('Approve Rquest Error');
+            }else if (type == 'add_liquidity'){
+                title = this.props.getTranslate('Add Liquidity Rquest Error');
+            }
+
+            notification.error({
+                message: title,
+                description: 'please check your transaction data',
+                duration: 5,
+            });
+
+            // if (this.checking[tx_id]) {
+            //     this.checking[tx_id]();
+            // }
+
+
+        }else if (result[0]['contractRet'] == "SUCCESS"){
+
+            let title = null;
+            if (type == 'approve') {
+                title = this.props.getTranslate('Approve Success');
+            }else if (type == 'add_liquidity'){
+                title = this.props.getTranslate('Add Liquidity Success');
+            }
+
+            notification.success({
+                message:  title,
+                description: null,
+                duration: 3,
+            });
+
+            // if (this.checking[tx_id]) {
+            //     this.checking[tx_id]();
+            // }
+
+        }else {
+            this.openListenTx(tx_id);
+            console.log('T3循环调用',tx_id);
+        }
+
+
     }
 
     render() {
 
         const {is_loading,
+            show_submit_confirm_modal,
+            show_step_confirm_modal,
+            active_step,
             token1_amount,token2_amount,
             token1_pool,token2_pool,
             token1,token2,
+            total_lp_token,
             is_fetching_pool,is_fetched_pool} = this.state;
         const {tronlink} = this.props;
 
-        console.log('debug,token1_amount',token1_amount);
+        // console.log('debug,tronlink',tronlink.toJS());
 
         let token1_balance = this.getBalance(token1);
         let token2_balance = this.getBalance(token2);
+
+        let is_tronlink = getIsTronlinkReady(false);
+
+
+        console.log('token1_amount',token1_amount)
+        console.log('token2_amount',token2_amount)
 
         return (
             <div className={styles.box_wrapper}>
@@ -171,7 +497,7 @@ class LiquidityAdd extends React.Component {
                         {t('Add Liquidity')}
                     </div>
                     <div className={styles.tool}>
-                        <SwapSetting />
+                        <SwapSetting ref={this.settingRef}/>
                     </div>
                 </div>
 
@@ -188,11 +514,10 @@ class LiquidityAdd extends React.Component {
                             </div>
                             <div className={styles.currency_input}>
                                 <SwapInput 
-                                    ref={this.fromRef}
                                     max={token1_balance}
                                     amount={token1_amount}
                                     token={token1}
-                                    default_token_name='trx'
+                                    // default_token_name='trx'
                                     disable_token={token2}
                                     setAmount={this.handleAmountChange.bind({},'token1_amount')}
                                     setToken={this.handleTokenChange.bind({},'token1')}
@@ -215,7 +540,6 @@ class LiquidityAdd extends React.Component {
                             </div>
                             <div className={styles.currency_input}>
                                 <SwapInput 
-                                    ref={this.toRef}
                                     max={token2_balance}
                                     token={token2}
                                     amount={token2_amount}
@@ -252,14 +576,14 @@ class LiquidityAdd extends React.Component {
                                     : null
                                 }
                                 <dl>
-                                    <dd>{this.getPoolPercent(token1_amount,token1_pool)}</dd>
+                                    <dd>{getPoolPercent(token1_amount,token1_pool)}</dd>
                                     <dt>{t('share of pool')}</dt>
                                 </dl>
                             </div>
                             : null
                         }
                         {
-                            (token1 && token2 && is_fetched_pool && !token1_pool && !token2_pool)
+                            (token1 && token2 && is_fetched_pool && !token1_pool && !token2_pool && is_tronlink)
                             ? <div className={styles.notice}>
                                 <h3>You are the first liquidity provider.</h3>
                                 <p>The ratio of tokens you add will set the price of this pool. Once you are happy with the rate click supply to review.</p>
@@ -269,15 +593,48 @@ class LiquidityAdd extends React.Component {
                         
                     </div>
                     <div className={styles.box_footer}>
-                        <Button block size="large" className="big-radius-btn" type="primary" onClick={this.test}>{t('submit')}</Button>
+                        {
+                            (tronlink.get('is_logined'))
+                            ? <Button block size="large" className="big-radius-btn" type="primary" onClick={this.submitConfirm}>{t('submit')}</Button>
+                            : <WalletConnectBtn block={true} size={'large'}/>
+                        }
                     </div>
                 </div>
 
-                <CheckModal visible={false} />
+                {
+                    (show_submit_confirm_modal)
+                    ? <CheckModal visible={true} 
+                        onCancel={this.handleCloseModals} 
+                        onOk={this.checkModalConfirm}
+                        token1_pool={token1_pool}
+                        token2_pool={token2_pool}
+                        total_lp_token={total_lp_token}
+                        token1={{token:token1,amount:token1_amount}} token2={{token:token2,amount:token2_amount}}/>
+                    : null
+                }
+                
+                {
+                    (show_step_confirm_modal)
+                    ? <ConfirmModal visible={true} 
+                        onCancel={this.handleCloseModals} 
+                        active_step={active_step} 
+                        steps={this.state.steps} 
+                        token1={{token:token1,amount:token1_amount}} 
+                        token2={{token:token2,amount:token2_amount}} 
+                        handleRetry={this.beginAddLiquidity}
+                        />
+                    : null
+                }
+                {
+                    (this.state.show_success_modal)
+                    ? <SuccessModal visible={true} 
+                        onCancel={this.handleCloseModals} 
+                        token1={{token:token1,amount:token1_amount}} 
+                        token2={{token:token2,amount:token2_amount}} />
+                    : null
+                }
 
-                <SuccessModal visible={false} />
-
-                <ConfirmModal visible={false} />
+                
             </div>
         );
     }
@@ -294,4 +651,4 @@ function mapStateToProps(state,ownProps) {
     }
 }
 
-module.exports = withRouter(connect(mapStateToProps,mapDispatchToProps)(LiquidityAdd))
+module.exports = TranslateHoc(withRouter(connect(mapStateToProps,mapDispatchToProps)(LiquidityAdd)))

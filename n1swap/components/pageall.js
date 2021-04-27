@@ -49,6 +49,7 @@ class PageAll extends React.Component {
                 'account' : nextProps.tronlink.get('account')
             }
         }
+        return null;
     }
 
     componentDidUpdate(prevProps, prevState) {

@@ -73,7 +73,7 @@ const tronlinkHoc = WrappedComponent => {
 
             return <WrappedComponent 
                 ref={instanceComponent => this.instanceComponent = instanceComponent}
-                // {...this.props} 
+                {...this.props} 
                 balance={this.props.balance}
                 tronlink={this.props.tronlink}
                 checkTronLink={this.checkTronLink}

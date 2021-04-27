@@ -5,10 +5,11 @@ const t = function(word) {
     return <Text>{word}</Text>
 }
 
-const translate = function(word) {
-    const translate = useContext(translateContext);
-    return ;
-}
+// const getTranslate = function() {
+//     const translate = useContext(translateContext);
+//     console.log('debug translate,获得了数据',translate);
+//     return translate;
+// }
 
 const tpure = function(word,translate) {
     return translate.localeMessage[word] ? translate.localeMessage[word] : word
@@ -25,12 +26,13 @@ const strFormat = function(str,args) {
         // console.log('正在替换字符串预计替换',str)
         str = str.toString().replace(new RegExp("\\{" + one + "\\}", "g"), args[one]);
     })
-
     return str;
-
 }
+
+
 module.exports = {
     t           : t,
     tpure       : tpure,
-    strFormat   : strFormat
+    strFormat   : strFormat,
+    // getTranslate: getTranslate
 }

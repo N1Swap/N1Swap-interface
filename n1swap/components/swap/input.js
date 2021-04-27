@@ -11,8 +11,6 @@ class SwapInput extends React.Component {
         super(props)
 
         this.state = {
-            // 'token'                 : null,
-            // 'amount'                : 0,
             'is_open_token_modal'   : false,
         }
 
@@ -24,36 +22,6 @@ class SwapInput extends React.Component {
         // this.setAmount = ::this.setAmount
     }
 
-    // componentDidMount() {
-    //     if (this.props.default_token) {
-    //         let default_token = this.props.token.toLowerCase()
-    //         this.handleTokenChange(default_token);
-    //     }
-    // }
-
-    // static getDerivedStateFromProps(nextProps,prevState) {
-    //     if (nextProps.default_token) {
-    //         prevState['token'] = nextProps.default_token
-    //     }
-    //     return prevState;
-    // }
-
-    // getValue() {
-    //     return {
-    //         'token'  : this.state.token,
-    //         'amount' : Number(this.state.amount)
-    //     }
-    // }
-
-    // setAmount(amount) {
-    //     this.setState({
-    //         'amount' : amount
-    //     })
-        
-    //     if (typeof this.props.setAmount == 'function') {
-    //         this.props.setAmount(amount)
-    //     }
-    // }
     handleAmountChange(e) {
         this.props.setAmount(e.target.value)
     }
@@ -66,13 +34,6 @@ class SwapInput extends React.Component {
 
     handleTokenChange(token) {
         // console.log('debug001,更换当前选中的token:',token)
-        // this.setState({
-        //     'token' : token,
-        // })
-
-        // if (typeof this.props.setToken == 'function') {
-        // this.props.setToken(token)
-        // }
         this.props.setToken(token)
         this.props.setAmount(0)
     }
