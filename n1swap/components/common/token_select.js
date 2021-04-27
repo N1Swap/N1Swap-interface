@@ -206,7 +206,7 @@ class TokenSelect extends React.Component {
                                     if (token.name == disable_token_name) {
                                         is_disable = true;
                                     }
-                                    let contract_address_lower = token.contract_address;
+                                    let contract_address = (token.contract_address == 'T9yD14Nj9j7xAB4dbGeiX9h8unkKHxuWwb') ? 'trx' : token.contract_address;
                                     return <div className={'block-token-one'} key={token.name}><a 
                                         className={classNames("link-all",{"disable":is_disable})} 
                                         onClick={this.selectToken.bind({},token)}>
@@ -224,8 +224,8 @@ class TokenSelect extends React.Component {
                                         </div>
                                         <div className="balance">
                                             {
-                                                (balance.get(contract_address_lower))
-                                                ? balance.getIn([contract_address_lower,'show_balance'])
+                                                (balance.get(contract_address))
+                                                ? balance.getIn([contract_address,'show_balance'])
                                                 : 0
                                             }
                                         </div>

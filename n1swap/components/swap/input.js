@@ -17,7 +17,7 @@ class SwapInput extends React.Component {
         this.handleAmountChange = this.handleAmountChange.bind(this);
         this.handleTokenChange = this.handleTokenChange.bind(this);
 
-        this.setAmountMax = ::this.setAmountMax
+        // this.setAmountMax = ::this.setAmountMax
         // this.getValue = this.getValue.bind(this)
         // this.setAmount = ::this.setAmount
     }
@@ -27,10 +27,10 @@ class SwapInput extends React.Component {
     }
 
 
-    setAmountMax() {
-        const {max} = this.props;
-        this.props.setAmount(max)
-    }
+    // setAmountMax() {
+    //     const {max} = this.props;
+    //     this.props.setAmount(max)
+    // }
 
     handleTokenChange(token) {
         // console.log('debug001,更换当前选中的token:',token)
@@ -44,13 +44,13 @@ class SwapInput extends React.Component {
         const {is_open_token_modal} = this.state;
         const {disable_token,default_token_name,max,amount,token} = this.props;
 
-        // console.log('debug001,当前选中的token是',token,this.state);
+        console.log('debug001,当前的token和余额',token,max);
         // console.log('debug001,当前disable的token是',disable_token);
 
         return (
             <div className={styles.input_wrapper}>
                 <Input bordered={false} className={styles.input} value={amount} placeholder={'0.0'} onChange={this.handleAmountChange}/>
-                {(max > 0) ? <a className="max-btn" onClick={this.setAmountMax}>Max</a> : null}
+                {(max > 0 && disable_token) ? <a className="max-btn" onClick={this.props.handleSetMaxAmount}>Max</a> : null}
                 <TokenSelect token={token} default_token_name={default_token_name} disable_token={disable_token} onChange={this.handleTokenChange} />
             </div>
         );

@@ -1,3 +1,6 @@
+import {getTronscanApiUrl} from 'helper/config'
+import {fetchPost} from 'helper/http'
+import {Base58ToHex} from 'helper/tron'
 
 const isTronAddress = (trx_addr) => {
     trx_addr = trx_addr.toLowerCase();
@@ -33,14 +36,18 @@ const getAmountToInt = (amount,decimal = 6) => {
 
 const getBalanceList = async (address) => {
 
-    let url = "https://apilist.tronscan.org/api/account";
+
+
+    let trongrid_api_url = getTronscanApiUrl();
+
+    let url = trongrid_api_url + "api/account";
 
     const res = await fetch(url+"?"+new URLSearchParams({
         'address' : address
     }));
     const data = await res.json()
 
-    // console.log('原始请求的结果是',data);
+    console.log('原始请求的结果是',data);
 
     // catchError(data);
 

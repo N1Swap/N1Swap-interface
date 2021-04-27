@@ -99,6 +99,8 @@ class LiquidityAdd extends React.Component {
         this._listenTx = ::this._listenTx
         this.openListenTx = ::this.openListenTx
 
+        this.handleSetMaxAmount = ::this.handleSetMaxAmount
+
     }   
 
     componentDidMount() {
@@ -111,7 +113,7 @@ class LiquidityAdd extends React.Component {
 
         console.log('调用关闭所有modals的方法',ignore_confirm);
         var that = this;
-        if (ignore_confirm) {
+        if (ignore_confirm == true) {
             that.setState({
                 show_submit_confirm_modal : false,
                 show_step_confirm_modal   : false,
@@ -188,6 +190,43 @@ class LiquidityAdd extends React.Component {
         this.setState(new_state);
     }
 
+    handleSetMaxAmount() {
+        const {token1_pool,token2_pool,is_fetched_pool,token1,token2} = this.state;
+        
+        let token1_balance = this.getBalance(token1);
+        let token2_balance = this.getBalance(token2);
+
+        if (is_fetched_pool) {
+
+            if (token1_pool && token2_pool) {
+
+                ///先根据amount1来算       
+                let token1_amount,token2_amount;
+
+                token2_amount = token1_balance * token2_pool / token1_pool
+
+                if ( token2_amount > token2_balance) {
+                    token1_amount = token2_balance * token1_pool / token2_pool
+                    token2_amount = token2_balance;
+                }else {
+                    token1_amount = token1_balance;
+                }
+
+                this.setState({
+                    'token1_amount' : token1_amount,
+                    'token2_amount' : token2_amount
+                })
+            }else {
+                this.setState({
+                    'token1_amount' : token1_balance,
+                    'token2_amount' : token2_balance
+                })
+            }
+
+        }
+
+    }
+
 
     handleTokenChange(name,token) {
         console.log('debug,调用了handleTokenChange')
@@ -207,16 +246,24 @@ class LiquidityAdd extends React.Component {
 
     getBalance(token) {
 
+        // console.log('T4,token',token)
+
         if (!token) {
             return 0
         }
 
-        let b = this.props.balance.get(token.contract_address);
-        if (!b) {
+        let balance;
+        if (token.contract_address == address0) {
+            balance = this.props.balance.get('trx');
+        }else {
+            balance = this.props.balance.get(token.contract_address);
+        }
+
+        if (!balance) {
             return 0
         }
 
-        return b.get('show_balance')
+        return balance.get('show_balance')
     }
 
 
@@ -348,8 +395,6 @@ class LiquidityAdd extends React.Component {
 
                     var result = await addLiquidity(token1.contract_address,token1_amount_int,token2.contract_address,token2_amount_int,tolerance_ppt);
 
-                   
-
                     if (result.status == 'success') {
 
                         this.setState({
@@ -357,12 +402,12 @@ class LiquidityAdd extends React.Component {
                         });
 
                         ///开启一个轮询结果的方法
-                        // this.openListenTx(result.tx_id,'add_liquidity',{
-                        //     'token1_name' : token1.name,
-                        //     'token1_amount' : token1_amount,
-                        //     'token2_name' : token2.name,
-                        //     'token2_amount' : token2_amount
-                        // });
+                        this.openListenTx(result.tx_id,'add_liquidity',{
+                            'token1_name' : token1.name,
+                            'token1_amount' : token1_amount,
+                            'token2_name' : token2.name,
+                            'token2_amount' : token2_amount
+                        });
 
                         steps = steps.setIn([active_step,'status'],result.status)
                                     .setIn([active_step,'tx_id'],result.tx_id)
@@ -509,7 +554,7 @@ class LiquidityAdd extends React.Component {
                                 <div className={styles.balance}>
                                     {t('balance')}
                                     : 
-                                    <span className={styles.amount}>{token1_balance?token1_balance:'-'}</span>
+                                    <span className={styles.amount}>{token1_balance}</span>
                                 </div>
                             </div>
                             <div className={styles.currency_input}>
@@ -521,6 +566,7 @@ class LiquidityAdd extends React.Component {
                                     disable_token={token2}
                                     setAmount={this.handleAmountChange.bind({},'token1_amount')}
                                     setToken={this.handleTokenChange.bind({},'token1')}
+                                    handleSetMaxAmount={this.handleSetMaxAmount}
                                     />
                             </div>
                         </div>
@@ -535,7 +581,7 @@ class LiquidityAdd extends React.Component {
                                 <div className={styles.balance}>
                                     {t('balance')}
                                     : 
-                                    <span className={styles.amount}>{token2_balance?token2_balance:'-'}</span>
+                                    <span className={styles.amount}>{token2_balance}</span>
                                 </div>
                             </div>
                             <div className={styles.currency_input}>
@@ -546,6 +592,7 @@ class LiquidityAdd extends React.Component {
                                     disable_token={token1}
                                     setAmount={this.handleAmountChange.bind({},'token2_amount')}
                                     setToken={this.handleTokenChange.bind({},'token2')}
+                                    handleSetMaxAmount={this.handleSetMaxAmount}
                                     />
                             </div>
                         </div>

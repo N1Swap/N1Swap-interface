@@ -31,7 +31,7 @@ const translateHoc = WrappedComponent => {
     
         render() {
             return <WrappedComponent 
-                ref={instanceComponent => this.instanceComponent = instanceComponent}
+                // ref={instanceComponent => this.instanceComponent = instanceComponent}
                 {...this.props} 
                 getTranslate={this.getTranslate}/>
         }

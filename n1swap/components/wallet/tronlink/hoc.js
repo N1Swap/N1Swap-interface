@@ -10,6 +10,8 @@ import {getBalanceList} from 'helper/tron_util';
 import { connect } from "react-redux";
 import {pageReady} from 'helper/misc';
 
+
+
 const tronlinkHoc = WrappedComponent => {
 
     class tronlinkComponent extends Component {
@@ -38,6 +40,10 @@ const tronlinkHoc = WrappedComponent => {
                 this.props.tronlink_logined(true);
             }
 
+            
+            // let tron_net = getConfig('TRON_NET');
+
+
             //如果原来就已经有登陆账户，这里检查的是是否退出了用户
             if (tronlink.get('account')) {
                 if (!tronlink_account) {
@@ -55,8 +61,9 @@ const tronlinkHoc = WrappedComponent => {
                     // let trx_balance = await getTrxBalance(tronlink_account);
                     // this.props.tronlink_set_balance(trx_balance);
 
-                    // let balance_list = await getBalanceList(tronlink_account);
-                    let balance_list = await getBalanceList('TS9wJbdDASqdbXnhwPrkPVVm5GaFZKtCWo');
+                    let balance_list = await getBalanceList(tronlink_account);
+                    console.log('debug,balance_list',balance_list)
+                    // let balance_list = await getBalanceList('TS9wJbdDASqdbXnhwPrkPVVm5GaFZKtCWo');
 
                     Object.keys(balance_list).map(k=>{
                         this.props.set_balance(k,balance_list[k])

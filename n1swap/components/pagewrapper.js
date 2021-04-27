@@ -111,12 +111,12 @@ class PageWrapper extends React.Component {
                             <div className="top-header-left">
                                 <div className='block-logo'>
                                     <Image
-                                            src="/img/logo/logo_square.png"
-                                            alt="N1Swap Logo"
-                                            width={28}
-                                            height={28}
-                                            className="logo"
-                                          />
+                                        src="/img/logo/logo_square.png"
+                                        alt="N1Swap Logo"
+                                        width={28}
+                                        height={28}
+                                        className="logo"
+                                    />
                                     <span className='word'>
                                     <Image
                                         src="/img/logo/word.svg"
@@ -157,7 +157,7 @@ class PageWrapper extends React.Component {
                                 <div className="one"><NavLink href="/">{t('Home')}</NavLink></div>
                                 <div className="one"><NavLink href="/exchange" matchstart>{t('Swap')}</NavLink></div>
                                 <div className="one"><NavLink href="/liquidity" matchstart>{t('Liquidity')}</NavLink></div>
-                                <div className="one"><NavLink href="/status" matchstart>{t('Status')}</NavLink></div>
+                                <div className="one"><NavLink href="/analytics" matchstart>{t('Analytics')}</NavLink></div>
                                 <div className="one"><NavLink href="/protfolio" matchstart>{t('portfolio')}</NavLink></div>
                             </div>
                         </Col>
