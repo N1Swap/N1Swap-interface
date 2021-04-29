@@ -94,7 +94,7 @@ const getLiquidity = async(token1,token2) => {
         let contract = await tronWeb.contract().at(swapContractAddress);
 
         let result = await contract.getLiquidity(token1_address,token2_address).call();
-        console.log('T1获得数据的结果:', result ,token1,token2);
+        // console.log('T1获得数据的结果:', result ,token1,token2);
 
         if (!result) {
             ///如果没有获得最新的价格也允许继续往下执行
@@ -163,8 +163,96 @@ const addLiquidity =  async(token1,token1_amount,token2,token2_amount,tolerance 
 }
 
 
+const getLiquidityList = async(address) => {
+
+    if (!getIsTronlinkReady(false)) {
+        console.log('Tronlink is not ready')
+        return false;
+    }
+
+    const {tronWeb} = window;
+
+    if (!address) {
+        message.error('address cannot be empty');
+        return false;
+    }
+
+    try {
+
+        // console.log('T1合约地址:',swapContractAddress);
+        let contract = await tronWeb.contract().at(swapContractAddress);
+
+        let result = await contract.getLiquidity(token1_address,token2_address).call();
+        console.log('T1获得数据的结果:', result ,token1,token2);
+
+        if (!result) {
+            ///如果没有获得最新的价格也允许继续往下执行
+            return false;
+        }
+
+        return {
+            'token1_amount' : getAmountFromHex(result.token1Amount,token1.decimal),
+            'token2_amount' : getAmountFromHex(result.token2Amount,token2.decimal),
+            'total_lp_token' : parseInt(0),
+        }
+
+
+    } catch(error) {
+        console.error("trigger smart contract error",error)
+    }
+    
+}
+
+
+const swapToken =  async(token1,token1_amount,token2,min_token2_amount,deadline) => {
+
+
+    if (!getIsTronlinkReady(false)) {
+        console.log('Tronlink is not ready')
+        return false;
+    }
+
+    const {tronWeb} = window;
+
+
+    console.log('T2执行了交易的方法，数据',token1,token1_amount,token2,min_token2_amount,deadline)
+
+    let contract = await tronWeb.contract().at(swapContractAddress);
+    try {
+
+        let callvalue = 0;
+        if (token1 == address0) {
+            callvalue = token1_amount
+        }
+        let tx_id = await contract.swap(token1,token1_amount,token2,min_token2_amount,deadline).send({
+            feeLimit: 100000000,
+            callValue: callvalue,
+            // shouldPollResponse:true
+        })
+
+        console.log('T2执行了交易货币的操作，结果是',tx_id)
+
+        return {
+            'status' : 'success',
+            'tx_id'  : tx_id 
+        }
+
+    }catch(e) {
+        console.log('T2,执行错误：',e);
+
+        return {
+            'status'   : 'abort',
+            'message'  : e
+        }
+    }
+
+
+}
+
+
 module.exports = {
     getLiquidity : getLiquidity,
     tokenApprove : tokenApprove,
-    addLiquidity : addLiquidity
+    addLiquidity : addLiquidity,
+    swapToken    : swapToken
 }

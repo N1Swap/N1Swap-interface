@@ -1,4 +1,5 @@
 import React,{useRef} from 'react';
+import { withRouter } from 'next/router'
 
 import { connect } from "react-redux";
 import SwapInput from 'components/swap/input';
@@ -8,9 +9,8 @@ import {Button,Divider,Tooltip} from 'antd';
 
 import styles from 'styles/swap_trade.module.less'
 
-import { withRouter } from 'next/router'
-
 import {QuestionMarkCircleIcon} from '@heroicons/react/outline';
+import {t} from 'helper/translate'
 
 
 class SwapTrade extends React.Component {
@@ -97,8 +97,8 @@ class SwapTrade extends React.Component {
                 
                     <div className={styles.liquidity_list}>
                         <div className={styles.liquidity_head}>
-                            <h3>your liquidity</h3>
-                            <Tooltip placement="top" title={'When you add liquidity, you are given pool tokens that represent your share. If you don’t see a pool you joined in this list, try importing a pool below.'}>
+                            <h3>{t('your liquidity')}</h3>
+                            <Tooltip placement="top" title={t('When you add liquidity, you are given pool tokens that represent your share. If you don’t see a pool you joined in this list, try importing a pool below.')}>
                                 <QuestionMarkCircleIcon className={'icon-16'} />
                             </Tooltip>
                         </div>

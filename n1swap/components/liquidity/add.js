@@ -7,6 +7,7 @@ import CheckModal from 'components/liquidity/modal/check'
 import SuccessModal from 'components/liquidity/modal/success'
 import ConfirmModal from 'components/liquidity/modal/confirm'
 import Loading from 'components/common/loading'
+import TronscanLink from 'components/common/tronscan_link'
 
 import Immutable from "immutable";
 
@@ -18,7 +19,7 @@ import {Button,Alert,message,Modal,notification} from 'antd';
 
 import styles from 'styles/swap_trade.module.less'
 
-import {PlusIcon,ArrowLeftIcon,ExclamationIcon} from '@heroicons/react/solid';
+import {PlusIcon,ArrowLeftIcon,ExclamationCircleIcon} from '@heroicons/react/solid';
 import {t} from 'helper/translate'
 import TranslateHoc from 'helper/translate/hoc'
 
@@ -27,6 +28,9 @@ import {getLiquidity,addLiquidity,tokenApprove} from 'helper/contract'
 
 import {getIsTronlinkReady,getTx,address0} from 'helper/tron'
 import {getAmountToInt} from 'helper/tron_util'
+import { isMobile} from "react-device-detect";
+
+const notificationPlacement = (isMobile)?"bottomRight":"topRight";
 
 class LiquidityAdd extends React.Component {
 
@@ -101,6 +105,7 @@ class LiquidityAdd extends React.Component {
 
         this.handleSetMaxAmount = ::this.handleSetMaxAmount
 
+
     }   
 
     componentDidMount() {
@@ -122,7 +127,7 @@ class LiquidityAdd extends React.Component {
         }else {
             Modal.confirm({
                 title: this.props.getTranslate('The process is not yet complete'),
-                icon: <ExclamationIcon className="icon-24 anticon" />,
+                icon: <ExclamationCircleIcon className="icon-36 anticon" />,
                 content: this.props.getTranslate('Do you confirm to terminate the process and exit?'),
                 okText: this.props.getTranslate('Confirm'),
                 cancelText: this.props.getTranslate('Cancel'),
@@ -459,6 +464,8 @@ class LiquidityAdd extends React.Component {
         let result = await getTx(tx_id);
         console.log('T3最终结果是',result);
 
+        let view_text = this.props.getTranslate('view in tronscan');
+
         if (result[0]['contractRet'] == "REVERT") {
             console.log('T3交易失败');
 
@@ -471,14 +478,14 @@ class LiquidityAdd extends React.Component {
 
             notification.error({
                 message: title,
-                description: 'please check your transaction data',
+                description: <TronscanLink tx_id={tx_id} text={view_text}/>,
                 duration: 5,
+                placement:notificationPlacement
             });
 
             // if (this.checking[tx_id]) {
             //     this.checking[tx_id]();
             // }
-
 
         }else if (result[0]['contractRet'] == "SUCCESS"){
 
@@ -491,8 +498,9 @@ class LiquidityAdd extends React.Component {
 
             notification.success({
                 message:  title,
-                description: null,
+                description: <TronscanLink tx_id={tx_id} text={view_text}/>,
                 duration: 3,
+                placement:notificationPlacement
             });
 
             // if (this.checking[tx_id]) {
@@ -506,6 +514,17 @@ class LiquidityAdd extends React.Component {
 
 
     }
+
+    // handleNotification() {
+    //     console.log('handleNotification')
+    //     notification.error({
+    //         message: 'Transaction Error',
+    //         description: <TronscanLink tx_id={'4ba7c0a57dd49fafb0ac350dbdf196dbd8b57dfb2a0dedd45cbe301855c61421'} text={this.props.getTranslate('view in tronscan')}/>,
+    //         duration: 60,
+    //         placement: notificationPlacement
+    //     });
+    // }
+    // <Button onClick={this.handleNotification}>测试代码</Button>
 
     render() {
 
@@ -528,8 +547,8 @@ class LiquidityAdd extends React.Component {
         let is_tronlink = getIsTronlinkReady(false);
 
 
-        console.log('token1_amount',token1_amount)
-        console.log('token2_amount',token2_amount)
+        // console.log('token1_amount',token1_amount)
+        // console.log('token2_amount',token2_amount)
 
         return (
             <div className={styles.box_wrapper}>
@@ -681,7 +700,8 @@ class LiquidityAdd extends React.Component {
                     : null
                 }
 
-                
+
+
             </div>
         );
     }

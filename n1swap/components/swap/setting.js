@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import Image from 'next/image'
 
 import styles from 'styles/components/swap/setting.module.less'
+import {t} from 'helper/translate'
 
 import {CogIcon,QuestionMarkCircleIcon} from '@heroicons/react/outline';
 
@@ -30,7 +31,7 @@ class SwapInput extends React.Component {
     getValue() {
         return {
             'tolerance'  : Number(this.state.tolerance),
-            'deadline' : Number(this.state.deadline)
+            'deadline'   : Number(this.state.deadline)
         }
     }
 
@@ -45,6 +46,11 @@ class SwapInput extends React.Component {
         this.setState({
             'tolerance' : v
         })
+        if (this.props.onChange) {
+            this.props.onChange({
+                'tolerance' : v
+            });
+        }
     }
 
     getTolerance() {
@@ -52,10 +58,13 @@ class SwapInput extends React.Component {
     }
 
     handleEventValueChange(key_name,event){
-        // var value = event.target.value;
         var new_state = {}
         new_state[key_name] = event.target.value;
         this.setState(new_state);
+
+        if (this.props.onChange) {
+            this.props.onChange(new_state);
+        }
     }
 
 
@@ -84,7 +93,7 @@ class SwapInput extends React.Component {
                         <div className={styles.setting_wrapper}>
                             <div className={styles.setting_one}>
                                 <div className={styles.head}>
-                                    <h3>Slippage tolerance</h3>
+                                    <h3>{t('Slippage tolerance')}</h3>
                                     <Tooltip placement="top" title={'your transaction will revert'}>
                                         <QuestionMarkCircleIcon className='icon-16' />
                                     </Tooltip>
@@ -98,7 +107,7 @@ class SwapInput extends React.Component {
                             </div>
                             <div className={styles.setting_one}>
                                 <div className={styles.head}>
-                                    <h3>Transaction deadline</h3>
+                                    <h3>{t('Transaction deadline')}</h3>
                                     <Tooltip placement="top" title={'your transaction will revert'}>
                                         <QuestionMarkCircleIcon className='icon-16' />
                                     </Tooltip>

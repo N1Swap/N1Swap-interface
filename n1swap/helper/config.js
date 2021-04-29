@@ -21,10 +21,19 @@ const getTronscanApiUrl = () => {
         return 'https://apilist.tronscan.org/'
     }
 }
+const getTronscanUrl = () => {
+    let tron_net = getConfigHelper('TRON_NET');
+    if (tron_net == 'shasta') {
+        return 'https://shasta.tronscan.org/'
+    }else if (tron_net == 'main') {
+        return 'https://www.tronscan.org/'
+    }
+}
 
 
 module.exports = {
     getConfig           : getConfigHelper,
     getTronGridApiUrl   : getTronGridApiUrl,
-    getTronscanApiUrl   : getTronscanApiUrl
+    getTronscanApiUrl   : getTronscanApiUrl,
+    getTronscanUrl      : getTronscanUrl
 }

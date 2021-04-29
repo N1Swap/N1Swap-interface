@@ -1,5 +1,8 @@
 @import "./variables.less";
 
+.swap_wrapper {
+    padding-bottom:160px;
+}
 .box_wrapper {
     position: relative;
     max-width: 420px;
@@ -9,6 +12,32 @@
     border-radius: 30px;
     margin:0 auto;
 }
+
+.box_gray_footer {
+    max-width: 420px;
+    width: 100%;
+    background: rgba(233, 238, 244, 0.5);
+    border-radius: 30px;
+    // margin:0 auto;
+    // margin-top:-30px;
+    padding:60px 30px 15px 30px;
+    position:absolute;
+    z-index: 10;
+    dl {
+        display: flex;
+        justify-content: space-between;
+        margin:8px 0;
+        dt,dd {
+            color: @black-color-2;
+            margin:0;
+            font-weight: normal;
+            font-size:14px;
+        }
+    }
+}
+
+
+
 
 .box_wrapper .box_head {
     padding: 1rem 1.75rem 0px 1.75rem;
@@ -63,6 +92,10 @@
 
     .box_content_top {
         padding:1.25rem 1.75rem 1.75rem 1.75rem;
+        position:relative;
+        z-index: 100;
+        background:#fff;
+        border-radius: 0 0 30px 30px;
     }
 
     .box_content_mid {

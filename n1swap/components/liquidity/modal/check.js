@@ -1,18 +1,11 @@
  import React,{useRef} from 'react';
 
 import classNames from 'classnames';
-// import { connect } from "react-redux";
-// import SwapInput from 'components/swap/input';
-// import SwapSetting from 'components/swap/setting';
 import Image from 'next/image'
 
 import {Button,Divider,Modal} from 'antd';
-
 import styles from 'styles/components/modal.module.less'
-
 import { withRouter } from 'next/router'
-
-// import {QuestionMarkCircleIcon} from '@heroicons/react/outline';
 
 import {t} from 'helper/translate'
 import {autoDecimal,getPoolPercent} from 'helper/number'
@@ -21,22 +14,13 @@ class CheckModal extends React.Component {
 
     constructor(props) {
         super(props)
-        this.state = {
-            is_loading  : false,
-        }
     }   
 
 
     render() {
 
         var {token1,token2,total_lp_token,token1_pool,token2_pool} = this.props;
-
         let my_lp_token = (total_lp_token > 0) ? (token1.amount / token1_pool) * total_lp_token : token1.amount * token2.amount;
-
-        // token1_pool = 10
-        // token2_pool = 100
-
-        // console.log('autoDecimal',autoDecimal)
 
         return (
             <Modal

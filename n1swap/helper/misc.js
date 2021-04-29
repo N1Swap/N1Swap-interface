@@ -62,7 +62,9 @@ export const getSunFromTrx = (trx) => {
 }
 
 
-
+export const getUnixtime = () => {
+    return Math.round(new Date().getTime()/1000);
+}
 
 export const getTimezone = () => {
     return (0 - new Date().getTimezoneOffset() / 60);

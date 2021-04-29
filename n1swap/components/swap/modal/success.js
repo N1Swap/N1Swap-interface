@@ -6,7 +6,7 @@ import {Button,Divider,Modal} from 'antd';
 
 import { withRouter } from 'next/router'
 
-import {PlusIcon} from '@heroicons/react/outline';
+import {ArrowNarrowRightIcon} from '@heroicons/react/outline';
 
 import {t} from 'helper/translate'
 
@@ -44,14 +44,14 @@ class CheckModal extends React.Component {
                         </svg>
                     </div>
 
-                    <h1>{t('You liquidity has been added')}</h1>
+                    <h1>{t('You swap transaction is been sent')}</h1>
 
                     <Divider />
 
                     <div className="info">
                         <span className="tk1">{token1.amount}</span> 
                         <span className="token upper">{token1.token.name}</span> 
-                        <span className="add"><PlusIcon className="icon-24"/></span>
+                        <span className="add"><ArrowNarrowRightIcon className="icon-24"/></span>
                         <span className="tk1">{token2.amount}</span> 
                         <span className="token upper">{token2.token.name}</span> 
                     </div>
@@ -61,7 +61,7 @@ class CheckModal extends React.Component {
                     </div>
 
                     <div className="info-end">
-                        {t('Transaction is confirming on tron network. Your liquidity will be added after that.')}
+                        {t('Transaction is confirming on tron network. Your swap token will be received after that.')}
                     </div>
                     
                 </div>

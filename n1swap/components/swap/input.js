@@ -23,9 +23,9 @@ class SwapInput extends React.Component {
     }
 
     handleAmountChange(e) {
+        console.log('更改了amount')
         this.props.setAmount(e.target.value)
     }
-
 
     // setAmountMax() {
     //     const {max} = this.props;
@@ -35,7 +35,7 @@ class SwapInput extends React.Component {
     handleTokenChange(token) {
         // console.log('debug001,更换当前选中的token:',token)
         this.props.setToken(token)
-        this.props.setAmount(0)
+        // this.props.setAmount(0)
     }
 
 
