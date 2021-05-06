@@ -23,7 +23,7 @@ class SwapInput extends React.Component {
     }
 
     handleAmountChange(e) {
-        console.log('更改了amount')
+        // console.log('更改了amount')
         this.props.setAmount(e.target.value)
     }
 
@@ -44,7 +44,7 @@ class SwapInput extends React.Component {
         const {is_open_token_modal} = this.state;
         const {disable_token,default_token_name,max,amount,token} = this.props;
 
-        console.log('debug001,当前的token和余额',token,max);
+        // console.log('debug001,当前的token和余额',token,max);
         // console.log('debug001,当前disable的token是',disable_token);
 
         return (

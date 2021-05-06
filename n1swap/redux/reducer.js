@@ -4,6 +4,7 @@ import { combineReducers } from 'redux-immutable';
 
 import { reducer as setting } from './reducer/setting.js'
 import { reducer as token } from './reducer/token.js'
+import { reducer as liquidity } from './reducer/liquidity.js'
 
 function entities(state = Immutable.fromJS({}), action) {
     switch (action.type) {
@@ -30,7 +31,8 @@ function entities(state = Immutable.fromJS({}), action) {
 const allReducer = combineReducers({
     entities,
     setting,
-    token
+    token,
+    liquidity
 })
 
 export default allReducer

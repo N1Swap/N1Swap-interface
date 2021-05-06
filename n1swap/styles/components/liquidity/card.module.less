@@ -1,0 +1,64 @@
+@import "./../../variables.less";
+@import "./../../font.less";
+
+.liquidity_card {
+    background: #fafafa;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    border:1px solid #eee;
+    color: @black-color;
+    .p1 {
+        display: flex;
+        padding:15px 15px 0 15px;
+
+        justify-content: space-between;
+        .l {
+            display: flex;
+            justify-content: flex-start;
+        }
+        .icons {
+            display: flex;
+            justify-content: flex-start;
+        }
+        .name {
+            display: flex;
+            justify-content: flex-start;
+            span {
+                margin:0 3px;
+            }
+        }
+    }
+    .p2 {
+        padding:15px;
+        dl {
+            margin:0;
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+        }
+        dt {
+            text-transform: capitalize;
+        }
+        dt,dd {
+            margin:0;
+        }
+    }
+    .p3 {
+        margin-top: 10px;
+        padding:15px 15px ;
+        border-top:1px solid #e8e8e8;
+        display: flex;
+        justify-content: flex-end;
+    }
+    .center {
+        text-align: center;
+    }
+    &.white {
+        background:#fff;
+        border-color:#f0f0f0;
+        .p3 {
+            display: none;
+        }
+    }
+}
+

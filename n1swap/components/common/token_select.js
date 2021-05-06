@@ -6,7 +6,7 @@ import classNames from 'classnames';
 
 import Image from 'next/image'
 
-import styles from 'styles/components/common/token_select.module.less'
+import styles from 'styles/swap_trade.module.less'
 
 import {ChevronDownIcon} from '@heroicons/react/solid';
 
@@ -61,7 +61,7 @@ class TokenSelect extends React.Component {
     }
 
     componentDidUpdate(prevProps,prevState) {
-        console.log('componentDidUpdate',prevProps,prevState)
+        // console.log('componentDidUpdate',prevProps,prevState)
         if (prevProps.default_token_name != this.props.default_token_name) {
             this.setDefaultToken(this.props.default_token_name);
         }

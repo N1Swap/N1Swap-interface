@@ -10,6 +10,13 @@ const strFormat = function(str,args) {
 
 }
 
+const sortStr = function(str1,str2) {
+    let li = [str1,str2];
+    li.sort();
+    return li;
+}
+
 module.exports = {
-    'strFormat' : strFormat
+    'strFormat' : strFormat,
+    'sortStr'   : sortStr
 }

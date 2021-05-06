@@ -1,5 +1,57 @@
 @import "./variables.less";
 
+.search_box_wrapper {
+
+}
+.search_box_content {
+    margin:0 -20px;
+}
+.token_btn {
+    font-size: 20px;
+    font-weight: 500;
+    background-color: #fafafa;
+    color: rgb(0, 0, 0);
+    cursor: pointer;
+    border: none;
+    padding:0px 0.5rem;
+    height: 2.2rem;
+    border-radius: 12px;
+    align-items:center;
+    justify-content: space-between;
+    display: flex;
+    flex-shrink:0;
+    flex-grow: 1;
+}
+.token_btn:hover {
+    background: #eee;
+}
+
+.token_name {
+    margin: 0px 0.25rem 0px 0.75rem;
+    font-size: 20px;
+    color: #000;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+.token_btn .arrow {
+    display: flex;
+    color: #000;
+    align-items: center;
+}
+
+.token_btn_icon {
+    margin-right: 12px;
+}
+
+.token_icon {
+    margin-right: 12px;
+    display: flex;
+    align-items:center;
+}
+
+
+
 .swap_wrapper {
     padding-bottom:160px;
 }
@@ -56,6 +108,7 @@
     min-width: 0px;
     font-weight: 500;
     color: #000;
+    text-transform: capitalize;
     .sub {
         font-size: 12px;
         color: #999;
@@ -96,6 +149,10 @@
         z-index: 100;
         background:#fff;
         border-radius: 0 0 30px 30px;
+    }
+
+    .box_content_top2 {
+        padding-bottom: 0;
     }
 
     .box_content_mid {
@@ -140,6 +197,7 @@
     margin-top:2.5rem;
 }
 
+
 .box_form .box_from_input h3{
     margin: 0px;
     display: flex;
@@ -158,6 +216,13 @@
     flex-flow: row nowrap;
     align-items: center;
     padding: 6px 12px;
+}
+.box_form.box_find .currency_input {
+    padding:0;
+    .token_btn {
+        padding:8px 12px;
+        height: auto;
+    }
 }
 
 .box_form .to {
@@ -198,16 +263,22 @@
     color: #aaa;
 }
 
-.login_box {
-    padding:20px 0 0 0;
+.gray_box {
+    padding:0 0 1rem 0;
     .empty{
-    padding:20px 0;
-    background: #FAFAFA;
-    border: 1px solid #F0F0F0;
-    text-align: center;
-    color: #aaa;
-    border-radius:12px;
-    color: #999;
+        padding:20px 0;
+        background: #FAFAFA;
+        border: 1px solid #F0F0F0;
+        text-align: center;
+        color: #aaa;
+        border-radius:12px;
+        color: #999;
+    }
+    p {
+        margin-bottom: 0;
+        a {
+            color: @primary-color;
+        }
     }
 }
 
@@ -249,5 +320,109 @@
     p {
         margin-bottom: 0;
         font-size:14px;
+    }
+}
+
+.box_lptoken {
+    &:extend(.border-box);
+    h3 {
+        color: @black-color;
+        font-size:16px;
+        margin-bottom: 20px;
+        padding-bottom:0; 
+        text-transform:capitalize;
+    }
+    .amount_input {
+        &:extend(.gray-input);
+        font-size: 24px;
+        font-weight: 500;
+        color: #000;
+    }
+    .controller {
+        .slider {
+            margin:30px 0;
+        }
+        .quickbtn {
+            display: flex;
+            justify-content: space-between;
+            margin:0 -10px;
+            a {
+                flex-grow: 1;
+                text-align: center;
+                background: #ECF0F6;
+                border-radius: 6px;
+                font-size: 14px;
+                color: @black-color;
+                border: 2px solid #fff;
+                padding:5px 10px;
+                margin:0 10px;
+                &:hover {
+                    color: #3E2EAF;
+                    border: 2px solid #3E2EAF;
+                }
+
+            }
+        }
+    }
+}
+.box_result {
+    &:extend(.border-box);
+    padding:3px 15px;
+}
+dl.token {
+    display: flex;
+    justify-content: space-between;
+    margin:12px 0;
+    font-size: 16px;
+    color: @black-color;
+    dt {
+        display: flex;
+        justify-content: flex-end;
+        align-items:center;
+        .tokenicon {
+            display: flex;
+            align-items:center;
+            margin-right: 12px;
+        }
+    }
+    dd {
+        margin:0;
+    }
+}
+.token_sm {
+    display: flex;
+    justify-content: space-between;
+    margin:12px 0;
+    font-size: 14px;
+    color: @black-color-2;
+    dt,dd {
+        margin:0;
+    }
+    dt {
+        text-transform: capitalize;
+
+    }
+    dd {
+        p {
+            text-align: right;
+            margin:0;
+        }
+    }
+}
+.box_icon {
+    margin:24px 0;
+    display: flex;
+    justify-content: center;
+}
+.box_end {
+    margin: 20px 0;
+}
+.box_tips {
+    font-size: 14px;
+    padding-bottom: 30px;
+    color: #999;
+    .tips_b {
+        color: #3E2EAF;
+        font-weight:bold;
     }
 }

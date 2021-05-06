@@ -34,7 +34,7 @@ const tronlinkHoc = WrappedComponent => {
 
             let tronlink_account = getTronLinkLoginAccount();
 
-            console.log('tronlink的账户状态',tronlink_account);
+            // console.log('tronlink的账户状态',tronlink_account);
 
             if (tronlink_account && !tronlink.get('is_logined')) {
                 this.props.tronlink_logined(true);
@@ -47,7 +47,7 @@ const tronlinkHoc = WrappedComponent => {
             //如果原来就已经有登陆账户，这里检查的是是否退出了用户
             if (tronlink.get('account')) {
                 if (!tronlink_account) {
-                    console.log('突然发现账户不是登陆状态了');
+                    console.log('Action:账户被登出');
                     this.props.tronlink_set_account(null);
                     // this.props.tronlink_set_balance(0);
                     this.props.remove_balance_all();
@@ -55,7 +55,7 @@ const tronlinkHoc = WrappedComponent => {
             //如果原来不是登陆用户，这里需要检查的是用户是否突然登陆了
             }else {
                 if (tronlink_account) {
-                    console.log('突然发现账户是登陆状态了');
+                    console.log('Action:账户登陆');
 
                     this.props.tronlink_set_account(tronlink_account);
                     // let trx_balance = await getTrxBalance(tronlink_account);

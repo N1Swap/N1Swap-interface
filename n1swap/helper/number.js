@@ -39,7 +39,9 @@ const getPoolPercent = (token_amount,total_amount) => {
 const getIntAmount = (token_amount,total_decimal) => {
     return Number(token_amount) * Math.pow(10,total_decimal);
 }
-
+const forceDecimal = function(num , dec = 12) {
+    return Number(num).toFixed(dec);
+}
 
 const getPoolPriceAfter = (pool_amount1,pool_amount2,amount1) => {
     amount1 = Number(amount1)
@@ -84,5 +86,6 @@ module.exports = {
     'getPoolPriceAfter' : getPoolPriceAfter,
     'getExchangePrice'  : getExchangePrice,
     'getToAmount'       : getToAmount,
-    'getFromAmount'     : getFromAmount
+    'getFromAmount'     : getFromAmount,
+    'forceDecimal'      : forceDecimal
 }
